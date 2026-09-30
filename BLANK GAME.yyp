@@ -1,0 +1,51 @@
+{
+  "$GMProject":"v1",
+  "%Name":"BLANK GAME",
+  "AudioGroups":[
+    {"$GMAudioGroup":"v1","%Name":"audiogroup_default","exportDir":"","name":"audiogroup_default","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
+  ],
+  "configs":{
+    "children":[],
+    "name":"Default",
+  },
+  "defaultScriptType":0,
+  "Folders":[
+    {"$GMFolder":"","%Name":"Cenas","folderPath":"folders/Cenas.yy","name":"Cenas","resourceType":"GMFolder","resourceVersion":"2.0",},
+    {"$GMFolder":"","%Name":"Objetos","folderPath":"folders/Objetos.yy","name":"Objetos","resourceType":"GMFolder","resourceVersion":"2.0",},
+    {"$GMFolder":"","%Name":"Sprites parados","folderPath":"folders/Sprites parados.yy","name":"Sprites parados","resourceType":"GMFolder","resourceVersion":"2.0",},
+    {"$GMFolder":"","%Name":"Sprites se movendo","folderPath":"folders/Sprites se movendo.yy","name":"Sprites se movendo","resourceType":"GMFolder","resourceVersion":"2.0",},
+  ],
+  "ForcedPrefabProjectReferences":[],
+  "IncludedFiles":[],
+  "isEcma":false,
+  "LibraryEmitters":[],
+  "MetaData":{
+    "IDEVersion":"2026.0.0.16",
+  },
+  "name":"BLANK GAME",
+  "resources":[
+    {"id":{"name":"Object_player","path":"objects/Object_player/Object_player.yy",},},
+    {"id":{"name":"Object2","path":"objects/Object2/Object2.yy",},},
+    {"id":{"name":"Room1","path":"rooms/Room1/Room1.yy",},},
+    {"id":{"name":"costas","path":"sprites/costas/costas.yy",},},
+    {"id":{"name":"direita","path":"sprites/direita/direita.yy",},},
+    {"id":{"name":"esquerda","path":"sprites/esquerda/esquerda.yy",},},
+    {"id":{"name":"fente","path":"sprites/fente/fente.yy",},},
+    {"id":{"name":"Move_cima","path":"sprites/Move_cima/Move_cima.yy",},},
+    {"id":{"name":"Move_direita","path":"sprites/Move_direita/Move_direita.yy",},},
+    {"id":{"name":"Move_es","path":"sprites/Move_es/Move_es.yy",},},
+    {"id":{"name":"Move_frente","path":"sprites/Move_frente/Move_frente.yy",},},
+    {"id":{"name":"Sprite10","path":"sprites/Sprite10/Sprite10.yy",},},
+    {"id":{"name":"Sprite11","path":"sprites/Sprite11/Sprite11.yy",},},
+    {"id":{"name":"Sprite9","path":"sprites/Sprite9/Sprite9.yy",},},
+  ],
+  "resourceType":"GMProject",
+  "resourceVersion":"2.0",
+  "RoomOrderNodes":[
+    {"roomId":{"name":"Room1","path":"rooms/Room1/Room1.yy",},},
+  ],
+  "templateType":"game",
+  "TextureGroups":[
+    {"$GMTextureGroup":"","%Name":"Default","autocrop":true,"border":2,"compressFormat":"bz2","customOptions":"","directory":"","groupParent":null,"isScaled":true,"loadType":"default","mipsToGenerate":0,"name":"Default","resourceType":"GMTextureGroup","resourceVersion":"2.0","targets":-1,},
+  ],
+}

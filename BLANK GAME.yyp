@@ -35,6 +35,7 @@
     {"id":{"name":"Move_direita","path":"sprites/Move_direita/Move_direita.yy",},},
     {"id":{"name":"Move_es","path":"sprites/Move_es/Move_es.yy",},},
     {"id":{"name":"Move_frente","path":"sprites/Move_frente/Move_frente.yy",},},
+    {"id":{"name":"Sprite_teste","path":"sprites/Sprite_teste/Sprite_teste.yy",},},
     {"id":{"name":"Sprite10","path":"sprites/Sprite10/Sprite10.yy",},},
     {"id":{"name":"Sprite11","path":"sprites/Sprite11/Sprite11.yy",},},
     {"id":{"name":"Sprite9","path":"sprites/Sprite9/Sprite9.yy",},},

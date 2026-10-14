@@ -1,41 +1,47 @@
-// Teclas de movimentação
-var _dir = keyboard_check(ord("D"));
-var _esq = keyboard_check(ord("A"));
-var _baixo = keyboard_check(ord("S"));
-var _cima = keyboard_check(ord("W"));
+// Teclas de movimentação (com trava para o terminal)
+var _dir = 0;
+var _esq = 0;
+var _baixo = 0;
+var _cima = 0;
+
+if (!instance_exists(obj_Terminal))
+{
+    _dir = keyboard_check(ord("D"));
+    _esq = keyboard_check(ord("A"));
+    _baixo = keyboard_check(ord("S"));
+    _cima = keyboard_check(ord("W"));
+}
 
 // Calcular velocidade
 velh = (_dir - _esq) * vel;
 velv = (_baixo - _cima) * vel;
 
-// Colisão Horizontal
-repeat(abs(velh))
+// Colisão Horizontal Fluida
+if (place_meeting(x + velh, y, obj_Colisao_Pai))
 {
-    // Verifica se NÃO bate nem na parede E nem no Object7
-    if (!place_meeting(x + sign(velh), y, obj_Parede) && !place_meeting(x + sign(velh), y, obj_servidor))
+    while (!place_meeting(x + sign(velh), y, obj_Colisao_Pai))
     {
         x += sign(velh);
     }
-    else
-    {
-        velh = 0; // Nota: corrigido de velhh para velh
-        break;
-    }
+    velh = 0;
+}
+else
+{
+    x += velh;
 }
 
-// Colisão Vertical (Pra ele conseguir andar pra cima / baixo)
-repeat(abs(velv))
+// Colisão Vertical Fluida
+if (place_meeting(x, y + velv, obj_Colisao_Pai))
 {
-    // Verifica se NÃO bate nem na parede E nem no Object7
-    if (!place_meeting(x, y + sign(velv), obj_Parede) && !place_meeting(x, y + sign(velv), obj_servidor))
+    while (!place_meeting(x, y + sign(velv), obj_Colisao_Pai))
     {
         y += sign(velv);
     }
-    else
-    {
-        velv = 0; // Nota: corrigido de velhv para velv
-        break;
-    }
+    velv = 0;
+}
+else
+{
+    y += velv;
 }
 
 // Atualizar direção (lado) com base na última tecla pressionada
@@ -45,7 +51,7 @@ if (_dir)    lado = 2;
 if (_esq)    lado = 3;
 
 // Verificar se está em movimento
-if (velh != 0 || velv != 0) {
+if (_dir != 0 || _esq != 0 || _baixo != 0 || _cima != 0) {
     movendo = 1;
 } else {
     movendo = 0;

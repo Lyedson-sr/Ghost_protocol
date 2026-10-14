@@ -1,9 +1,12 @@
-// Desenha o sprite do notebook normalmente
 draw_self();
 
-// Se o jogador estiver perto, mostra o aviso
-if (point_distance(x, y, obj_player.x, obj_player.y) < 40)
+// Verifica se o jogador existe na sala antes de calcular a distância
+if (instance_exists(obj_player)) 
 {
-    draw_set_color(c_white);
-    draw_text(x - 30, y - 40, "Pressione [ E ]");
+    // Se o jogador estiver a menos de 50 pixels, mostra o aviso centralizado em cima
+    if (point_distance(x, y, obj_player.x, obj_player.y) < 50)
+    {
+        draw_set_color(c_white);
+        draw_text(x - 10, y - 35, "Pressione [ E ]");
+    }
 }

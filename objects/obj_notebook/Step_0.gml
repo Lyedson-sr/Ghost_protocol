@@ -1,5 +1,5 @@
 // Verifica se o jogador está perto (ex: a menos de 40 pixels) e aperta a tecla E
-if (point_distance(x, y, obj_player.x, obj_player.y) < 40)
+if (point_distance(x, y, obj_player.x, obj_player.y) < 50)
 {
     if (keyboard_check_pressed(ord("E")))
     {

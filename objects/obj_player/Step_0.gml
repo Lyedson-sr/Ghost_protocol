@@ -1,16 +1,49 @@
 
 /// Evento Etapa (Step) - obj_player
 
+// Voltar ao menu com ESC
+if (keyboard_check_pressed(vk_escape))
+{
+    // Fechar interfaces antes de trocar de sala
+    if (instance_exists(obj_Terminal))
+    {
+        with (obj_Terminal)
+        {
+            instance_destroy();
+        }
+        exit;
+    }
+
+    if (instance_exists(obj_Caderno))
+    {
+        with (obj_Caderno)
+        {
+            instance_destroy();
+        }
+        exit;
+    }
+
+    room_goto(Room_Menu);
+    exit;
+}
+
 // Verificar se alguma interface esta aberta
 var _interface_aberta =
     instance_exists(obj_Terminal)
     || instance_exists(obj_Caderno);
 
-// Abrir o caderno com C, se nenhuma interface estiver aberta
+// Abrir/fechar o caderno com C (toggle), se o terminal nao estiver aberto
 if (!instance_exists(obj_Terminal)
     && keyboard_check_pressed(ord("C")))
 {
-    if (!instance_exists(obj_Caderno))
+    if (instance_exists(obj_Caderno))
+    {
+        with (obj_Caderno)
+        {
+            instance_destroy();
+        }
+    }
+    else
     {
         instance_create_depth(
             0, 0, -10000,

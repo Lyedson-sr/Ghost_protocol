@@ -1,13 +1,15 @@
 {
   "$GMObject":"",
-  "%Name":"Object13",
-  "eventList":[],
+  "%Name":"obj_porta",
+  "eventList":[
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+  ],
   "managed":true,
-  "name":"Object13",
+  "name":"obj_porta",
   "overriddenProperties":[],
   "parent":{
-    "name":"BLANK GAME",
-    "path":"BLANK GAME.yyp",
+    "name":"Objetos",
+    "path":"folders/Objetos.yy",
   },
   "parentObjectId":null,
   "persistent":false,
@@ -28,8 +30,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"Sprite18",
-    "path":"sprites/Sprite18/Sprite18.yy",
+    "name":"spr_porta",
+    "path":"sprites/spr_porta/spr_porta.yy",
   },
   "spriteMaskId":null,
   "visible":true,

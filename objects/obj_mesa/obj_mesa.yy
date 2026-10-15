@@ -6,8 +6,8 @@
   "name":"obj_mesa",
   "overriddenProperties":[],
   "parent":{
-    "name":"BLANK GAME",
-    "path":"BLANK GAME.yyp",
+    "name":"Objetos",
+    "path":"folders/Objetos.yy",
   },
   "parentObjectId":{
     "name":"obj_Colisao_Pai",

@@ -30,6 +30,7 @@
     {"id":{"name":"obj_Colisao_Pai","path":"objects/obj_Colisao_Pai/obj_Colisao_Pai.yy",},},
     {"id":{"name":"obj_dist_1","path":"objects/obj_dist_1/obj_dist_1.yy",},},
     {"id":{"name":"obj_dist_2","path":"objects/obj_dist_2/obj_dist_2.yy",},},
+    {"id":{"name":"obj_menu","path":"objects/obj_menu/obj_menu.yy",},},
     {"id":{"name":"obj_mesa","path":"objects/obj_mesa/obj_mesa.yy",},},
     {"id":{"name":"obj_notebook","path":"objects/obj_notebook/obj_notebook.yy",},},
     {"id":{"name":"obj_Parede","path":"objects/obj_Parede/obj_Parede.yy",},},
@@ -39,6 +40,7 @@
     {"id":{"name":"obj_servidor","path":"objects/obj_servidor/obj_servidor.yy",},},
     {"id":{"name":"obj_Terminal","path":"objects/obj_Terminal/obj_Terminal.yy",},},
     {"id":{"name":"Object13","path":"objects/Object13/Object13.yy",},},
+    {"id":{"name":"Room_Menu","path":"rooms/Room_Menu/Room_Menu.yy",},},
     {"id":{"name":"Room1","path":"rooms/Room1/Room1.yy",},},
     {"id":{"name":"Room2","path":"rooms/Room2/Room2.yy",},},
     {"id":{"name":"spr_chao","path":"sprites/spr_chao/spr_chao.yy",},},
@@ -63,6 +65,7 @@
   "resourceType":"GMProject",
   "resourceVersion":"2.0",
   "RoomOrderNodes":[
+    {"roomId":{"name":"Room_Menu","path":"rooms/Room_Menu/Room_Menu.yy",},},
     {"roomId":{"name":"Room1","path":"rooms/Room1/Room1.yy",},},
     {"roomId":{"name":"Room2","path":"rooms/Room2/Room2.yy",},},
   ],

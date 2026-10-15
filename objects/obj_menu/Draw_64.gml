@@ -122,6 +122,132 @@ if (mostrar_controles)
     exit;
 }
 
+if (mostrar_configuracoes)
+{
+    var _painel_w_cfg = min(760, _gui_w - 120);
+    var _painel_h_cfg = min(430, _gui_h - 120);
+
+    var _px1_cfg = (_gui_w - _painel_w_cfg) * 0.5;
+    var _py1_cfg = (_gui_h - _painel_h_cfg) * 0.5;
+    var _px2_cfg = _px1_cfg + _painel_w_cfg;
+    var _py2_cfg = _py1_cfg + _painel_h_cfg;
+
+    draw_set_color(make_color_rgb(12, 20, 34));
+    draw_rectangle(_px1_cfg, _py1_cfg, _px2_cfg, _py2_cfg, false);
+
+    draw_set_color(make_color_rgb(118, 190, 255));
+    draw_rectangle(_px1_cfg, _py1_cfg, _px2_cfg, _py2_cfg, true);
+
+    draw_set_color(make_color_rgb(20, 34, 57));
+    draw_rectangle(_px1_cfg + 1, _py1_cfg + 1, _px2_cfg - 1, _py1_cfg + 74, false);
+
+    draw_set_font(-1);
+    draw_set_halign(fa_center);
+    draw_set_valign(fa_middle);
+    draw_set_color(c_white);
+    draw_text(_gui_w * 0.5, _py1_cfg + 38, "CONFIGURACOES");
+
+    var _vol_w = 64;
+    var _vol_h = 44;
+    var _vol_gap = 16;
+    var _vol_y = _py1_cfg + 188;
+
+    var _menos_x1 = _px1_cfg + 56;
+    var _menos_x2 = _menos_x1 + _vol_w;
+
+    var _mais_x2 = _px2_cfg - 56;
+    var _mais_x1 = _mais_x2 - _vol_w;
+
+    var _label_x1 = _menos_x2 + _vol_gap;
+    var _label_x2 = _mais_x1 - _vol_gap;
+
+    draw_set_halign(fa_left);
+    draw_set_valign(fa_top);
+    draw_set_color(make_color_rgb(162, 217, 255));
+    draw_text(_px1_cfg + 44, _py1_cfg + 118, "VOLUME GERAL");
+
+    draw_set_color(make_color_rgb(21, 36, 58));
+    draw_rectangle(_label_x1, _vol_y, _label_x2, _vol_y + _vol_h, false);
+    draw_set_color(make_color_rgb(110, 178, 243));
+    draw_rectangle(_label_x1, _vol_y, _label_x2, _vol_y + _vol_h, true);
+
+    var _cor_menos = make_color_rgb(28, 48, 82);
+    var _cor_borda_menos = make_color_rgb(130, 194, 255);
+
+    if (hover_volume_menos)
+    {
+        _cor_menos = make_color_rgb(54, 90, 150);
+        _cor_borda_menos = c_white;
+    }
+
+    var _cor_mais = make_color_rgb(28, 48, 82);
+    var _cor_borda_mais = make_color_rgb(130, 194, 255);
+
+    if (hover_volume_mais)
+    {
+        _cor_mais = make_color_rgb(54, 90, 150);
+        _cor_borda_mais = c_white;
+    }
+
+    draw_set_color(_cor_menos);
+    draw_rectangle(_menos_x1, _vol_y, _menos_x2, _vol_y + _vol_h, false);
+    draw_set_color(_cor_borda_menos);
+    draw_rectangle(_menos_x1, _vol_y, _menos_x2, _vol_y + _vol_h, true);
+
+    draw_set_color(_cor_mais);
+    draw_rectangle(_mais_x1, _vol_y, _mais_x2, _vol_y + _vol_h, false);
+    draw_set_color(_cor_borda_mais);
+    draw_rectangle(_mais_x1, _vol_y, _mais_x2, _vol_y + _vol_h, true);
+
+    var _volume_pct = string(round(global.volume_master * 100));
+
+    draw_set_halign(fa_center);
+    draw_set_valign(fa_middle);
+    draw_set_color(c_white);
+    draw_text((_label_x1 + _label_x2) * 0.5, _vol_y + _vol_h * 0.5, _volume_pct + "%");
+    draw_text((_menos_x1 + _menos_x2) * 0.5, _vol_y + _vol_h * 0.5, "-");
+    draw_text((_mais_x1 + _mais_x2) * 0.5, _vol_y + _vol_h * 0.5, "+");
+
+    draw_set_halign(fa_left);
+    draw_set_valign(fa_top);
+    draw_set_color(make_color_rgb(170, 218, 255));
+    draw_text(_px1_cfg + 44, _vol_y + 68, "Ajuste o som geral do jogo.");
+
+    var _voltar_largura_cfg = 220;
+    var _voltar_altura_cfg = 52;
+
+    var _voltar_x1_cfg = (_gui_w - _voltar_largura_cfg) * 0.5;
+    var _voltar_y1_cfg = _gui_h - 110;
+    var _voltar_x2_cfg = _voltar_x1_cfg + _voltar_largura_cfg;
+    var _voltar_y2_cfg = _voltar_y1_cfg + _voltar_altura_cfg;
+
+    var _cor_btn_cfg = make_color_rgb(28, 48, 82);
+    var _cor_borda_btn_cfg = make_color_rgb(130, 194, 255);
+
+    if (hover_voltar)
+    {
+        _cor_btn_cfg = make_color_rgb(57, 94, 154);
+        _cor_borda_btn_cfg = c_white;
+    }
+
+    draw_set_color(_cor_btn_cfg);
+    draw_rectangle(_voltar_x1_cfg, _voltar_y1_cfg, _voltar_x2_cfg, _voltar_y2_cfg, false);
+
+    draw_set_color(_cor_borda_btn_cfg);
+    draw_rectangle(_voltar_x1_cfg, _voltar_y1_cfg, _voltar_x2_cfg, _voltar_y2_cfg, true);
+
+    draw_set_halign(fa_center);
+    draw_set_valign(fa_middle);
+    draw_set_color(c_white);
+    draw_text(_gui_w * 0.5, _voltar_y1_cfg + _voltar_altura_cfg * 0.5, "VOLTAR");
+
+    draw_set_halign(fa_left);
+    draw_set_valign(fa_top);
+    draw_set_alpha(1);
+    draw_set_color(c_white);
+    exit;
+}
+
 // Titulo
 draw_set_font(-1);
 draw_set_halign(fa_center);

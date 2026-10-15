@@ -61,6 +61,7 @@
     {"id":{"name":"spr_portal_2","path":"sprites/spr_portal_2/spr_portal_2.yy",},},
     {"id":{"name":"spr_servidor","path":"sprites/spr_servidor/spr_servidor.yy",},},
     {"id":{"name":"Sprite18","path":"sprites/Sprite18/Sprite18.yy",},},
+    {"id":{"name":"snd_menu","path":"sounds/snd_menu/snd_menu.yy",},},
   ],
   "resourceType":"GMProject",
   "resourceVersion":"2.0",

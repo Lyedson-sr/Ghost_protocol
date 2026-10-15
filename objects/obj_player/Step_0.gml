@@ -1,10 +1,32 @@
-// Teclas de movimentação (com trava para o terminal)
+
+/// Evento Etapa (Step) - obj_player
+
+// Verificar se alguma interface esta aberta
+var _interface_aberta =
+    instance_exists(obj_Terminal)
+    || instance_exists(obj_Caderno);
+
+// Abrir o caderno com C, se nenhuma interface estiver aberta
+if (!instance_exists(obj_Terminal)
+    && keyboard_check_pressed(ord("C")))
+{
+    if (!instance_exists(obj_Caderno))
+    {
+        instance_create_depth(
+            0, 0, -10000,
+            obj_Caderno
+        );
+    }
+}
+
+// Teclas de movimentacao
 var _dir = 0;
 var _esq = 0;
 var _baixo = 0;
 var _cima = 0;
 
-if (!instance_exists(obj_Terminal))
+// Travar movimento enquanto uma interface estiver aberta
+if (!_interface_aberta)
 {
     _dir = keyboard_check(ord("D"));
     _esq = keyboard_check(ord("A"));
@@ -16,13 +38,15 @@ if (!instance_exists(obj_Terminal))
 velh = (_dir - _esq) * vel;
 velv = (_baixo - _cima) * vel;
 
-// Colisão Horizontal Fluida
+// Colisao horizontal
 if (place_meeting(x + velh, y, obj_Colisao_Pai))
 {
-    while (!place_meeting(x + sign(velh), y, obj_Colisao_Pai))
+    while (velh != 0
+        && !place_meeting(x + sign(velh), y, obj_Colisao_Pai))
     {
         x += sign(velh);
     }
+
     velh = 0;
 }
 else
@@ -30,13 +54,15 @@ else
     x += velh;
 }
 
-// Colisão Vertical Fluida
+// Colisao vertical
 if (place_meeting(x, y + velv, obj_Colisao_Pai))
 {
-    while (!place_meeting(x, y + sign(velv), obj_Colisao_Pai))
+    while (velv != 0
+        && !place_meeting(x, y + sign(velv), obj_Colisao_Pai))
     {
         y += sign(velv);
     }
+
     velv = 0;
 }
 else
@@ -44,18 +70,21 @@ else
     y += velv;
 }
 
-// Atualizar direção (lado) com base na última tecla pressionada
-if (_baixo)  lado = 0;
-if (_cima)   lado = 1;
-if (_dir)    lado = 2;
-if (_esq)    lado = 3;
+// Atualizar direcao
+if (_baixo) lado = 0;
+if (_cima)  lado = 1;
+if (_dir)   lado = 2;
+if (_esq)   lado = 3;
 
-// Verificar se está em movimento
-if (_dir != 0 || _esq != 0 || _baixo != 0 || _cima != 0) {
+// Verificar movimento
+if (_dir != 0 || _esq != 0 || _baixo != 0 || _cima != 0)
+{
     movendo = 1;
-} else {
+}
+else
+{
     movendo = 0;
 }
 
-// Trocar o sprite atual dinamicamente
+// Atualizar sprite
 sprite_index = sprites[movendo][lado];

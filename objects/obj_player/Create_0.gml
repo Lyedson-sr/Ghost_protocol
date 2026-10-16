@@ -4,8 +4,17 @@ velh = 0;
 velv = 0;
 movendo = 0;
 lado = 0; // 0: frente, 1: costas, 2: direita, 3: esquerda
+lado_anterior = lado;
+ultimo_lado_input = lado;
+
+// Usa escala nativa dos sprites para evitar qualquer deformacao visual.
+player_scale = 1.15;
 
 // Matriz de sprites
+sprites = array_create(2);
+sprites[0] = array_create(4);
+sprites[1] = array_create(4);
+
 // Parados (movendo = 0)
 sprites[0][0] = spr_fente;
 sprites[0][1] = spr_costas;

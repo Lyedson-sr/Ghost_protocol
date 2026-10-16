@@ -57,6 +57,9 @@ var _dir = 0;
 var _esq = 0;
 var _baixo = 0;
 var _cima = 0;
+var _x_ant = x;
+var _y_ant = y;
+var _lado_ant = lado;
 
 // Travar movimento enquanto uma interface estiver aberta
 if (!_interface_aberta)
@@ -65,6 +68,12 @@ if (!_interface_aberta)
     _esq = keyboard_check(ord("A"));
     _baixo = keyboard_check(ord("S"));
     _cima = keyboard_check(ord("W"));
+
+    // Memoriza a ultima tecla de direcao apertada para usar no idle.
+    if (keyboard_check_pressed(ord("D"))) ultimo_lado_input = 2;
+    if (keyboard_check_pressed(ord("A"))) ultimo_lado_input = 3;
+    if (keyboard_check_pressed(ord("S"))) ultimo_lado_input = 0;
+    if (keyboard_check_pressed(ord("W"))) ultimo_lado_input = 1;
 }
 
 // Calcular velocidade
@@ -103,14 +112,26 @@ else
     y += velv;
 }
 
-// Atualizar direcao
-if (_baixo) lado = 0;
-if (_cima)  lado = 1;
-if (_dir)   lado = 2;
-if (_esq)   lado = 3;
+// Atualizar direcao pela entrada atual (resposta imediata, sem atraso visual)
+if (_dir && !_esq)
+{
+    lado = 2;
+}
+else if (_esq && !_dir)
+{
+    lado = 3;
+}
+else if (_baixo && !_cima)
+{
+    lado = 0;
+}
+else if (_cima && !_baixo)
+{
+    lado = 1;
+}
 
-// Verificar movimento
-if (_dir != 0 || _esq != 0 || _baixo != 0 || _cima != 0)
+// Verificar movimento real (sincroniza animacao com deslocamento de fato)
+if (x != _x_ant || y != _y_ant)
 {
     movendo = 1;
 }
@@ -119,5 +140,44 @@ else
     movendo = 0;
 }
 
+// Sem teclas e parado: usa a ultima direcao apertada (W/A/S/D).
+if (!movendo && !_dir && !_esq && !_baixo && !_cima)
+{
+    lado = ultimo_lado_input;
+}
+
 // Atualizar sprite
 sprite_index = sprites[movendo][lado];
+
+// Ao trocar de direcao, reinicia a animacao para evitar pulo visual.
+if (lado != _lado_ant)
+{
+    image_index = 0;
+}
+
+lado_anterior = lado;
+
+// Mantem escala uniforme para evitar deformacao entre animacoes.
+image_xscale = player_scale;
+image_yscale = player_scale;
+
+// Ajustar velocidade da animacao para acompanhar melhor o movimento
+if (movendo)
+{
+    var _dist_mov = point_distance(_x_ant, _y_ant, x, y);
+    var _px_por_quadrado = 32;
+    var _frames_por_quadrado_base = 5;
+
+    // W/S pedem um pouco mais de cadencia para evitar efeito de "deslize".
+    var _ajuste_direcao = ((lado == 0 || lado == 1) ? 1.20 : 1.00);
+    var _frames_por_quadrado = _frames_por_quadrado_base * _ajuste_direcao;
+
+    // Regra base: ~5 frames por quadrado, com ajuste vertical (W/S).
+    image_speed = (_dist_mov * _frames_por_quadrado) / _px_por_quadrado;
+    image_speed = clamp(image_speed, 0.20, 0.80);
+}
+else
+{
+    image_speed = 0;
+    image_index = 0;
+}

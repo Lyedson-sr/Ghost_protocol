@@ -1,4 +1,6 @@
-if place_meeting(x,y, obj_player) && !instance_exists(obj_dist_1)//sea instancia não existir podemos executar esse codigo
+if place_meeting(x,y, obj_player)
+    && global.incidente_001_confirmado
+    && !instance_exists(obj_dist_1)//sea instancia não existir podemos executar esse codigo
 	{
 		//sempre que criarmos o objeto o definiremos em uma profundidade apropriada
 		//algo legal que podemos fazer sempre que criamos novas instancias é armazenar o id dessa nova instancia com uma variavel

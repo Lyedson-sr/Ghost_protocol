@@ -1,87 +1,50 @@
+/// Step - obj_Terminal
+terminal_x = (display_get_gui_width()  - terminal_largura) / 2;
+terminal_y = (display_get_gui_height() - terminal_altura)  / 2;
 
-/// Evento Etapa - obj_Terminal
+var _mx = device_mouse_x_to_gui(0);
+var _my = device_mouse_y_to_gui(0);
 
-// 1. Capturar o texto digitado
-input_texto = keyboard_string;
-
-// 2. Posição e tamanho do terminal
-var _x = 150;
-var _y = 100;
-var _largura = terminal_largura;
-var _altura = terminal_altura;
-
-// 3. Detectar o mouse dentro do terminal
-var _mouse_x = device_mouse_x_to_gui(0);
-var _mouse_y = device_mouse_y_to_gui(0);
-
-var _mouse_dentro =
-    _mouse_x >= _x &&
-    _mouse_x <= _x + _largura &&
-    _mouse_y >= _y &&
-    _mouse_y <= _y + _altura;
-
-// 4. Controlar a rolagem
-if (_mouse_dentro)
-{
-    if (mouse_wheel_up())
-    {
-        scroll_linha += scroll_velocidade;
-    }
-
-    if (mouse_wheel_down())
-    {
-        scroll_linha -= scroll_velocidade;
-    }
-}
-
-scroll_linha = max(0, scroll_linha);
-
-// 5. Processar comando ao pressionar ENTER
-if (keyboard_check_pressed(vk_enter))
-{
-    var _entrada = string_trim(input_texto);
-    var _cmd = string_lower(_entrada);
-
-    historico += "> " + _entrada + "\n";
-
-    if (_cmd == "ls")
-    {
-        historico +=
-            "  documentos/\n" +
-            "  senhas.txt\n" +
-            "  projeto_secreto.gml\n";
-    }
-    else if (_cmd == "ajuda" || _cmd == "help")
-    {
-        historico +=
-            "  Comandos disponiveis: ls, ajuda, cls, limpar, sair\n";
-    }
-    else if (_cmd == "cls" || _cmd == "limpar")
-    {
-        historico = "";
-    }
-    else if (_cmd == "sair" || _cmd == "exit")
-    {
-        instance_destroy();
-        exit;
-    }
-    else if (_cmd != "")
-    {
-        historico +=
-            "  Comando nao reconhecido: " + _entrada + "\n";
-    }
-
-    // Limpar o texto digitado
-    keyboard_string = "";
-    input_texto = "";
-
-    // Mostrar o final do histórico
-    scroll_linha = 0;
-}
-
-// 6. Fechar terminal com ESC
-if (keyboard_check_pressed(vk_escape))
-{
+// Botão fechar (X)
+var _bx = terminal_x + terminal_largura - 30;
+var _by = terminal_y + 4;
+if (mouse_check_button_pressed(mb_left) && point_in_rectangle(_mx, _my, _bx, _by, _bx + 24, _by + 24)) {
     instance_destroy();
     exit;
+}
+
+if (keyboard_check_pressed(vk_escape)) { instance_destroy(); exit; }
+
+// Rolagem
+if (point_in_rectangle(_mx, _my, terminal_x, terminal_y, terminal_x + terminal_largura, terminal_y + terminal_altura)) {
+    if (mouse_wheel_up())   scroll_linha += scroll_velocidade;
+    if (mouse_wheel_down()) scroll_linha -= scroll_velocidade;
+}
+scroll_linha = max(0, scroll_linha);
+
+if (ocupado) {
+    keyboard_string = "";
+    input_texto = "";
+    timer--;
+    if (timer <= 0) {
+        for (var i = 0; i < array_length(saida_pendente); i++) adicionar("out", saida_pendente[i]);
+        var _a = acao_pendente;
+        saida_pendente = [];
+        acao_pendente = "";
+        ocupado = false;
+        scroll_linha = 0;
+        if (_a != "") finalizar_acao(_a);
+    }
+} else {
+    if (string_length(keyboard_string) > 120) keyboard_string = string_copy(keyboard_string, 1, 120);
+    input_texto = keyboard_string;
+
+    if (keyboard_check_pressed(vk_enter)) {
+        var _entrada = input_texto;
+        keyboard_string = "";
+        input_texto = "";
+        if (modo == "senha") processar_senha(_entrada);
+        else executar(string_trim(_entrada));
+        scroll_linha = 0;
+    }
 }

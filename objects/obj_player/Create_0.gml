@@ -9,6 +9,11 @@ ultimo_lado_input = lado;
 
 // Usa escala nativa dos sprites para evitar qualquer deformacao visual.
 player_scale = 1.15;
+alvo = noone;
+
+if (!variable_global_exists("dialogo_aberto")) global.dialogo_aberto = false;
+if (!variable_global_exists("incidente_001_concluido")) global.incidente_001_concluido = false;
+if (!variable_global_exists("incidente_001_confirmado")) global.incidente_001_confirmado = false;
 
 // Matriz de sprites
 sprites = array_create(2);

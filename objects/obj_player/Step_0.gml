@@ -4,6 +4,12 @@
 // Voltar ao menu com ESC
 if (keyboard_check_pressed(vk_escape))
 {
+    // Enquanto um dialogo estiver aberto, o ESC nao abre o menu.
+    if (global.dialogo_aberto)
+    {
+        exit;
+    }
+
     // Fechar interfaces antes de trocar de sala
     if (instance_exists(obj_Terminal))
     {
@@ -61,6 +67,26 @@ var _x_ant = x;
 var _y_ant = y;
 var _lado_ant = lado;
 
+if (global.dialogo_aberto) exit;   // trava o movimento enquanto a janela está aberta
+
+alvo = collision_circle(x, y, 36, obj_interactive, false, true);
+
+var _servidor = instance_nearest(x, y, obj_servidor);
+if (_servidor != noone)
+{
+    var _ponto_x = clamp(x, _servidor.bbox_left, _servidor.bbox_right);
+    var _ponto_y = clamp(y, _servidor.bbox_top, _servidor.bbox_bottom);
+
+    if (point_distance(x, y, _ponto_x, _ponto_y) < 48)
+    {
+        alvo = _servidor;
+    }
+}
+
+if (alvo != noone && keyboard_check_pressed(ord("E"))) {
+    obj_dialogo.abrir(alvo);
+}
+
 // Travar movimento enquanto uma interface estiver aberta
 if (!_interface_aberta)
 {
@@ -91,6 +117,12 @@ if (place_meeting(x + velh, y, obj_Colisao_Pai))
 
     velh = 0;
 }
+else if (!global.incidente_001_confirmado
+    && (place_meeting(x + velh, y, obj_portal_1)
+        || place_meeting(x + velh, y, obj_portal_2)))
+{
+    velh = 0;
+}
 else
 {
     x += velh;
@@ -105,6 +137,12 @@ if (place_meeting(x, y + velv, obj_Colisao_Pai))
         y += sign(velv);
     }
 
+    velv = 0;
+}
+else if (!global.incidente_001_confirmado
+    && (place_meeting(x, y + velv, obj_portal_1)
+        || place_meeting(x, y + velv, obj_portal_2)))
+{
     velv = 0;
 }
 else

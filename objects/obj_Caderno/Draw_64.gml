@@ -192,7 +192,7 @@ if (aba_atual == 0)
 
     draw_text(
         _right_x + 25, _page_y + 23,
-        "Ameaca Potencial"
+        "SERVIDOR DESCONHECIDO"
     );
 
     draw_set_color(make_color_rgb(93, 66, 43));
@@ -254,70 +254,15 @@ if (aba_atual == 0)
         );
     }
 
-    // Painel da ameaca
-    var _card_x = _right_x + 16;
-    var _card_y = _page_y + 72;
-    var _card_w = _page_w - 32;
-    var _card_h = 120;
-
-    draw_set_color(make_color_rgb(225, 211, 161));
-
-    draw_rectangle(
-        _card_x, _card_y,
-        _card_x + _card_w, _card_y + _card_h,
-        false
-    );
-
-    // Icone provisório em pixel art
-    var _icon_x = _card_x + 12;
-    var _icon_y = _card_y + 15;
-
-    draw_set_color(make_color_rgb(40, 47, 61));
-
-    draw_rectangle(
-        _icon_x, _icon_y,
-        _icon_x + 76, _icon_y + 80,
-        false
-    );
-
-    // Silhueta da pessoa
-    draw_set_color(make_color_rgb(91, 101, 116));
-
-    draw_rectangle(
-        _icon_x + 15, _icon_y + 47,
-        _icon_x + 61, _icon_y + 73,
-        false
-    );
-
-    draw_rectangle(
-        _icon_x + 24, _icon_y + 27,
-        _icon_x + 52, _icon_y + 52,
-        false
-    );
-
-    draw_set_color(make_color_rgb(16, 21, 32));
-
-    draw_rectangle(
-        _icon_x + 27, _icon_y + 31,
-        _icon_x + 49, _icon_y + 49,
-        false
-    );
-
     // Descricao da ameaca
     draw_set_color(cor_texto);
 
-    draw_text(
-        _icon_x + 88,
-        _card_y + 15,
-        "Engenharia Social"
-    );
-
     draw_text_ext(
-        _icon_x + 88,
-        _card_y + 43,
-        "Exploracao da interacao humana para obter informacoes confidenciais.",
+        _right_x + 25,
+        _page_y + 82,
+        "Um servidor desconhecido foi identificado na rede interna. Descubra quais servicos estao expostos e determine se e possivel obter acesso.",
         16,
-        _card_w - 110
+        _page_w - 50
     );
 
     // Botao de confirmacao
@@ -346,7 +291,15 @@ if (aba_atual == 0)
         false
     );
 
-    draw_set_color(cor_borda);
+    draw_set_color(
+        (global.incidente_001_concluido
+            && array_length(evidencias) > 0
+            && evidencias[0]
+            && evidencias[1]
+            && evidencias[2])
+        ? cor_borda
+        : make_color_rgb(130, 130, 110)
+    );
 
     draw_rectangle(
         _bx, _by,
@@ -361,6 +314,20 @@ if (aba_atual == 0)
         draw_text(
             _bx + 25, _by + 13,
             "Ameaca Confirmada!"
+        );
+    }
+    else if (!global.incidente_001_concluido)
+    {
+        draw_text(
+            _bx + 25, _by + 13,
+            "Aguardando neutralizacao"
+        );
+    }
+    else if (!evidencias[0] || !evidencias[1] || !evidencias[2])
+    {
+        draw_text(
+            _bx + 25, _by + 13,
+            "Marque todas as evidencias"
         );
     }
     else
@@ -400,10 +367,7 @@ else if (aba_atual == 1)
     );
 
     var _ferramentas = [
-        "Wireshark - Analise de trafego",
-        "Nmap - Descoberta de hosts",
-        "Wazuh - Monitoramento de eventos",
-        "Suricata - Deteccao de intrusoes"
+        "Nmap - Descoberta de redes"
     ];
 
     for (var i = 0; i < array_length(_ferramentas); i++)
@@ -426,6 +390,18 @@ else if (aba_atual == 1)
         );
     }
 
+    draw_text(_page_x + 25, _page_y + 126, "nmap <IP_do_alvo>");
+    draw_line(
+        _page_x + 20, _page_y + 160,
+        _page_x + _page_w - 20, _page_y + 160
+    );
+    draw_text(_page_x + 25, _page_y + 178, "SSH");
+    draw_line(
+        _page_x + 20, _page_y + 214,
+        _page_x + _page_w - 20, _page_y + 214
+    );
+    draw_text(_page_x + 25, _page_y + 232, "ssh usuario@IP_ou_hostname");
+
     draw_set_color(cor_texto);
 
     draw_text(
@@ -445,6 +421,14 @@ else if (aba_atual == 1)
         20,
         _page_w - 50
     );
+
+    draw_text(_right_x + 25, _page_y + 178, "Linux");
+    draw_line(
+        _right_x + 20, _page_y + 214,
+        _right_x + _page_w - 20, _page_y + 214
+    );
+    draw_text(_right_x + 25, _page_y + 232, "ls");
+    draw_text(_right_x + 25, _page_y + 280, "cat");
 
     draw_text(
         _page_x + 12,
@@ -472,11 +456,7 @@ else if (aba_atual == 2)
     );
 
     var _ameacas = [
-        "Engenharia Social",
-        "Phishing",
-        "Acesso nao autorizado",
-        "Modificacao de arquivos",
-        "Dispositivo desconhecido"
+        "Dumpster Diving"
     ];
 
     for (var i = 0; i < array_length(_ameacas); i++)
@@ -516,6 +496,14 @@ else if (aba_atual == 2)
         _page_y + 82,
         "Consulte aqui as categorias de ameacas identificadas durante a investigacao.",
         20,
+        _page_w - 50
+    );
+
+    draw_text_ext(
+        _page_x + 25,
+        _page_y + 126,
+        "Tecnica de reconhecimento em que um atacante procura informacoes uteis em materiais...",
+        18,
         _page_w - 50
     );
 

@@ -40,6 +40,8 @@ if (keyboard_check_pressed(vk_escape))
 // Detectar cliques
 if (mouse_check_button_pressed(mb_left))
 {
+    ameaca_confirmada = global.incidente_001_confirmado;
+
     // Selecionar uma das tres abas
     for (var i = 0; i < 3; i++)
     {
@@ -67,6 +69,7 @@ if (mouse_check_button_pressed(mb_left))
             {
                 evidencias[i] = !evidencias[i];
                 ameaca_confirmada = false;
+                global.incidente_001_confirmado = false;
             }
         }
 
@@ -79,19 +82,19 @@ if (mouse_check_button_pressed(mb_left))
         if (_mx >= _bx && _mx <= _bx + _bw
             && _my >= _by && _my <= _by + _bh)
         {
-            var _alguma_selecionada = false;
-
+            var _todas_selecionadas = true;
             for (var i = 0; i < array_length(evidencias); i++)
             {
-                if (evidencias[i])
+                if (!evidencias[i])
                 {
-                    _alguma_selecionada = true;
+                    _todas_selecionadas = false;
                 }
             }
 
-            if (_alguma_selecionada)
+            if (global.incidente_001_concluido && _todas_selecionadas)
             {
-                ameaa_confirmada = true;
+                ameaca_confirmada = true;
+                global.incidente_001_confirmado = true;
             }
         }
     }

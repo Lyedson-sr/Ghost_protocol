@@ -1,6 +1,11 @@
 var _gui_w = display_get_gui_width();
 var _gui_h = display_get_gui_height();
 
+if (keyboard_check_pressed(vk_f11))
+{
+    window_set_fullscreen(!window_get_fullscreen());
+}
+
 var _total_botoes = array_length(botoes);
 
 var _bloco_altura = (_total_botoes * botao_altura)

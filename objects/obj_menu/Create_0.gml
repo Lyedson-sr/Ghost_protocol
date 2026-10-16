@@ -1,5 +1,7 @@
 /// Evento Criar - obj_menu
 
+gpu_set_texfilter(false);
+
 mostrar_controles = false;
 mostrar_configuracoes = false;
 hover_indice = -1;

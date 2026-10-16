@@ -63,7 +63,7 @@ if (mostrar_controles)
     var _linha_x1 = _px1 + 44;
     var _linha_x2 = _px2 - 44;
     var _inicio_y = _py1 + 108;
-    var _espaco_y = 56;
+    var _espaco_y = 44;
 
     // Linhas de comando
     draw_set_color(make_color_rgb(162, 217, 255));
@@ -72,18 +72,28 @@ if (mostrar_controles)
     draw_text(_linha_x1 + 190, _inicio_y, "mover personagem");
 
     draw_set_color(make_color_rgb(162, 217, 255));
-    draw_text(_linha_x1, _inicio_y + _espaco_y, "C");
+    draw_text(_linha_x1, _inicio_y + _espaco_y, "E");
     draw_set_color(c_white);
-    draw_text(_linha_x1 + 190, _inicio_y + _espaco_y, "abrir/fechar caderno");
+    draw_text(_linha_x1 + 190, _inicio_y + _espaco_y, "interagir");
 
     draw_set_color(make_color_rgb(162, 217, 255));
-    draw_text(_linha_x1, _inicio_y + _espaco_y * 2, "ESC");
+    draw_text(_linha_x1, _inicio_y + _espaco_y * 2, "C");
     draw_set_color(c_white);
-    draw_text(_linha_x1 + 190, _inicio_y + _espaco_y * 2, "fechar interfaces / voltar menu");
+    draw_text(_linha_x1 + 190, _inicio_y + _espaco_y * 2, "abrir/fechar caderno");
+
+    draw_set_color(make_color_rgb(162, 217, 255));
+    draw_text(_linha_x1, _inicio_y + _espaco_y * 3, "F11");
+    draw_set_color(c_white);
+    draw_text(_linha_x1 + 190, _inicio_y + _espaco_y * 3, "alternar tela cheia");
+
+    draw_set_color(make_color_rgb(162, 217, 255));
+    draw_text(_linha_x1, _inicio_y + _espaco_y * 4, "ESC");
+    draw_set_color(c_white);
+    draw_text(_linha_x1 + 190, _inicio_y + _espaco_y * 4, "fechar interfaces / voltar menu");
 
     // Linha divisoria
     draw_set_color(make_color_rgb(73, 117, 166));
-    draw_line(_linha_x1, _py2 - 118, _linha_x2, _py2 - 118);
+    draw_line(_linha_x1, _py2 - 96, _linha_x2, _py2 - 96);
 
     // Botao VOLTAR
     var _voltar_largura = 220;

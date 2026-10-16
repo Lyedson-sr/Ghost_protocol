@@ -1,6 +1,11 @@
 
 /// Evento Etapa (Step) - obj_player
 
+if (keyboard_check_pressed(vk_f11))
+{
+    window_set_fullscreen(!window_get_fullscreen());
+}
+
 // Voltar ao menu com ESC
 if (keyboard_check_pressed(vk_escape))
 {
@@ -80,11 +85,21 @@ if (!_interface_aberta)
 velh = (_dir - _esq) * vel;
 velv = (_baixo - _cima) * vel;
 
+function _hitbox_colide(_dx, _dy)
+{
+    var _l = bbox_left + _dx + hitbox_margem_x;
+    var _r = bbox_right + _dx - hitbox_margem_x;
+    var _t = bbox_top + _dy + hitbox_margem_top;
+    var _b = bbox_bottom + _dy - hitbox_margem_bottom;
+
+    return collision_rectangle(_l, _t, _r, _b, obj_Colisao_Pai, false, true) != noone;
+}
+
 // Colisao horizontal
-if (place_meeting(x + velh, y, obj_Colisao_Pai))
+if (_hitbox_colide(velh, 0))
 {
     while (velh != 0
-        && !place_meeting(x + sign(velh), y, obj_Colisao_Pai))
+        && !_hitbox_colide(sign(velh), 0))
     {
         x += sign(velh);
     }
@@ -97,10 +112,10 @@ else
 }
 
 // Colisao vertical
-if (place_meeting(x, y + velv, obj_Colisao_Pai))
+if (_hitbox_colide(0, velv))
 {
     while (velv != 0
-        && !place_meeting(x, y + sign(velv), obj_Colisao_Pai))
+        && !_hitbox_colide(0, sign(velv)))
     {
         y += sign(velv);
     }
@@ -111,6 +126,9 @@ else
 {
     y += velv;
 }
+
+// Ordena renderizacao pelos "pes" do sprite para sobreposicao correta.
+depth = -bbox_bottom;
 
 // Atualizar direcao pela entrada atual (resposta imediata, sem atraso visual)
 if (_dir && !_esq)

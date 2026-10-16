@@ -8,27 +8,27 @@
 aba_atual = 0;
 
 // Evidências selecionadas
-evidencias = array_create(5, false);
+evidencias = array_create(3, false);
 
 evidencias_nome = [
-    "E-mail de Phishing",
-    "Registro de Login Suspeito",
-    "Trafego de Rede Anomalo",
-    "Arquivo de Sistema Modificado",
-    "Dispositivo USB Desconhecido"
+    "IP",
+    "Usuario",
+    "Senha"
 ];
 
 // Estado da ameaça
-ameaca_confirmada = false;
+if (!variable_global_exists("incidente_001_concluido")) global.incidente_001_concluido = false;
+if (!variable_global_exists("incidente_001_confirmado")) global.incidente_001_confirmado = false;
+ameaca_confirmada = global.incidente_001_confirmado;
 
 // Cores do caderno
 cor_fundo = make_color_rgb(10, 14, 27);
-cor_borda = make_color_rgb(109, 222, 237);
-cor_madeira = make_color_rgb(104, 48, 34);
-cor_detalhe = make_color_rgb(207, 145, 65);
+cor_borda = make_color_rgb(32, 64, 83);
+cor_madeira = make_color_rgb(121, 69, 43);
+cor_detalhe = make_color_rgb(213, 180, 100);
 cor_papel = make_color_rgb(244, 231, 177);
 cor_texto = make_color_rgb(35, 29, 27);
-cor_aba = make_color_rgb(27, 38, 61);
+cor_aba = make_color_rgb(24, 39, 59);
 cor_verde = make_color_rgb(93, 190, 107);
 
 // Controle de visibilidade

@@ -4,6 +4,7 @@ input_texto = "";
 
 if (!variable_global_exists("dialogo_aberto")) global.dialogo_aberto = false;
 if (!variable_global_exists("incidente_001_concluido")) global.incidente_001_concluido = false;
+if (!variable_global_exists("incidente_001_confirmado")) global.incidente_001_confirmado = false;
 
 // Aparência
 terminal_largura = 700;
@@ -31,7 +32,7 @@ servidor20_ligado = true;
 // Dados do incidente #001
 ip_servidor = "192.168.1.20";
 usuario_ssh = "operador";
-senha_correta = "r0b0t-2026l";   // confira com o caderno
+senha_correta = "r0b0t-2026";   // confira com o caderno
 senha_prompt = usuario_ssh + "@" + ip_servidor + "'s password: ";
 
 // Histórico
@@ -156,6 +157,7 @@ finalizar_acao = function(_acao) {
     if (_acao == "poweroff") {
         servidor20_ligado = false;
         global.incidente_001_concluido = true;
+        adicionar("out", "Ameaca neutralizada. Confirme a ameaca no caderno para liberar a porta.");
         definir_sessao_local();
     }
 };

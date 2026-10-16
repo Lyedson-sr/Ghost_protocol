@@ -61,6 +61,14 @@ var _x_ant = x;
 var _y_ant = y;
 var _lado_ant = lado;
 
+if (global.dialogo_aberto) exit;   // trava o movimento enquanto a janela está aberta
+
+alvo = collision_circle(x, y, 40, obj_interactive, false, true);
+
+if (alvo != noone && keyboard_check_pressed(ord("E"))) {
+    obj_dialogo.abrir(alvo);
+}
+
 // Travar movimento enquanto uma interface estiver aberta
 if (!_interface_aberta)
 {

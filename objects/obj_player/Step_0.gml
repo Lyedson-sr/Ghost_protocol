@@ -106,11 +106,14 @@ if (!_interface_aberta)
 velh = (_dir - _esq) * vel;
 velv = (_baixo - _cima) * vel;
 
+// A mascara personalizada ja remove a cabeca da colisao.
+var _offset_colisao_y = 0;
+
 // Colisao horizontal
-if (place_meeting(x + velh, y, obj_Colisao_Pai))
+if (place_meeting(x + velh, y + _offset_colisao_y, obj_Colisao_Pai))
 {
     while (velh != 0
-        && !place_meeting(x + sign(velh), y, obj_Colisao_Pai))
+        && !place_meeting(x + sign(velh), y + _offset_colisao_y, obj_Colisao_Pai))
     {
         x += sign(velh);
     }
@@ -118,8 +121,9 @@ if (place_meeting(x + velh, y, obj_Colisao_Pai))
     velh = 0;
 }
 else if (!global.incidente_001_confirmado
-    && (place_meeting(x + velh, y, obj_portal_1)
-        || place_meeting(x + velh, y, obj_portal_2)))
+    && (place_meeting(x + velh, y + _offset_colisao_y, obj_portal_1)
+        || place_meeting(x + velh, y + _offset_colisao_y, obj_portal_2)
+        || place_meeting(x + velh, y + _offset_colisao_y, obj_porta)))
 {
     velh = 0;
 }
@@ -129,10 +133,10 @@ else
 }
 
 // Colisao vertical
-if (place_meeting(x, y + velv, obj_Colisao_Pai))
+if (place_meeting(x, y + velv + _offset_colisao_y, obj_Colisao_Pai))
 {
     while (velv != 0
-        && !place_meeting(x, y + sign(velv), obj_Colisao_Pai))
+        && !place_meeting(x, y + sign(velv) + _offset_colisao_y, obj_Colisao_Pai))
     {
         y += sign(velv);
     }
@@ -140,8 +144,9 @@ if (place_meeting(x, y + velv, obj_Colisao_Pai))
     velv = 0;
 }
 else if (!global.incidente_001_confirmado
-    && (place_meeting(x, y + velv, obj_portal_1)
-        || place_meeting(x, y + velv, obj_portal_2)))
+    && (place_meeting(x, y + velv + _offset_colisao_y, obj_portal_1)
+        || place_meeting(x, y + velv + _offset_colisao_y, obj_portal_2)
+        || place_meeting(x, y + velv + _offset_colisao_y, obj_porta)))
 {
     velv = 0;
 }
@@ -198,6 +203,9 @@ lado_anterior = lado;
 // Mantem escala uniforme para evitar deformacao entre animacoes.
 image_xscale = player_scale;
 image_yscale = player_scale;
+
+// Y-sort: quem esta mais abaixo na tela fica na frente.
+depth = -y;
 
 // Ajustar velocidade da animacao para acompanhar melhor o movimento
 if (movendo)

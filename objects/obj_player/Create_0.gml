@@ -8,8 +8,27 @@ lado_anterior = lado;
 ultimo_lado_input = lado;
 
 // Usa escala nativa dos sprites para evitar qualquer deformacao visual.
-player_scale = 1.15;
+player_scale = 1.00;
 alvo = noone;
+
+// Mantem uma mascara de colisao fixa para evitar variacao entre sprites.
+mask_index = spr_move_direita;
+
+// Remove colisao da cabeca: usa somente a metade inferior (corpo/pes).
+sprite_collision_mask(
+	spr_move_direita,
+	true,
+	2,
+	6,
+	15,
+	25,
+	31,
+	1,
+	0
+);
+
+// Ordena desenho por Y para evitar que objetos "engulam" o player visualmente.
+depth = -y;
 
 if (!variable_global_exists("dialogo_aberto")) global.dialogo_aberto = false;
 if (!variable_global_exists("incidente_001_concluido")) global.incidente_001_concluido = false;

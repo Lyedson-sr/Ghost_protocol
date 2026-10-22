@@ -35,6 +35,9 @@
     "name":"spr_fente",
     "path":"sprites/spr_fente/spr_fente.yy",
   },
-  "spriteMaskId":null,
+  "spriteMaskId":{
+    "name":"spr_move_frente",
+    "path":"sprites/spr_move_frente/spr_move_frente.yy",
+  },
   "visible":true,
 }

@@ -9,7 +9,10 @@
     "name":"Objetos _Escritorios",
     "path":"folders/Objetos _Escritorios.yy",
   },
-  "parentObjectId":null,
+  "parentObjectId":{
+    "name":"obj_Colisao_Pai",
+    "path":"objects/obj_Colisao_Pai/obj_Colisao_Pai.yy",
+  },
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,

@@ -33,6 +33,8 @@ depth = -y;
 if (!variable_global_exists("dialogo_aberto")) global.dialogo_aberto = false;
 if (!variable_global_exists("incidente_001_concluido")) global.incidente_001_concluido = false;
 if (!variable_global_exists("incidente_001_confirmado")) global.incidente_001_confirmado = false;
+if (!variable_global_exists("incidente_002_concluido")) global.incidente_002_concluido = false;
+if (!variable_global_exists("incidente_002_confirmado")) global.incidente_002_confirmado = false;
 
 // Matriz de sprites
 sprites = array_create(2);

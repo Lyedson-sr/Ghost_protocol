@@ -34,6 +34,8 @@ if (ocupado) {
         ocupado = false;
         scroll_linha = 0;
         if (_a != "") finalizar_acao(_a);
+		checar_conclusao();   // [NOVO] libera o progresso depois que a saida aparece
+
     }
 } else {
     if (string_length(keyboard_string) > 120) keyboard_string = string_copy(keyboard_string, 1, 120);

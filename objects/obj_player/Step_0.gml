@@ -20,9 +20,14 @@ if (keyboard_check_pressed(vk_escape))
         exit;
     }
 
-    if (instance_exists(obj_Caderno))
+    if (instance_exists(obj_Caderno)
+        || instance_exists(obj_Caderno_1))
     {
         with (obj_Caderno)
+        {
+            instance_destroy();
+        }
+        with (obj_Caderno_1)
         {
             instance_destroy();
         }
@@ -36,25 +41,35 @@ if (keyboard_check_pressed(vk_escape))
 // Verificar se alguma interface esta aberta
 var _interface_aberta =
     instance_exists(obj_Terminal)
-    || instance_exists(obj_Caderno);
+    || instance_exists(obj_Caderno)
+    || instance_exists(obj_Caderno_1);
 
 // Abrir/fechar o caderno com C (toggle), se o terminal nao estiver aberto
 if (!instance_exists(obj_Terminal)
     && keyboard_check_pressed(ord("C")))
 {
-    if (instance_exists(obj_Caderno))
+    if (instance_exists(obj_Caderno)
+        || instance_exists(obj_Caderno_1))
     {
         with (obj_Caderno)
+        {
+            instance_destroy();
+        }
+        with (obj_Caderno_1)
         {
             instance_destroy();
         }
     }
     else
     {
-        instance_create_depth(
-            0, 0, -10000,
-            obj_Caderno
-        );
+        if (room == Room2)
+        {
+            instance_create_depth(0, 0, -10000, obj_Caderno_1);
+        }
+        else
+        {
+            instance_create_depth(0, 0, -10000, obj_Caderno);
+        }
     }
 }
 
@@ -84,7 +99,14 @@ if (_servidor != noone)
 }
 
 if (alvo != noone && keyboard_check_pressed(ord("E"))) {
-    obj_dialogo.abrir(alvo);
+    var _dialogo = instance_find(obj_dialogo, 0);
+
+    if (_dialogo == noone)
+    {
+        _dialogo = instance_create_depth(0, 0, -10000, obj_dialogo);
+    }
+
+    _dialogo.abrir(alvo);
 }
 
 // Travar movimento enquanto uma interface estiver aberta
@@ -120,7 +142,7 @@ if (place_meeting(x + velh, y + _offset_colisao_y, obj_Colisao_Pai))
 
     velh = 0;
 }
-else if (!global.incidente_001_confirmado
+else if (!(room == Room2 ? global.incidente_002_confirmado : global.incidente_001_confirmado)
     && (place_meeting(x + velh, y + _offset_colisao_y, obj_portal_1)
         || place_meeting(x + velh, y + _offset_colisao_y, obj_portal_2)
         || place_meeting(x + velh, y + _offset_colisao_y, obj_porta)))
@@ -143,7 +165,7 @@ if (place_meeting(x, y + velv + _offset_colisao_y, obj_Colisao_Pai))
 
     velv = 0;
 }
-else if (!global.incidente_001_confirmado
+else if (!(room == Room2 ? global.incidente_002_confirmado : global.incidente_001_confirmado)
     && (place_meeting(x, y + velv + _offset_colisao_y, obj_portal_1)
         || place_meeting(x, y + velv + _offset_colisao_y, obj_portal_2)
         || place_meeting(x, y + velv + _offset_colisao_y, obj_porta)))

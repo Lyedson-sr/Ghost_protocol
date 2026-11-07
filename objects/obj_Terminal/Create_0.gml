@@ -5,6 +5,8 @@ input_texto = "";
 if (!variable_global_exists("dialogo_aberto")) global.dialogo_aberto = false;
 if (!variable_global_exists("incidente_001_concluido")) global.incidente_001_concluido = false;
 if (!variable_global_exists("incidente_001_confirmado")) global.incidente_001_confirmado = false;
+if (!variable_global_exists("incidente_002_concluido")) global.incidente_002_concluido = false;
+if (!variable_global_exists("incidente_002_confirmado")) global.incidente_002_confirmado = false;
 
 // Aparência
 terminal_largura = 700;
@@ -166,6 +168,12 @@ executar = function(_entrada) {
     var _cmd = normalizar(_entrada);
     adicionar("cmd", _entrada);
     if (_cmd == "") return;
+
+    if (_cmd == "nmap scan report for 192.168.1.50") {
+        adicionar("out", "Nmap scan report for 192.168.1.50");
+        global.incidente_002_concluido = true;
+        return;
+    }
 
     if (_cmd == "clear" || _cmd == "cls" || _cmd == "limpar") { linhas = []; return; }
 

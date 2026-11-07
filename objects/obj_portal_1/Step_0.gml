@@ -1,5 +1,5 @@
 if place_meeting(x,y, obj_player)
-    && global.incidente_001_confirmado
+    && (room == Room2 ? global.incidente_002_confirmado : global.incidente_001_confirmado)
     && !instance_exists(obj_dist_1)//sea instancia não existir podemos executar esse codigo
 	{
 		//sempre que criarmos o objeto o definiremos em uma profundidade apropriada

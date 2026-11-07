@@ -260,7 +260,7 @@ if (aba_atual == 0)
     draw_text_ext(
         _right_x + 25,
         _page_y + 82,
-        "Um servidor desconhecido foi identificado na rede interna. Descubra quais servicos estao expostos e determine se e possivel obter acesso.",
+        "Um servidor desconhecido foi identificado na rede interna. Descubra quais serviços estão expostos e desligue-o.",
         16,
         _page_w - 50
     );
@@ -390,23 +390,27 @@ else if (aba_atual == 1)
         );
     }
 
-    draw_text(_page_x + 25, _page_y + 126, "nmap <IP_do_alvo>");
+    draw_text(_page_x + 25, _page_y + 126, "nmap <Ip_do_alvo>");
+    draw_text(_page_x + 25, _page_y + 150, "# verificar portas abertas");
+
+    draw_text(_page_x + 25, _page_y + 194, "Uso da ferramenta");
     draw_line(
-        _page_x + 20, _page_y + 160,
-        _page_x + _page_w - 20, _page_y + 160
+        _page_x + 20, _page_y + 230,
+        _page_x + _page_w - 20, _page_y + 230
     );
-    draw_text(_page_x + 25, _page_y + 178, "SSH");
-    draw_line(
-        _page_x + 20, _page_y + 214,
-        _page_x + _page_w - 20, _page_y + 214
+    draw_text_ext(
+        _page_x + 25,
+        _page_y + 248,
+        "Mapear redes, descobrir hosts, verificar portas abertas e identificar serviços ou sistemas operacionais.",
+        16,
+        _page_w - 50
     );
-    draw_text(_page_x + 25, _page_y + 232, "ssh usuario@IP_ou_hostname");
 
     draw_set_color(cor_texto);
 
     draw_text(
         _right_x + 25, _page_y + 23,
-        "Uso das Ferramentas"
+        "Linux"
     );
 
     draw_line(
@@ -414,21 +418,18 @@ else if (aba_atual == 1)
         _right_x + _page_w - 20, _page_y + 57
     );
 
-    draw_text_ext(
-        _right_x + 25,
-        _page_y + 82,
-        "As ferramentas auxiliam na coleta, analise e correlacao de eventos para investigar possiveis ameacas.",
-        20,
-        _page_w - 50
-    );
+    draw_text(_right_x + 25, _page_y + 62, "ls");
+    draw_text(_right_x + 25, _page_y + 86, "#listar arquivos e diretórios");
+    draw_text(_right_x + 25, _page_y + 110, "cat");
+    draw_text(_right_x + 25, _page_y + 134, "#exibir conteúdo de arquivos");
 
-    draw_text(_right_x + 25, _page_y + 178, "Linux");
+    draw_text(_right_x + 25, _page_y + 178, "SSH");
     draw_line(
         _right_x + 20, _page_y + 214,
         _right_x + _page_w - 20, _page_y + 214
     );
-    draw_text(_right_x + 25, _page_y + 232, "ls");
-    draw_text(_right_x + 25, _page_y + 280, "cat");
+    draw_text(_right_x + 25, _page_y + 232, "ssh usuario@Ip_ou_hostname");
+    draw_text(_right_x + 25, _page_y + 256, "#exibir conteúdo de arquivos");
 
     draw_text(
         _page_x + 12,

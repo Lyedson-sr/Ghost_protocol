@@ -27,7 +27,12 @@ if (ocupado) {
     input_texto = "";
     timer--;
     if (timer <= 0) {
-        for (var i = 0; i < array_length(saida_pendente); i++) adicionar("out", saida_pendente[i]);
+        for (var i = 0; i < array_length(saida_pendente); i++) {
+            adicionar("out", saida_pendente[i]);
+            if (saida_pendente[i] == "Nmap scan report for 192.168.1.50") {
+                global.incidente_002_concluido = true;
+            }
+        }
         var _a = acao_pendente;
         saida_pendente = [];
         acao_pendente = "";

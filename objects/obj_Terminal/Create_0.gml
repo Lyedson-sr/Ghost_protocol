@@ -195,7 +195,7 @@ confere_passo = function(_p, _cmd) {
     for (var i = 0; i < array_length(_p.aceita); i++) if (_cmd == _p.aceita[i]) _ok = true;
     if (!_ok && array_length(_p.todos) > 0) {
         _ok = true;
-        for (var j = 0; j < array_length(_p.todos); j++) if (string_pos(_p.todos[j], _cmd) == 0) _ok = false;
+        for (var j = 0; j < array_length(_p.todos); j++) if (string_pos(_p.todos[j], _cmd) <= 0) _ok = false;
         if (_ok && array_length(_p.um_de) > 0) {
             var _alg = false;
             for (var k = 0; k < array_length(_p.um_de); k++) if (string_pos(_p.um_de[k], _cmd) > 0) _alg = true;
@@ -233,9 +233,12 @@ cadeia_ativa = function() {
     var _n = 0;
     if (variable_global_exists("incidente_atual")) _n = global.incidente_atual;   // se o seu jogo ja controla a fase
     else {
-        for (var i = 1; i <= 5; i++) {
-            if (i == 2) continue;   // #002 acontece nos PCs dos robos
-            if (!variable_global_get("incidente_00" + string(i) + "_concluido")) { _n = i; break; }
+        // Ordem narrativa no Kali: #001, #005, #003 e #004.
+        // O #002 acontece nos PCs dos robos depois dessa sequencia.
+        var _ordem = [1, 5, 3, 4];
+        for (var i = 0; i < array_length(_ordem); i++) {
+            var _inc = _ordem[i];
+            if (!variable_global_get("incidente_00" + string(_inc) + "_concluido")) { _n = _inc; break; }
         }
     }
     var _k = "i" + string(_n);
@@ -542,7 +545,7 @@ if (eh_kali) {
                 "Use curl com a URL da aplicacao, que esta na pasta antiga.",
                 "curl http://<endereco-da-pista>" ] }),
         passo({ base: "curl", duracao: 2,
-            todos: ["curl", "http://internal/login.php", "-d", "user=' or '1'='1", "pass="],
+            todos: ["curl", "http://internal/login.php", "-d", "user=' or '1'='1', "pass="],
             saida: ["Login successful! Welcome, admin."],
             dicas: [
                 "O formulario envia 'user' e 'pass' por POST. O quadro da sala tem um texto estranho com aspas.",

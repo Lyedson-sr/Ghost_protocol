@@ -208,6 +208,8 @@ if (aba_atual == 0)
     );
 
     // Lista de evidencias
+    var _fase2 = global.incidente_001_confirmado && global.incidente_005_concluido;
+    var _evidencias_atuais = _fase2 ? evidencias_fase2 : evidencias;
     for (var i = 0; i < array_length(evidencias); i++)
     {
         var _cx = _page_x + 30;
@@ -229,7 +231,7 @@ if (aba_atual == 0)
         );
 
         // Marca de selecao
-        if (evidencias[i])
+        if (_evidencias_atuais[i])
         {
             draw_set_color(make_color_rgb(34, 48, 62));
 
@@ -291,15 +293,14 @@ if (aba_atual == 0)
         false
     );
 
-    draw_set_color(
-        (global.incidente_001_concluido
-            && array_length(evidencias) > 0
-            && evidencias[0]
-            && evidencias[1]
-            && evidencias[2])
-        ? cor_borda
-        : make_color_rgb(130, 130, 110)
-    );
+    var _pode_confirmar = ((_fase2 && global.incidente_005_concluido)
+        || (!_fase2 && global.incidente_001_concluido))
+        && array_length(evidencias) > 0
+        && _evidencias_atuais[0]
+        && _evidencias_atuais[1]
+        && _evidencias_atuais[2];
+    if (_pode_confirmar) draw_set_color(cor_borda);
+    else draw_set_color(make_color_rgb(130, 130, 110));
 
     draw_rectangle(
         _bx, _by,
@@ -309,21 +310,35 @@ if (aba_atual == 0)
 
     draw_set_color(c_white);
 
-    if (ameaca_confirmada)
+    if (_fase2 && global.incidente_005_confirmado)
+    {
+        draw_text(
+            _bx + 25, _by + 13,
+            "Fase 2 Confirmada!"
+        );
+    }
+    else if (!_fase2 && ameaca_confirmada)
     {
         draw_text(
             _bx + 25, _by + 13,
             "Ameaca Confirmada!"
         );
     }
-    else if (!global.incidente_001_concluido)
+    else if (_fase2 && !global.incidente_005_concluido)
+    {
+        draw_text(
+            _bx + 25, _by + 13,
+            "Aguardando conclusao da fase 2"
+        );
+    }
+    else if (!_fase2 && !global.incidente_001_concluido)
     {
         draw_text(
             _bx + 25, _by + 13,
             "Aguardando neutralizacao"
         );
     }
-    else if (!evidencias[0] || !evidencias[1] || !evidencias[2])
+    else if (!_evidencias_atuais[0] || !_evidencias_atuais[1] || !_evidencias_atuais[2])
     {
         draw_text(
             _bx + 25, _by + 13,
@@ -332,9 +347,11 @@ if (aba_atual == 0)
     }
     else
     {
+        var _texto_botao = "Confirmar Ameaca";
+        if (_fase2) _texto_botao = "Confirmar Fase 2";
         draw_text(
             _bx + 25, _by + 13,
-            "Confirmar Ameaca"
+            _texto_botao
         );
     }
 

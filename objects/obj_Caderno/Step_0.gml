@@ -41,6 +41,7 @@ if (keyboard_check_pressed(vk_escape))
 if (mouse_check_button_pressed(mb_left))
 {
     ameaca_confirmada = global.incidente_001_confirmado;
+    var _fase2 = global.incidente_001_confirmado && global.incidente_005_concluido;
 
     // Selecionar uma das tres abas
     for (var i = 0; i < 3; i++)
@@ -67,9 +68,14 @@ if (mouse_check_button_pressed(mb_left))
             if (_mx >= _cx && _mx <= _cx + 28
                 && _my >= _cy && _my <= _cy + 28)
             {
-                evidencias[i] = !evidencias[i];
-                ameaca_confirmada = false;
-                global.incidente_001_confirmado = false;
+                if (_fase2) {
+                    evidencias_fase2[i] = !evidencias_fase2[i];
+                    global.incidente_005_confirmado = false;
+                } else {
+                    evidencias[i] = !evidencias[i];
+                    ameaca_confirmada = false;
+                    global.incidente_001_confirmado = false;
+                }
             }
         }
 
@@ -85,14 +91,16 @@ if (mouse_check_button_pressed(mb_left))
             var _todas_selecionadas = true;
             for (var i = 0; i < array_length(evidencias); i++)
             {
-                if (!evidencias[i])
+                var _marcada = _fase2 ? evidencias_fase2[i] : evidencias[i];
+                if (!_marcada)
                 {
                     _todas_selecionadas = false;
                 }
             }
 
-            if (global.incidente_001_concluido && _todas_selecionadas)
-            {
+            if (_fase2 && _todas_selecionadas) {
+                global.incidente_005_confirmado = true;
+            } else if (!_fase2 && global.incidente_001_concluido && _todas_selecionadas) {
                 ameaca_confirmada = true;
                 global.incidente_001_confirmado = true;
             }

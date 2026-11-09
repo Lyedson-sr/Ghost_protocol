@@ -9,6 +9,7 @@ aba_atual = 0;
 
 // Evidências selecionadas
 evidencias = array_create(3, false);
+evidencias_fase2 = array_create(3, false);
 
 evidencias_nome = [
     "IP",
@@ -19,6 +20,8 @@ evidencias_nome = [
 // Estado da ameaça
 if (!variable_global_exists("incidente_001_concluido")) global.incidente_001_concluido = false;
 if (!variable_global_exists("incidente_001_confirmado")) global.incidente_001_confirmado = false;
+if (!variable_global_exists("incidente_005_concluido")) global.incidente_005_concluido = false;
+if (!variable_global_exists("incidente_005_confirmado")) global.incidente_005_confirmado = false;
 ameaca_confirmada = global.incidente_001_confirmado;
 
 // Cores do caderno

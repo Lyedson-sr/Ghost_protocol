@@ -39,15 +39,57 @@ if (ocupado) {
         ocupado = false;
         scroll_linha = 0;
         if (_a != "") finalizar_acao(_a);
+		checar_conclusao();   // [NOVO] libera o progresso depois que a saida aparece
+
     }
 } else {
-    if (string_length(keyboard_string) > 120) keyboard_string = string_copy(keyboard_string, 1, 120);
-    input_texto = keyboard_string;
+    if (keyboard_check_pressed(vk_up)) {
+        if (array_length(historico_comandos) > 0) {
+            if (historico_indice < 0) historico_indice = array_length(historico_comandos) - 1;
+            else historico_indice = max(0, historico_indice - 1);
+            input_texto = historico_comandos[historico_indice];
+            cursor_pos = string_length(input_texto);
+        }
+    } else if (keyboard_check_pressed(vk_down)) {
+        if (historico_indice >= 0) {
+            historico_indice++;
+            if (historico_indice >= array_length(historico_comandos)) {
+                historico_indice = -1;
+                input_texto = "";
+            } else input_texto = historico_comandos[historico_indice];
+            cursor_pos = string_length(input_texto);
+        }
+    } else {
+        if (keyboard_string != "") {
+            var _novo = keyboard_string;
+            var _antes = string_copy(input_texto, 1, cursor_pos);
+            var _depois = string_copy(input_texto, cursor_pos + 1, string_length(input_texto) - cursor_pos);
+            input_texto = _antes + _novo + _depois;
+            cursor_pos += string_length(_novo);
+            keyboard_string = "";
+        }
+        if (keyboard_check_pressed(vk_left)) cursor_pos = max(0, cursor_pos - 1);
+        if (keyboard_check_pressed(vk_right)) cursor_pos = min(string_length(input_texto), cursor_pos + 1);
+        if (keyboard_check_pressed(vk_backspace) && cursor_pos > 0) {
+            input_texto = string_delete(input_texto, cursor_pos, 1);
+            cursor_pos--;
+        }
+        if (keyboard_check_pressed(vk_delete) && cursor_pos < string_length(input_texto)) {
+            input_texto = string_delete(input_texto, cursor_pos + 1, 1);
+        }
+    }
+    if (string_length(input_texto) > 120) {
+        input_texto = string_copy(input_texto, 1, 120);
+        cursor_pos = min(cursor_pos, 120);
+    }
 
     if (keyboard_check_pressed(vk_enter)) {
         var _entrada = input_texto;
         keyboard_string = "";
         input_texto = "";
+        cursor_pos = 0;
+        historico_indice = -1;
+        if (string_trim(_entrada) != "") array_push(historico_comandos, _entrada);
         if (modo == "senha") processar_senha(_entrada);
         else executar(string_trim(_entrada));
         scroll_linha = 0;

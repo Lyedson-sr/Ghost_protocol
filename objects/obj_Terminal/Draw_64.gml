@@ -9,9 +9,9 @@ var _larg_texto = terminal_largura - _mgx * 2;
 draw_set_alpha(1);
 draw_set_halign(fa_left);
 draw_set_valign(fa_top);
-// draw_set_font(fnt_terminal);   // fonte monoespaçada
+// draw_set_font(fnt_terminal);   // fonte monoespacada
 
-// Fundo, barra de título e borda
+// Fundo, barra de titulo e borda
 draw_set_color(cor_fundo);
 draw_rectangle(_x, _y, _x + terminal_largura, _y + terminal_altura, false);
 draw_set_color(cor_barra);
@@ -19,7 +19,7 @@ draw_rectangle(_x, _y, _x + terminal_largura, _y + terminal_barra, false);
 draw_set_color(cor_texto);
 draw_text(_x + 12, _y + 7, usuario + "@" + host + ": " + diretorio);
 
-// Botão X
+// Botao X
 var _bx = _x + terminal_largura - 30;
 var _by = _y + 4;
 var _hover = point_in_rectangle(device_mouse_x_to_gui(0), device_mouse_y_to_gui(0), _bx, _by, _bx + 24, _by + 24);
@@ -38,22 +38,27 @@ for (var i = 0; i < array_length(linhas); i++) {
     var _e = linhas[i];
     var _eh_cmd = (_e.tipo == "cmd");
     var _pr = _eh_cmd ? (_e.u + "@" + _e.h + ":" + _e.d + "$ ") : "";
+    var _cor_l = (_e.tipo == "dica") ? cor_dica : cor_texto;   // [NOVO]
     var _q = quebrar(_pr + _e.texto, _larg_texto);
     for (var j = 0; j < array_length(_q); j++) {
-        array_push(_vis, { t: _q[j], p: (_eh_cmd && j == 0), u: _eh_cmd ? _e.u : "", h: _eh_cmd ? _e.h : "", d: _eh_cmd ? _e.d : "", plen: string_length(_pr), cursor: false });
+        array_push(_vis, { t: _q[j], p: (_eh_cmd && j == 0), u: _eh_cmd ? _e.u : "", h: _eh_cmd ? _e.h : "", d: _eh_cmd ? _e.d : "", plen: string_length(_pr), cursor: false, cor: _cor_l });
     }
 }
 
 if (ocupado) {
     var _pontos = string_copy("...", 1, (current_time div 400) mod 4);
-    array_push(_vis, { t: "Executando" + _pontos, p: false, u: "", h: "", d: "", plen: 0, cursor: false });
+    array_push(_vis, { t: "Executando" + _pontos, p: false, u: "", h: "", d: "", plen: 0, cursor: false, cor: cor_texto });
 } else if (modo == "senha") {
-    array_push(_vis, { t: senha_prompt, p: false, u: "", h: "", d: "", plen: 0, cursor: true });
+    array_push(_vis, { t: senha_prompt, p: false, u: "", h: "", d: "", plen: 0, cursor: true, cor: cor_texto });
 } else {
     var _pr2 = usuario + "@" + host + ":" + diretorio + "$ ";
     var _q2 = quebrar(_pr2 + input_texto, _larg_texto);
+    var _cursor_global = string_length(_pr2) + cursor_pos;
+    var _cursor_acum = 0;
     for (var j = 0; j < array_length(_q2); j++) {
-        array_push(_vis, { t: _q2[j], p: (j == 0), u: usuario, h: host, d: diretorio, plen: string_length(_pr2), cursor: (j == array_length(_q2) - 1) });
+        var _cursor_linha = (_cursor_global >= _cursor_acum && _cursor_global <= _cursor_acum + string_length(_q2[j]));
+        array_push(_vis, { t: _q2[j], p: (j == 0), u: usuario, h: host, d: diretorio, plen: string_length(_pr2), cursor: _cursor_linha, cursor_offset: _cursor_global - _cursor_acum, cor: cor_texto });
+        _cursor_acum += string_length(_q2[j]);
     }
 }
 
@@ -80,11 +85,15 @@ for (var i = _ini; i < _fim; i++) {
         draw_set_color(cor_azul);  draw_text(_px, _py, _l.d); _px += string_width(_l.d);
         draw_set_color(cor_texto); draw_text(_px, _py, "$ "); _px += string_width("$ ");
         draw_text(_px, _py, _resto);
-        _fx = _px + string_width(_resto);
+        if (variable_struct_exists(_l, "cursor_offset")) {
+            var _texto_cursor = max(0, _l.cursor_offset - _l.plen);
+            _fx = _px + string_width(string_copy(_resto, 1, _texto_cursor));
+        } else _fx = _px + string_width(_resto);
     } else {
-        draw_set_color(cor_texto);
+        draw_set_color(_l.cor);   // [ALTERADO]
         draw_text(_px, _py, _l.t);
-        _fx = _px + string_width(_l.t);
+        if (variable_struct_exists(_l, "cursor_offset")) _fx = _px + string_width(string_copy(_l.t, 1, _l.cursor_offset));
+        else _fx = _px + string_width(_l.t);
     }
 
     if (_l.cursor && _cursor_on) {

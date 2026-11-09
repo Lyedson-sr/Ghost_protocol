@@ -1,6 +1,9 @@
 /// Create - obj_Terminal
 keyboard_string = "";
 input_texto = "";
+cursor_pos = 0;
+historico_comandos = [];
+historico_indice = -1;
 
 if (!variable_global_exists("dialogo_aberto")) global.dialogo_aberto = false;
 if (!variable_global_exists("incidente_001_concluido")) global.incidente_001_concluido = false;
@@ -545,7 +548,7 @@ if (eh_kali) {
                 "Use curl com a URL da aplicacao, que esta na pasta antiga.",
                 "curl http://<endereco-da-pista>" ] }),
         passo({ base: "curl", duracao: 2,
-            todos: ["curl", "http://internal/login.php", "-d", "user=' or '1'='1', "pass="],
+            todos: ["curl", "http://internal/login.php", "-d", "user=' or '1'='1", "pass="],
             saida: ["Login successful! Welcome, admin."],
             dicas: [
                 "O formulario envia 'user' e 'pass' por POST. O quadro da sala tem um texto estranho com aspas.",

@@ -38,6 +38,75 @@ if (keyboard_check_pressed(vk_escape))
     exit;
 }
 
+// Mantem a escala do player estavel mesmo em estados com retorno antecipado.
+image_xscale = player_scale;
+image_yscale = player_scale;
+
+// Intro inicial da Room1: telefone toca e o jogador atende com E.
+if (room == Room1
+    && !global.intro_ligacao_vista
+    && !global.dialogo_aberto
+    && !instance_exists(obj_Terminal)
+    && !instance_exists(obj_Caderno)
+    && !instance_exists(obj_Caderno_1))
+{
+    if (intro_ligacao_estado == 0)
+    {
+        intro_ligacao_estado = 1;
+        if (!audio_is_playing(snd_phone_ring))
+        {
+            audio_play_sound(snd_phone_ring, 10, true);
+        }
+    }
+
+    if (intro_ligacao_estado == 1)
+    {
+        if (keyboard_check_pressed(ord("E")))
+        {
+            audio_stop_sound(snd_phone_ring);
+
+            var _dialogo_intro = instance_find(obj_dialogo, 0);
+
+            if (_dialogo_intro == noone)
+            {
+                _dialogo_intro = instance_create_depth(0, 0, -10000, obj_dialogo);
+            }
+
+            var _ligacao = instance_create_depth(x, y, -10001, obj_interactive);
+            _ligacao.tipo = "mensagem";
+            _ligacao.titulo = "Telefone - Central";
+            _ligacao.linhas = [
+                "Alerta da Central de Seguranca.",
+                "Sua tarefa e identificar e neutralizar as ameacas de seguranca do predio.",
+                "Investigue cada sala e elimine os riscos para liberar as saidas.",
+                "Para encontrar pistas, interaja com os objetos da sala usando a tecla E.",
+                "Pressione C para abrir o caderno com informacoes importantes da operacao."
+            ];
+
+            _dialogo_intro.abrir(_ligacao);
+            with (_ligacao) instance_destroy();
+
+            audio_play_sound(snd_phone_talking, 11, false);
+            intro_fala_tocando = true;
+            intro_ligacao_estado = 2;
+            global.intro_ligacao_vista = true;
+            exit;
+        }
+
+        // Durante o toque, aguarda o atendimento e trava outras acoes.
+        exit;
+    }
+}
+
+if (intro_fala_tocando && !global.dialogo_aberto)
+{
+    if (audio_is_playing(snd_phone_talking))
+    {
+        audio_stop_sound(snd_phone_talking);
+    }
+    intro_fala_tocando = false;
+}
+
 // Verificar se alguma interface esta aberta
 var _interface_aberta =
     instance_exists(obj_Terminal)

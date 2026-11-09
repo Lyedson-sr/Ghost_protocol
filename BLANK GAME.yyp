@@ -71,6 +71,8 @@
     {"id":{"name":"Room1","path":"rooms/Room1/Room1.yy",},},
     {"id":{"name":"Room2","path":"rooms/Room2/Room2.yy",},},
     {"id":{"name":"snd_menu","path":"sounds/snd_menu/snd_menu.yy",},},
+    {"id":{"name":"snd_phone_ring","path":"sounds/snd_phone_ring/snd_phone_ring.yy",},},
+    {"id":{"name":"snd_phone_talking","path":"sounds/snd_phone_talking/snd_phone_talking.yy",},},
     {"id":{"name":"obj_mesaimpre","path":"sprites/obj_mesaimpre/obj_mesaimpre.yy",},},
     {"id":{"name":"spr_chao","path":"sprites/spr_chao/spr_chao.yy",},},
     {"id":{"name":"spr_computador","path":"sprites/spr_computador/spr_computador.yy",},},

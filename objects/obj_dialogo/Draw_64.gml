@@ -3,7 +3,8 @@ if (!ativo) exit;
 var gw = display_get_gui_width();
 var gh = display_get_gui_height();
 var margem = 20;
-var altura = (tipo == "terminal") ? 260 : 120;
+var altura = (tipo == "terminal") ? 260 : altura_caixa;
+
 var x1 = margem, x2 = gw - margem;
 var y2 = gh - margem, y1 = y2 - altura;
 

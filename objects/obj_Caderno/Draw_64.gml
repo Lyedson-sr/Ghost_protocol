@@ -21,6 +21,8 @@ var _page_w = (_w - 56) / 2;
 var _page_h = _h - 108;
 
 var _right_x = _page_x + _page_w + 4;
+var _fonte_anterior = draw_get_font();
+draw_set_font(fonte_caderno);
 
 // --------------------------------------------------
 // 1. FUNDO E MOLDURA EXTERNA
@@ -123,8 +125,6 @@ var _nomes_abas = [
     "FERRAMENTAS",
     "CATALOGO"
 ];
-
-draw_set_font(-1);
 
 for (var i = 0; i < 3; i++)
 {
@@ -262,7 +262,7 @@ if (aba_atual == 0)
     draw_text_ext(
         _right_x + 25,
         _page_y + 82,
-        "Um servidor desconhecido foi identificado na rede interna. Descubra quais serviços estão expostos e desligue-o.",
+        "Um servidor desconhecido foi identificado na rede interna. Descubra quais servicos estao expostos e desligue-o.",
         16,
         _page_w - 50
     );
@@ -373,9 +373,12 @@ else if (aba_atual == 1)
 {
     draw_set_color(cor_texto);
 
+    var _titulo_ferramentas = "Ferramentas de Investigacao";
+    if (ferramentas_pagina == 1) _titulo_ferramentas = "SSH";
+
     draw_text(
         _page_x + 25, _page_y + 23,
-        "Ferramentas de Investigacao"
+        _titulo_ferramentas
     );
 
     draw_line(
@@ -383,76 +386,173 @@ else if (aba_atual == 1)
         _page_x + _page_w - 20, _page_y + 57
     );
 
-    var _ferramentas = [
-        "Nmap - Descoberta de redes"
-    ];
-
-    for (var i = 0; i < array_length(_ferramentas); i++)
+    if (ferramentas_pagina == 0)
     {
-        var _fy = _page_y + 82 + i * 48;
+        var _ferramentas = [
+            "Nmap - Descoberta de redes"
+        ];
 
-        draw_set_color(make_color_rgb(225, 211, 161));
+        for (var i = 0; i < array_length(_ferramentas); i++)
+        {
+            var _fy = _page_y + 82 + i * 48;
 
-        draw_rectangle(
-            _page_x + 20, _fy,
-            _page_x + _page_w - 20, _fy + 36,
-            false
+            draw_set_color(make_color_rgb(225, 211, 161));
+
+            draw_rectangle(
+                _page_x + 20, _fy,
+                _page_x + _page_w - 20, _fy + 36,
+                false
+            );
+
+            draw_set_color(cor_texto);
+
+            draw_text(
+                _page_x + 30, _fy + 10,
+                _ferramentas[i]
+            );
+        }
+
+        draw_text(_page_x + 25, _page_y + 126, "nmap <Ip_do_alvo>");
+        draw_text(_page_x + 25, _page_y + 150, "# verificar portas abertas");
+
+        draw_text(_page_x + 25, _page_y + 194, "Uso da ferramenta");
+        draw_line(
+            _page_x + 20, _page_y + 230,
+            _page_x + _page_w - 20, _page_y + 230
+        );
+        draw_text_ext(
+            _page_x + 25,
+            _page_y + 248,
+            "Mapear redes, descobrir hosts, verificar portas abertas e identificar servicos ou sistemas operacionais.",
+            16,
+            _page_w - 50
         );
 
         draw_set_color(cor_texto);
 
         draw_text(
-            _page_x + 30, _fy + 10,
-            _ferramentas[i]
+            _right_x + 25, _page_y + 23,
+            "Linux"
+        );
+
+        draw_line(
+            _right_x + 20, _page_y + 57,
+            _right_x + _page_w - 20, _page_y + 57
+        );
+
+        draw_text(_right_x + 25, _page_y + 62, "ls");
+        draw_text(_right_x + 25, _page_y + 86, "#listar arquivos e diretorios");
+        draw_text(_right_x + 25, _page_y + 110, "cat");
+        draw_text(_right_x + 25, _page_y + 134, "#exibir conteudo de arquivos");
+    }
+    else
+    {
+        draw_text(_page_x + 25, _page_y + 82, "ssh usuario@Ip_ou_hostname");
+        draw_text(_page_x + 25, _page_y + 106, "#acessar host remoto por ssh");
+
+        draw_text(_page_x + 25, _page_y + 152, "Bloco de notas");
+        draw_line(
+            _page_x + 20, _page_y + 188,
+            _page_x + _page_w - 20, _page_y + 188
+        );
+        draw_text(_page_x + 25, _page_y + 212, "N");
+        draw_text(_page_x + 25, _page_y + 236, "#abrir bloco para anotar pistas");
+        draw_text(_page_x + 25, _page_y + 262, "notas");
+        draw_text(_page_x + 25, _page_y + 286, "#mostrar anotacoes no terminal");
+
+        draw_text(
+            _right_x + 25, _page_y + 23,
+            "Dica rapida"
+        );
+        draw_line(
+            _right_x + 20, _page_y + 57,
+            _right_x + _page_w - 20, _page_y + 57
+        );
+        draw_text_ext(
+            _right_x + 25,
+            _page_y + 84,
+            "Registre IP, usuario, senha e comandos uteis no bloco para acelerar cada incidente.",
+            18,
+            _page_w - 50
         );
     }
 
-    draw_text(_page_x + 25, _page_y + 126, "nmap <Ip_do_alvo>");
-    draw_text(_page_x + 25, _page_y + 150, "# verificar portas abertas");
+    if (ferramentas_total_paginas > 1)
+    {
+        draw_set_color(make_color_rgb(158, 118, 70));
 
-    draw_text(_page_x + 25, _page_y + 194, "Uso da ferramenta");
-    draw_line(
-        _page_x + 20, _page_y + 230,
-        _page_x + _page_w - 20, _page_y + 230
-    );
-    draw_text_ext(
-        _page_x + 25,
-        _page_y + 248,
-        "Mapear redes, descobrir hosts, verificar portas abertas e identificar serviços ou sistemas operacionais.",
-        16,
-        _page_w - 50
-    );
+        // Triangulo de voltar
+        draw_triangle(
+            _right_x + _page_w - 52, _page_y + _page_h - 34,
+            _right_x + _page_w - 74, _page_y + _page_h - 22,
+            _right_x + _page_w - 52, _page_y + _page_h - 10,
+            true
+        );
+        draw_triangle(
+            _right_x + _page_w - 51, _page_y + _page_h - 34,
+            _right_x + _page_w - 73, _page_y + _page_h - 22,
+            _right_x + _page_w - 51, _page_y + _page_h - 10,
+            true
+        );
 
-    draw_set_color(cor_texto);
+        // Triangulo de avancar
+        draw_triangle(
+            _right_x + _page_w - 40, _page_y + _page_h - 34,
+            _right_x + _page_w - 18, _page_y + _page_h - 22,
+            _right_x + _page_w - 40, _page_y + _page_h - 10,
+            true
+        );
+        draw_triangle(
+            _right_x + _page_w - 41, _page_y + _page_h - 34,
+            _right_x + _page_w - 19, _page_y + _page_h - 22,
+            _right_x + _page_w - 41, _page_y + _page_h - 10,
+            true
+        );
 
-    draw_text(
-        _right_x + 25, _page_y + 23,
-        "Linux"
-    );
+        if (nav_anim_prev > 0)
+        {
+            var _pulso_prev = 2 + floor(nav_anim_prev / 2);
+            draw_set_alpha(0.7);
+            draw_set_color(cor_detalhe);
+            draw_triangle(
+                _right_x + _page_w - 52 + _pulso_prev, _page_y + _page_h - 34 - _pulso_prev,
+                _right_x + _page_w - 74 - _pulso_prev, _page_y + _page_h - 22,
+                _right_x + _page_w - 52 + _pulso_prev, _page_y + _page_h - 10 + _pulso_prev,
+                true
+            );
+            draw_set_alpha(0.35);
+            draw_triangle(
+                _right_x + _page_w - 52 + _pulso_prev + 2, _page_y + _page_h - 34 - _pulso_prev - 2,
+                _right_x + _page_w - 74 - _pulso_prev - 2, _page_y + _page_h - 22,
+                _right_x + _page_w - 52 + _pulso_prev + 2, _page_y + _page_h - 10 + _pulso_prev + 2,
+                true
+            );
+            draw_set_alpha(1);
+            draw_set_color(make_color_rgb(158, 118, 70));
+        }
 
-    draw_line(
-        _right_x + 20, _page_y + 57,
-        _right_x + _page_w - 20, _page_y + 57
-    );
-
-    draw_text(_right_x + 25, _page_y + 62, "ls");
-    draw_text(_right_x + 25, _page_y + 86, "#listar arquivos e diretórios");
-    draw_text(_right_x + 25, _page_y + 110, "cat");
-    draw_text(_right_x + 25, _page_y + 134, "#exibir conteúdo de arquivos");
-
-    draw_text(_right_x + 25, _page_y + 178, "SSH");
-    draw_line(
-        _right_x + 20, _page_y + 214,
-        _right_x + _page_w - 20, _page_y + 214
-    );
-    draw_text(_right_x + 25, _page_y + 232, "ssh usuario@Ip_ou_hostname");
-    draw_text(_right_x + 25, _page_y + 256, "#exibir conteúdo de arquivos");
-
-    draw_text(
-        _page_x + 12,
-        _page_y + _page_h - 28,
-        "Pagina 2"
-    );
+        if (nav_anim_next > 0)
+        {
+            var _pulso_next = 2 + floor(nav_anim_next / 2);
+            draw_set_alpha(0.7);
+            draw_set_color(cor_detalhe);
+            draw_triangle(
+                _right_x + _page_w - 40 - _pulso_next, _page_y + _page_h - 34 - _pulso_next,
+                _right_x + _page_w - 18 + _pulso_next, _page_y + _page_h - 22,
+                _right_x + _page_w - 40 - _pulso_next, _page_y + _page_h - 10 + _pulso_next,
+                true
+            );
+            draw_set_alpha(0.35);
+            draw_triangle(
+                _right_x + _page_w - 40 - _pulso_next - 2, _page_y + _page_h - 34 - _pulso_next - 2,
+                _right_x + _page_w - 18 + _pulso_next + 2, _page_y + _page_h - 22,
+                _right_x + _page_w - 40 - _pulso_next - 2, _page_y + _page_h - 10 + _pulso_next + 2,
+                true
+            );
+            draw_set_alpha(1);
+            draw_set_color(make_color_rgb(158, 118, 70));
+        }
+    }
 }
 
 // --------------------------------------------------
@@ -535,3 +635,4 @@ else if (aba_atual == 2)
 // Restaurar configuracoes de desenho
 draw_set_alpha(1);
 draw_set_color(c_white);
+draw_set_font(_fonte_anterior);

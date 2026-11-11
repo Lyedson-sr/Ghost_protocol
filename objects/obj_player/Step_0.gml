@@ -2,22 +2,8 @@
 /// Evento Etapa (Step) - obj_player
 
 // Voltar ao menu com ESC
-var _obj_bloco_notas = asset_get_index("obj_bloco_notas");
-if (!variable_global_exists("anotacoes_jogador")) global.anotacoes_jogador = "";
-if (!variable_global_exists("notas_abertas")) global.notas_abertas = false;
-
-if (!variable_instance_exists(id, "notas_cursor_pos")) notas_cursor_pos = string_length(global.anotacoes_jogador);
-if (!variable_instance_exists(id, "notas_limite_caracteres")) notas_limite_caracteres = 1800;
-
 if (keyboard_check_pressed(vk_escape))
 {
-    if (global.notas_abertas)
-    {
-        global.notas_abertas = false;
-        keyboard_string = "";
-        exit;
-    }
-
     // Enquanto um dialogo estiver aberto, o ESC nao abre o menu.
     if (global.dialogo_aberto)
     {
@@ -35,8 +21,7 @@ if (keyboard_check_pressed(vk_escape))
     }
 
     if (instance_exists(obj_Caderno)
-        || instance_exists(obj_Caderno_1)
-        || (_obj_bloco_notas != -1 && instance_exists(_obj_bloco_notas)))
+        || instance_exists(obj_Caderno_1))
     {
         with (obj_Caderno)
         {
@@ -45,13 +30,6 @@ if (keyboard_check_pressed(vk_escape))
         with (obj_Caderno_1)
         {
             instance_destroy();
-        }
-        if (_obj_bloco_notas != -1)
-        {
-            with (_obj_bloco_notas)
-            {
-                instance_destroy();
-            }
         }
         exit;
     }
@@ -63,63 +41,6 @@ if (keyboard_check_pressed(vk_escape))
 // Mantem a escala do player estavel mesmo em estados com retorno antecipado.
 image_xscale = player_scale;
 image_yscale = player_scale;
-
-// Abrir bloco de notas com N/B (sem toggle para nao conflitar com digitacao).
-if (!instance_exists(obj_Terminal)
-    && !global.notas_abertas
-    && (keyboard_check_pressed(ord("N")) || keyboard_check_pressed(ord("B"))))
-{
-    global.notas_abertas = true;
-    notas_cursor_pos = string_length(global.anotacoes_jogador);
-
-    keyboard_string = "";
-}
-
-// Edicao do bloco de notas (embutido no player para garantir funcionamento)
-if (global.notas_abertas)
-{
-    if (keyboard_string != "")
-    {
-        var _novo = keyboard_string;
-        var _antes = string_copy(global.anotacoes_jogador, 1, notas_cursor_pos);
-        var _depois = string_copy(global.anotacoes_jogador, notas_cursor_pos + 1, string_length(global.anotacoes_jogador) - notas_cursor_pos);
-        global.anotacoes_jogador = _antes + _novo + _depois;
-        notas_cursor_pos += string_length(_novo);
-        keyboard_string = "";
-    }
-
-    if (keyboard_check_pressed(vk_enter))
-    {
-        var _antes_enter = string_copy(global.anotacoes_jogador, 1, notas_cursor_pos);
-        var _depois_enter = string_copy(global.anotacoes_jogador, notas_cursor_pos + 1, string_length(global.anotacoes_jogador) - notas_cursor_pos);
-        global.anotacoes_jogador = _antes_enter + "\n" + _depois_enter;
-        notas_cursor_pos += 1;
-    }
-
-    if (keyboard_check_pressed(vk_left)) notas_cursor_pos = max(0, notas_cursor_pos - 1);
-    if (keyboard_check_pressed(vk_right)) notas_cursor_pos = min(string_length(global.anotacoes_jogador), notas_cursor_pos + 1);
-    if (keyboard_check_pressed(vk_home)) notas_cursor_pos = 0;
-    if (keyboard_check_pressed(vk_end)) notas_cursor_pos = string_length(global.anotacoes_jogador);
-
-    if (keyboard_check_pressed(vk_backspace) && notas_cursor_pos > 0)
-    {
-        global.anotacoes_jogador = string_delete(global.anotacoes_jogador, notas_cursor_pos, 1);
-        notas_cursor_pos -= 1;
-    }
-
-    if (keyboard_check_pressed(vk_delete) && notas_cursor_pos < string_length(global.anotacoes_jogador))
-    {
-        global.anotacoes_jogador = string_delete(global.anotacoes_jogador, notas_cursor_pos + 1, 1);
-    }
-
-    if (string_length(global.anotacoes_jogador) > notas_limite_caracteres)
-    {
-        global.anotacoes_jogador = string_copy(global.anotacoes_jogador, 1, notas_limite_caracteres);
-        notas_cursor_pos = min(notas_cursor_pos, notas_limite_caracteres);
-    }
-
-    exit;
-}
 
 // Intro inicial da Room1: telefone toca e o jogador atende com E.
 if (room == Room1
@@ -155,12 +76,11 @@ if (room == Room1
             _ligacao.tipo = "mensagem";
             _ligacao.titulo = "Telefone - Central";
             _ligacao.linhas = [
-                "Alerta da Central de Segurança.",
-                "Sua tarefa é identificar e neutralizar as ameaças de segurança do prédio.",
-                "Investigue cada sala e elimine os riscos para liberar as saídas.",
+                "Alerta da Central de Seguranca.",
+                "Sua tarefa e identificar e neutralizar as ameacas de seguranca do predio.",
+                "Investigue cada sala e elimine os riscos para liberar as saidas.",
                 "Para encontrar pistas, interaja com os objetos da sala usando a tecla E.",
-                "Pressione C para abrir o caderno com informações importantes da operação.",
-                "Use N para abrir o bloco de notas e registrar pistas importantes."
+                "Pressione C para abrir o caderno com informacoes importantes da operacao."
             ];
 
             _dialogo_intro.abrir(_ligacao);
@@ -191,9 +111,7 @@ if (intro_fala_tocando && !global.dialogo_aberto)
 var _interface_aberta =
     instance_exists(obj_Terminal)
     || instance_exists(obj_Caderno)
-    || instance_exists(obj_Caderno_1)
-    || global.notas_abertas
-    || (_obj_bloco_notas != -1 && instance_exists(_obj_bloco_notas));
+    || instance_exists(obj_Caderno_1);
 
 // Abrir/fechar o caderno com C (toggle), se o terminal nao estiver aberto
 if (!instance_exists(obj_Terminal)

@@ -29,7 +29,6 @@
   "name":"BLANK GAME",
   "resources":[
     {"id":{"name":"ob_movel1","path":"objects/ob_movel1/ob_movel1.yy",},},
-    {"id":{"name":"obj_bloco_notas","path":"objects/obj_bloco_notas/obj_bloco_notas.yy",},},
     {"id":{"name":"obj_Caderno_1","path":"objects/obj_Caderno_1/obj_Caderno_1.yy",},},
     {"id":{"name":"obj_Caderno","path":"objects/obj_Caderno/obj_Caderno.yy",},},
     {"id":{"name":"obj_cafeteira","path":"objects/obj_cafeteira/obj_cafeteira.yy",},},

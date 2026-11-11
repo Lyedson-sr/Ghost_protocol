@@ -14,48 +14,48 @@ alvo_descricao = undefined;
 fonte_interacao = font_add("Arial", 14, false, false, 32, 255);
 if (fonte_interacao == -1)
 {
-    show_error("Não foi possível carregar a fonte dos avisos de interação.", true);
+    show_error("Nao foi possivel carregar a fonte dos avisos de interacao.", true);
 }
 
 descricoes_objetos = [
     { objeto: obj_garrafao, tipo: "mensagem", titulo: "Bebedouro",
-        linhas: ["A torneira do bebedouro está pingando água. Uma pequena poça começa a se formar no chão."] },
+        linhas: ["A torneira do bebedouro esta pingando agua. Uma pequena poca comeca a se formar no chao."] },
     { objeto: obj_quadro, tipo: "mensagem", titulo: "Quadro de avisos",
-        linhas: ["Parece ser a lista de funcionários do mês, com fotos e pequenos recados de parabéns."] },
+        linhas: ["Parece ser a lista de funcionarios do mes, com fotos e pequenos recados de parabens."] },
     { objeto: obj_quadros, tipo: "mensagem", titulo: "Quadros na parede",
-        linhas: ["Relatórios e gráficos emoldurados mostram os resultados da equipe nos últimos meses."] },
+        linhas: ["Relatorios e graficos emoldurados mostram os resultados da equipe nos ultimos meses."] },
     { objeto: obj_cafeteira, tipo: "mensagem", titulo: "Cafeteira",
-        linhas: ["Ainda há um pouco de café na jarra. O cheiro forte sugere que ele está aqui há algumas horas."] },
+        linhas: ["Ainda ha um pouco de cafe na jarra. O cheiro forte sugere que ele esta aqui ha algumas horas."] },
     { objeto: obj_impressora, tipo: "mensagem", titulo: "Impressora",
-        linhas: ["A impressora está em modo de espera. Algumas folhas em branco aguardam na bandeja."] },
-    { objeto: obj_me_impre, tipo: "mensagem", titulo: "Mesa de impressão",
-        linhas: ["Uma mesa com equipamento de impressão e papéis organizados ao lado, pronta para mais um dia de trabalho."] },
+        linhas: ["A impressora esta em modo de espera. Algumas folhas em branco aguardam na bandeja."] },
+    { objeto: obj_me_impre, tipo: "mensagem", titulo: "Mesa de impressao",
+        linhas: ["Uma mesa com equipamento de impressao e papeis organizados ao lado, pronta para mais um dia de trabalho."] },
     { objeto: obj_lixeira, tipo: "mensagem", titulo: "Lixeira",
-        linhas: ["A lixeira tem copos descartáveis e embalagens de lanche. Alguém precisa recolher o lixo."] },
-    { objeto: ob_movel1, tipo: "mensagem", titulo: "Armário",
-        linhas: ["Um armário de escritório com as portas fechadas. A pintura está gasta perto dos puxadores."] },
+        linhas: ["A lixeira tem copos descartaveis e embalagens de lanche. Alguem precisa recolher o lixo."] },
+    { objeto: ob_movel1, tipo: "mensagem", titulo: "Armario",
+        linhas: ["Um armario de escritorio com as portas fechadas. A pintura esta gasta perto dos puxadores."] },
     { objeto: obj_movel2, tipo: "mensagem", titulo: "Arquivo",
-        linhas: ["Um pequeno arquivo de madeira. As gavetas estão fechadas e há uma fina camada de poeira sobre ele."] },
-    { objeto: obj_m1, tipo: "mensagem", titulo: "Balcão",
-        linhas: ["Um balcão com gavetas para guardar materiais de escritório. A superfície está limpa e bem cuidada."] },
-    { objeto: obj_m2, tipo: "mensagem", titulo: "Estação de trabalho",
-        linhas: ["Uma estação de trabalho com cadeira e equipamentos de escritório. Parece que o expediente terminou há pouco."] },
+        linhas: ["Um pequeno arquivo de madeira. As gavetas estao fechadas e ha uma fina camada de poeira sobre ele."] },
+    { objeto: obj_m1, tipo: "mensagem", titulo: "Balcao",
+        linhas: ["Um balcao com gavetas para guardar materiais de escritorio. A superficie esta limpa e bem cuidada."] },
+    { objeto: obj_m2, tipo: "mensagem", titulo: "Estacao de trabalho",
+        linhas: ["Uma estacao de trabalho com cadeira e equipamentos de escritorio. Parece que o expediente terminou ha pouco."] },
     { objeto: obj_mesa, tipo: "mensagem", titulo: "Mesa",
-        linhas: ["Uma mesa simples de madeira. Pequenos riscos na superfície mostram as marcas do uso diário."] },
-    { objeto: obj_mesa_grande, tipo: "mensagem", titulo: "Mesa de reunião",
-        linhas: ["Uma grande mesa cercada de cadeiras. Dá para imaginar as longas reuniões que acontecem aqui."] },
-    { objeto: Object29, tipo: "mensagem", titulo: "Equipamento de escritório",
-        linhas: ["Um equipamento instalado ao lado da passagem. O painel está silencioso e a estrutura tem marcas de uso."] },
-    { objeto: Object30, tipo: "mensagem", titulo: "Equipamento de escritório",
-        linhas: ["Outro equipamento de escritório, semelhante ao que está do outro lado. Parece fazer parte da rotina do lugar."] },
-    { objeto: obj_sono, tipo: "mensagem", titulo: "Área de descanso",
+        linhas: ["Uma mesa simples de madeira. Pequenos riscos na superficie mostram as marcas do uso diario."] },
+    { objeto: obj_mesa_grande, tipo: "mensagem", titulo: "Mesa de reuniao",
+        linhas: ["Uma grande mesa cercada de cadeiras. Da para imaginar as longas reunioes que acontecem aqui."] },
+    { objeto: Object29, tipo: "mensagem", titulo: "Equipamento de escritorio",
+        linhas: ["Um equipamento instalado ao lado da passagem. O painel esta silencioso e a estrutura tem marcas de uso."] },
+    { objeto: Object30, tipo: "mensagem", titulo: "Equipamento de escritorio",
+        linhas: ["Outro equipamento de escritorio, semelhante ao que esta do outro lado. Parece fazer parte da rotina do lugar."] },
+    { objeto: obj_sono, tipo: "mensagem", titulo: "Area de descanso",
         linhas: ["Um cantinho para descansar durante os intervalos. Parece um bom lugar para recuperar as energias."] },
     { objeto: obj_porta, tipo: "mensagem", titulo: "Porta",
-        linhas: ["Uma porta que liga os ambientes do prédio. A pintura ao redor da passagem está desgastada."] },
+        linhas: ["Uma porta que liga os ambientes do predio. A pintura ao redor da passagem esta desgastada."] },
     { objeto: obj_portal_1, tipo: "mensagem", titulo: "Passagem",
-        linhas: ["Esta passagem leva a outro ambiente do prédio. O corredor do outro lado está silencioso."] },
+        linhas: ["Esta passagem leva a outro ambiente do predio. O corredor do outro lado esta silencioso."] },
     { objeto: obj_portal_2, tipo: "mensagem", titulo: "Passagem",
-        linhas: ["Uma passagem entre as salas do prédio. Uma corrente de ar frio vem do outro lado."] }
+        linhas: ["Uma passagem entre as salas do predio. Uma corrente de ar frio vem do outro lado."] }
 ];
 
 // Mantem uma mascara de colisao fixa para evitar variacao entre sprites.
@@ -83,11 +83,6 @@ if (!variable_global_exists("incidente_001_concluido")) global.incidente_001_con
 if (!variable_global_exists("incidente_001_confirmado")) global.incidente_001_confirmado = false;
 if (!variable_global_exists("incidente_002_concluido")) global.incidente_002_concluido = false;
 if (!variable_global_exists("incidente_002_confirmado")) global.incidente_002_confirmado = false;
-if (!variable_global_exists("anotacoes_jogador")) global.anotacoes_jogador = "";
-if (!variable_global_exists("notas_abertas")) global.notas_abertas = false;
-
-notas_cursor_pos = string_length(global.anotacoes_jogador);
-notas_limite_caracteres = 1800;
 
 intro_ligacao_estado = 0; // 0: sem chamada, 1: tocando, 2: atendida
 intro_fala_tocando = false;

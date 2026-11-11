@@ -21,8 +21,6 @@ var _page_w = (_w - 56) / 2;
 var _page_h = _h - 108;
 
 var _right_x = _page_x + _page_w + 4;
-var _fonte_anterior = draw_get_font();
-draw_set_font(fonte_caderno);
 
 // --------------------------------------------------
 // 1. FUNDO E MOLDURA EXTERNA
@@ -125,6 +123,8 @@ var _nomes_abas = [
     "FERRAMENTAS",
     "CATALOGO"
 ];
+
+draw_set_font(-1);
 
 for (var i = 0; i < 3; i++)
 {
@@ -260,7 +260,7 @@ if (aba_atual == 0)
     draw_text_ext(
         _right_x + 25,
         _page_y + 82,
-        "Um servidor interno antigo foi reiniciado pelos robos, mas seu software nao e atualizado ha bastante tempo.",
+        "Um servidor interno antigo foi reiniciado pelos robôs, mas seu software não é atualizado há bastante tempo.",
         16,
         _page_w - 50
     );
@@ -356,12 +356,9 @@ else if (aba_atual == 1)
 {
     draw_set_color(cor_texto);
 
-    var _titulo_ferramentas = "Ferramentas de Investigacao";
-    if (ferramentas_pagina == 1) _titulo_ferramentas = "Linux";
-
     draw_text(
         _page_x + 25, _page_y + 23,
-        _titulo_ferramentas
+        "Ferramentas de Investigacao"
     );
 
     draw_line(
@@ -369,152 +366,70 @@ else if (aba_atual == 1)
         _page_x + _page_w - 20, _page_y + 57
     );
 
-    if (ferramentas_pagina == 0)
+    var _ferramentas = [
+        "Nmap - Descoberta de redes"
+    ];
+
+    for (var i = 0; i < array_length(_ferramentas); i++)
     {
-        var _ferramentas = [
-            "Nmap - Descoberta de redes"
-        ];
+        var _fy = _page_y + 82 + i * 48;
 
-        for (var i = 0; i < array_length(_ferramentas); i++)
-        {
-            var _fy = _page_y + 82 + i * 48;
+        draw_set_color(make_color_rgb(225, 211, 161));
 
-            draw_set_color(make_color_rgb(225, 211, 161));
-
-            draw_rectangle(
-                _page_x + 20, _fy,
-                _page_x + _page_w - 20, _fy + 36,
-                false
-            );
-
-            draw_set_color(cor_texto);
-
-            draw_text(
-                _page_x + 30, _fy + 10,
-                _ferramentas[i]
-            );
-        }
-
-        draw_text(_page_x + 25, _page_y + 126, "nmap -sV <Ip_do_alvo>");
-        draw_text(_page_x + 25, _page_y + 150, "#identificar as versoes dos servicos");
-        draw_text(_page_x + 25, _page_y + 174, "nmap -sV --script <script> <Ip_do_alvo>");
-        draw_text(_page_x + 25, _page_y + 198, "#Executar um script especifico");
-
-        draw_text(_page_x + 25, _page_y + 242, "Uso das Ferramentas");
-        draw_line(
-            _page_x + 20, _page_y + 278,
-            _page_x + _page_w - 20, _page_y + 278
+        draw_rectangle(
+            _page_x + 20, _fy,
+            _page_x + _page_w - 20, _fy + 36,
+            false
         );
-        draw_text_ext(
-            _page_x + 25,
-            _page_y + 296,
-            "NSE e o mecanismo de scripts do Nmap que permite automatizar tarefas.",
-            16,
-            _page_w - 50
-        );
-    }
-    else
-    {
-        draw_text(_page_x + 25, _page_y + 82, "ls");
-        draw_text(_page_x + 25, _page_y + 106, "#listar arquivos e diretorios");
-        draw_text(_page_x + 25, _page_y + 130, "cat");
-        draw_text(_page_x + 25, _page_y + 154, "#exibir conteudo de arquivos");
 
-        draw_text(_right_x + 25, _page_y + 23, "Bloco de notas");
-        draw_line(
-            _right_x + 20, _page_y + 57,
-            _right_x + _page_w - 20, _page_y + 57
-        );
-        draw_text(_right_x + 25, _page_y + 82, "N");
-        draw_text(_right_x + 25, _page_y + 106, "#abrir bloco para anotar pistas");
-        draw_text(_right_x + 25, _page_y + 130, "notas");
-        draw_text(_right_x + 25, _page_y + 154, "#mostrar anotacoes no terminal");
+        draw_set_color(cor_texto);
 
-        draw_text_ext(
-            _right_x + 25,
-            _page_y + 200,
-            "Dica: organize CVEs, comandos e observacoes para agilizar a confirmacao da ameaca.",
-            18,
-            _page_w - 50
+        draw_text(
+            _page_x + 30, _fy + 10,
+            _ferramentas[i]
         );
     }
 
-    if (ferramentas_total_paginas > 1)
-    {
-        draw_set_color(make_color_rgb(158, 118, 70));
+    draw_text(_page_x + 25, _page_y + 126, "nmap -sV <Ip_do_alvo>");
+    draw_text(_page_x + 25, _page_y + 150, "#identificar as versões dos serviços");
+    draw_text(_page_x + 25, _page_y + 174, "nmap -sV --script <script> <Ip_do_alvo>");
+    draw_text(_page_x + 25, _page_y + 198, "#Executar um script específico");
 
-        // Triangulo de voltar
-        draw_triangle(
-            _right_x + _page_w - 52, _page_y + _page_h - 34,
-            _right_x + _page_w - 74, _page_y + _page_h - 22,
-            _right_x + _page_w - 52, _page_y + _page_h - 10,
-            true
-        );
-        draw_triangle(
-            _right_x + _page_w - 51, _page_y + _page_h - 34,
-            _right_x + _page_w - 73, _page_y + _page_h - 22,
-            _right_x + _page_w - 51, _page_y + _page_h - 10,
-            true
-        );
+    draw_text(_page_x + 25, _page_y + 242, "Uso das Ferramentas");
+    draw_line(
+        _page_x + 20, _page_y + 278,
+        _page_x + _page_w - 20, _page_y + 278
+    );
+    draw_text_ext(
+        _page_x + 25,
+        _page_y + 296,
+        "NSE é o mecanismo de scripts do Nmap que permite automatizar tarefas.",
+        16,
+        _page_w - 50
+    );
 
-        // Triangulo de avancar
-        draw_triangle(
-            _right_x + _page_w - 40, _page_y + _page_h - 34,
-            _right_x + _page_w - 18, _page_y + _page_h - 22,
-            _right_x + _page_w - 40, _page_y + _page_h - 10,
-            true
-        );
-        draw_triangle(
-            _right_x + _page_w - 41, _page_y + _page_h - 34,
-            _right_x + _page_w - 19, _page_y + _page_h - 22,
-            _right_x + _page_w - 41, _page_y + _page_h - 10,
-            true
-        );
+    draw_set_color(cor_texto);
 
-        if (nav_anim_prev > 0)
-        {
-            var _pulso_prev = 2 + floor(nav_anim_prev / 2);
-            draw_set_alpha(0.7);
-            draw_set_color(cor_detalhe);
-            draw_triangle(
-                _right_x + _page_w - 52 + _pulso_prev, _page_y + _page_h - 34 - _pulso_prev,
-                _right_x + _page_w - 74 - _pulso_prev, _page_y + _page_h - 22,
-                _right_x + _page_w - 52 + _pulso_prev, _page_y + _page_h - 10 + _pulso_prev,
-                true
-            );
-            draw_set_alpha(0.35);
-            draw_triangle(
-                _right_x + _page_w - 52 + _pulso_prev + 2, _page_y + _page_h - 34 - _pulso_prev - 2,
-                _right_x + _page_w - 74 - _pulso_prev - 2, _page_y + _page_h - 22,
-                _right_x + _page_w - 52 + _pulso_prev + 2, _page_y + _page_h - 10 + _pulso_prev + 2,
-                true
-            );
-            draw_set_alpha(1);
-            draw_set_color(make_color_rgb(158, 118, 70));
-        }
+    draw_text(
+        _right_x + 25, _page_y + 23,
+        "Linux"
+    );
 
-        if (nav_anim_next > 0)
-        {
-            var _pulso_next = 2 + floor(nav_anim_next / 2);
-            draw_set_alpha(0.7);
-            draw_set_color(cor_detalhe);
-            draw_triangle(
-                _right_x + _page_w - 40 - _pulso_next, _page_y + _page_h - 34 - _pulso_next,
-                _right_x + _page_w - 18 + _pulso_next, _page_y + _page_h - 22,
-                _right_x + _page_w - 40 - _pulso_next, _page_y + _page_h - 10 + _pulso_next,
-                true
-            );
-            draw_set_alpha(0.35);
-            draw_triangle(
-                _right_x + _page_w - 40 - _pulso_next - 2, _page_y + _page_h - 34 - _pulso_next - 2,
-                _right_x + _page_w - 18 + _pulso_next + 2, _page_y + _page_h - 22,
-                _right_x + _page_w - 40 - _pulso_next - 2, _page_y + _page_h - 10 + _pulso_next + 2,
-                true
-            );
-            draw_set_alpha(1);
-            draw_set_color(make_color_rgb(158, 118, 70));
-        }
-    }
+    draw_line(
+        _right_x + 20, _page_y + 57,
+        _right_x + _page_w - 20, _page_y + 57
+    );
+
+    draw_text(_right_x + 25, _page_y + 62, "ls");
+    draw_text(_right_x + 25, _page_y + 86, "#listar arquivos e diretórios");
+    draw_text(_right_x + 25, _page_y + 110, "cat");
+    draw_text(_right_x + 25, _page_y + 134, "#exibir conteúdo de arquivos");
+
+    draw_text(
+        _page_x + 12,
+        _page_y + _page_h - 28,
+        "Pagina 2"
+    );
 }
 
 // --------------------------------------------------
@@ -536,7 +451,7 @@ else if (aba_atual == 2)
     );
 
     var _ameacas = [
-        "Exploracao de CVEs"
+        "Exploração de CVEs"
     ];
 
     for (var i = 0; i < array_length(_ameacas); i++)
@@ -574,7 +489,7 @@ else if (aba_atual == 2)
     draw_text_ext(
         _right_x + 25,
         _page_y + 82,
-        "Consulte aqui as categorias de ameacas identificadas durante a investigacao.",
+        "Consulte aqui as categorias de ameaças identificadas durante a investigação.",
         20,
         _page_w - 50
     );
@@ -582,7 +497,7 @@ else if (aba_atual == 2)
     draw_text_ext(
         _page_x + 25,
         _page_y + 126,
-        "CVE (Common Vulnerabilities and Exposures) e uma identificacao unica atribuida publicamente para vulnerabilidades de seguranca conhecida.",
+        "CVE (Common Vulnerabilities and Exposures) é uma identificação única atribuída publicamente para vulnerabilidades de segurança conhecida.",
         18,
         _page_w - 50
     );
@@ -625,4 +540,3 @@ if (finalizado)
 // Restaurar configuracoes de desenho
 draw_set_alpha(1);
 draw_set_color(c_white);
-draw_set_font(_fonte_anterior);

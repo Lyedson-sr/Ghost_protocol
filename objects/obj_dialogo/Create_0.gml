@@ -2,8 +2,6 @@ ativo = false;
 tipo = "mensagem";
 titulo = "";
 linhas = [];
-fonte_dialogo = font_add("Arial", 14, false, false, 32, 255);
-if (fonte_dialogo == -1) fonte_dialogo = -1;
 entrada = "";          // texto digitado (terminal)
 historico = [];        // linhas exibidas no terminal
 frame_abertura = 0;
@@ -33,7 +31,7 @@ abrir = function(_inst) {
         var _gh = display_get_gui_height();
         var _largura_texto = _gw - (_margem * 2) - 24;
         var _texto = string_join_ext("\n", linhas);
-        var _altura_texto = string_height_ext(_texto, 16, _largura_texto);
+        var _altura_texto = string_height_ext(_texto, 18, _largura_texto);
 
         // Calcula uma vez por abertura para manter tamanho estavel.
         altura_caixa = clamp(_altura_texto + 72, 150, _gh - (_margem * 2));

@@ -6,10 +6,6 @@
 // 1 = Ferramentas
 // 2 = Catálogo
 aba_atual = 0;
-ferramentas_pagina = 0;
-ferramentas_total_paginas = 2;
-nav_anim_prev = 0;
-nav_anim_next = 0;
 
 // Evidências selecionadas
 evidencias = array_create(3, false);
@@ -37,8 +33,6 @@ cor_papel = make_color_rgb(244, 231, 177);
 cor_texto = make_color_rgb(35, 29, 27);
 cor_aba = make_color_rgb(24, 39, 59);
 cor_verde = make_color_rgb(93, 190, 107);
-fonte_caderno = font_add("Consolas", 16, false, false, 32, 255);
-if (fonte_caderno == -1) fonte_caderno = -1;
 
 // Controle de visibilidade
 // Este objeto deve existir enquanto o caderno estiver aberto.

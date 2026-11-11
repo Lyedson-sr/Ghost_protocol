@@ -167,7 +167,36 @@ if (_servidor != noone)
     }
 }
 
-if (alvo != noone && keyboard_check_pressed(ord("E"))) {
+// Pistas existentes e o notebook mantem prioridade sobre as descricoes do cenario.
+alvo_descricao = undefined;
+var _notebook = instance_nearest(x, y, obj_notebook);
+var _perto_notebook = _notebook != noone
+    && point_distance(x, y, _notebook.x, _notebook.y) < 50;
+
+if (alvo == noone && !_interface_aberta && !_perto_notebook)
+{
+    var _menor_distancia = 40;
+    for (var _i = 0; _i < array_length(descricoes_objetos); _i++)
+    {
+        var _descricao = descricoes_objetos[_i];
+        var _quantidade = instance_number(_descricao.objeto);
+        for (var _j = 0; _j < _quantidade; _j++)
+        {
+            var _objeto = instance_find(_descricao.objeto, _j);
+            var _px = clamp(x, _objeto.bbox_left, _objeto.bbox_right);
+            var _py = clamp(y, _objeto.bbox_top, _objeto.bbox_bottom);
+            var _distancia = point_distance(x, y, _px, _py);
+            if (_distancia < _menor_distancia)
+            {
+                _menor_distancia = _distancia;
+                alvo = _objeto;
+                alvo_descricao = _descricao;
+            }
+        }
+    }
+}
+
+if (alvo != noone && !_interface_aberta && keyboard_check_pressed(ord("E"))) {
     var _dialogo = instance_find(obj_dialogo, 0);
 
     if (_dialogo == noone)
@@ -175,7 +204,14 @@ if (alvo != noone && keyboard_check_pressed(ord("E"))) {
         _dialogo = instance_create_depth(0, 0, -10000, obj_dialogo);
     }
 
-    _dialogo.abrir(alvo);
+    if (is_undefined(alvo_descricao))
+    {
+        _dialogo.abrir(alvo);
+    }
+    else
+    {
+        _dialogo.abrir(alvo_descricao);
+    }
 }
 
 // Travar movimento enquanto uma interface estiver aberta

@@ -31,10 +31,14 @@ sprite_collision_mask(
 depth = -y;
 
 if (!variable_global_exists("dialogo_aberto")) global.dialogo_aberto = false;
+if (!variable_global_exists("intro_ligacao_vista")) global.intro_ligacao_vista = false;
 if (!variable_global_exists("incidente_001_concluido")) global.incidente_001_concluido = false;
 if (!variable_global_exists("incidente_001_confirmado")) global.incidente_001_confirmado = false;
 if (!variable_global_exists("incidente_002_concluido")) global.incidente_002_concluido = false;
 if (!variable_global_exists("incidente_002_confirmado")) global.incidente_002_confirmado = false;
+
+intro_ligacao_estado = 0; // 0: sem chamada, 1: tocando, 2: atendida
+intro_fala_tocando = false;
 
 // Matriz de sprites
 sprites = array_create(2);

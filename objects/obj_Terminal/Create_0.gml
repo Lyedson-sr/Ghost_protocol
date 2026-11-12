@@ -10,6 +10,7 @@ if (!variable_global_exists("incidente_001_concluido")) global.incidente_001_con
 if (!variable_global_exists("incidente_001_confirmado")) global.incidente_001_confirmado = false;
 if (!variable_global_exists("incidente_002_concluido")) global.incidente_002_concluido = false;
 if (!variable_global_exists("incidente_002_confirmado")) global.incidente_002_confirmado = false;
+if (!variable_global_exists("anotacoes_jogador")) global.anotacoes_jogador = "";
 
 // [NOVO] flags dos demais incidentes e estado persistente das dicas
 for (var _n = 2; _n <= 5; _n++) {
@@ -321,20 +322,20 @@ ao_concluir = function(_inc) {
         case "i1": break;   // flag e mensagem ja tratadas em finalizar_acao("poweroff")
         case "i3":
             global.incidente_003_concluido = true;
-            adicionar("out", "Falha confirmada: o servidor entrega arquivos fora do diretorio permitido. Registre a CWE no caderno.");
+            adicionar("out", "Falha confirmada: o servidor entrega arquivos fora do diretório permitido. Registre a CWE no caderno.");
             break;
         case "i4":
             global.incidente_004_concluido = true;
-            adicionar("out", "Autenticacao contornada. Registre a falha no caderno.");
+            adicionar("out", "Autenticação contornada. Registre a falha no caderno.");
             break;
         case "i5":
             global.incidente_005_concluido = true;
-            adicionar("out", "Versoes vulneraveis identificadas. Registre as CVEs e a medida corretiva no caderno.");
+            adicionar("out", "Versões vulneráveis identificadas. Registre as CVEs e a medida corretiva no caderno.");
             break;
         case "i2":
             variable_global_set("incidente_002_" + terminal_id + "_ok", true);
-            if (terminal_id == "pc3") adicionar("out", "Acesso dos dois robos ao grupo foi revogado.");
-            else adicionar("out", "Evidencia coletada neste computador. Registre no caderno.");
+            if (terminal_id == "pc3") adicionar("out", "Acesso dos dois robôs ao grupo foi revogado.");
+            else adicionar("out", "Evidência coletada neste computador. Registre no caderno.");
             if (global.incidente_002_pc1_ok && global.incidente_002_pc2_ok && global.incidente_002_pc3_ok) {
                 global.incidente_002_concluido = true;
                 adicionar("out", "Incidente #002 resolvido.");
@@ -361,7 +362,7 @@ finalizar_acao = function(_acao) {
     if (_acao == "poweroff") {
         servidor20_ligado = false;
         global.incidente_001_concluido = true;
-        adicionar("out", "Ameaca neutralizada. Confirme a ameaca no caderno para liberar a porta.");
+        adicionar("out", "Ameaça neutralizada. Confirme a ameaça no caderno para liberar a porta.");
         definir_sessao_local();
     }
 };
@@ -380,8 +381,57 @@ executar = function(_entrada) {
     if (_cmd == "clear" || _cmd == "cls" || _cmd == "limpar") { linhas = []; return; }
 
     if (_cmd == "ajuda" || _cmd == "help") {
-        if (eh_kali) adicionar("out", "Comandos: nmap, ssh, curl, ls, cat, sudo, clear, exit");
-        else adicionar("out", "Comandos: ls, groups, sudo, gpasswd, clear, exit");
+        if (eh_kali) adicionar("out", "Comandos: nmap, ssh, curl, ls, cat, sudo, notas, clear, exit");
+        else adicionar("out", "Comandos: ls, groups, sudo, gpasswd, notas, clear, exit");
+        adicionar("out", "Notas: notas | notas add <texto> | notas limpar | notas abrir");
+        return;
+    }
+
+    if (_cmd == "notas abrir" || _cmd == "nota abrir") {
+        global.notas_abertas = true;
+        keyboard_string = "";
+        instance_destroy();
+        return;
+    }
+
+    if (_cmd == "notas limpar" || _cmd == "nota limpar" || _cmd == "notas clear") {
+        global.anotacoes_jogador = "";
+        adicionar("out", "Bloco de notas limpo.");
+        return;
+    }
+
+    var _entrada_limpa = string_trim(_entrada);
+    var _entrada_lc = string_lower(_entrada_limpa);
+    if (string_copy(_entrada_lc, 1, 10) == "notas add " || string_copy(_entrada_lc, 1, 9) == "nota add ") {
+        var _corte = (string_copy(_entrada_lc, 1, 10) == "notas add ") ? 10 : 9;
+        var _texto_add = string_trim(string_delete(_entrada_limpa, 1, _corte));
+        if (_texto_add == "") {
+            adicionar("out", "Uso: notas add <texto>");
+            return;
+        }
+
+        if (string_trim(global.anotacoes_jogador) == "") {
+            global.anotacoes_jogador = _texto_add;
+        } else {
+            global.anotacoes_jogador += "\n" + _texto_add;
+        }
+
+        adicionar("out", "Anotação adicionada ao bloco.");
+        return;
+    }
+
+    if (_cmd == "notas" || _cmd == "nota" || _cmd == "cat notas" || _cmd == "cat notas.txt") {
+        adicionar("out", "=== BLOCO DE NOTAS ===");
+        if (string_trim(global.anotacoes_jogador) == "") {
+            adicionar("out", "(vazio)");
+            adicionar("out", "Use [N] durante o jogo ou 'notas add <texto>' aqui no terminal.");
+        } else {
+            var _linhas_notas = string_split(global.anotacoes_jogador, "\n");
+            for (var _i_nota = 0; _i_nota < array_length(_linhas_notas); _i_nota++) {
+                adicionar("out", _linhas_notas[_i_nota]);
+            }
+        }
+        adicionar("out", "======================");
         return;
     }
 
@@ -498,27 +548,27 @@ cadeias = {};
 if (eh_kali) {
     cadeias.i1 = [
         passo({ base: "nmap", aceita: ["nmap 192.168.1.20"], dicas: [
-            "Antes de tentar entrar, descubra quais servicos o servidor expoe. Qual ferramenta do caderno faz varredura de portas?",
-            "Use o nmap seguido do alvo. O IP esta na etiqueta do servidor.",
+            "Antes de tentar entrar, descubra quais serviços o servidor expõe. Qual ferramenta do caderno faz varredura de portas?",
+            "Use o nmap seguido do alvo. O IP está na etiqueta do servidor.",
             "nmap <IP-da-etiqueta>" ] }),
         passo({ base: "ssh", aceita: ["ssh operador@192.168.1.20"], reabrir: true, dicas: [
-            "A porta 22 esta aberta. Que servico roda nela e como se conecta a ele remotamente?",
-            "Use ssh no formato usuario@ip. As pistas indicam o usuario.",
+            "A porta 22 está aberta. Que serviço roda nela e como se conecta a ele remotamente?",
+            "Use ssh no formato usuario@ip. As pistas indicam o usuário.",
             "ssh <usuario>@<IP>" ] }),
         passo({ base: "", senha: true, dicas: [
-            "A senha nao aparece enquanto voce digita. O caderno cita as senhas do ssh: onde alguem poderia te-la deixado?",
+            "A senha não aparece enquanto você digita. O caderno cita as senhas do ssh: onde alguém poderia tê-la deixado?",
             "Procure na lixeira da sala (dumpster diving).",
-            "Digite a senha exatamente como esta escrita: letras, numeros e hifen contam." ] }),
+            "Digite a senha exatamente como está escrita: letras, números e hífen contam." ] }),
         passo({ base: "ls", aceita: ["ls"], dicas: [
-            "Voce esta dentro do servidor. Como listar os arquivos do diretorio atual?",
-            "E um comando de duas letras.",
-            "Comeca com 'l' e termina com 's'." ] }),
+            "Você está dentro do servidor. Como listar os arquivos do diretório atual?",
+            "É um comando de duas letras.",
+            "Começa com 'l' e termina com 's'." ] }),
         passo({ base: "cat", aceita: ["cat readme.txt"], dicas: [
-            "Como exibir o conteudo de um arquivo de texto no terminal?",
+            "Como exibir o conteúdo de um arquivo de texto no terminal?",
             "O comando se chama cat, seguido do nome do arquivo.",
             "cat <nome-do-arquivo-listado>" ] }),
         passo({ base: "sudo", aceita: ["sudo poweroff"], dicas: [
-            "O arquivo ensina como desligar a maquina. Falta executar com privilegios administrativos.",
+            "O arquivo ensina como desligar a máquina. Falta executar com privilégios administrativos.",
             "Comandos administrativos usam o prefixo sudo.",
             "sudo <comando-lido-no-arquivo>" ] })
     ];
@@ -531,15 +581,15 @@ if (eh_kali) {
                     "<title>Internal File Server</title>", "</head>", "<body>", "<h1>Internal File Server</h1>",
                     "<a href=\"/download?file=manual.pdf\">Download Manual</a>", "</body>", "</html>"],
             dicas: [
-                "Voce precisa ver o que o servidor devolve. Qual ferramenta de linha de comando faz requisicoes HTTP?",
+                "Você precisa ver o que o servidor devolve. Qual ferramenta de linha de comando faz requisições HTTP?",
                 "Use curl seguido da URL que aparece na pista da caixa do projeto arquivado.",
                 "curl http://<endereco-da-pista>" ] }),
         passo({ base: "curl", duracao: 2,
             todos: ["curl", "download?file=../config.txt"], um_de: ["internal-files.example.com", "192.168.1.30"],
             saida: ["SERVER_CONFIG", "Environment: production", "Database: internal-db"],
             dicas: [
-                "A aplicacao pede arquivos pelo parametro file. O catalogo de vulnerabilidades cita manipulacao de caminhos.",
-                "No Path Traversal, ../ sobe um diretorio. Peça o arquivo mencionado na caixa, fora da pasta web.",
+                "A aplicação pede arquivos pelo parâmetro file. O catálogo de vulnerabilidades cita manipulação de caminhos.",
+                "No Path Traversal, ../ sobe um diretório. Peça o arquivo mencionado na caixa, fora da pasta web.",
                 "curl \"http://<host>/download?file=../<arquivo>\"  (aspas por causa do '?')" ] })
     ];
 
@@ -552,45 +602,45 @@ if (eh_kali) {
                     "<label>Password:</label> <input type=\"password\" name=\"pass\"><br>",
                     "<input type=\"submit\" value=\"Login\">", "</form>", "</body>", "</html>"],
             dicas: [
-                "Antes de atacar, examine o formulario. Qual ferramenta do caderno acessa uma pagina pelo terminal?",
-                "Use curl com a URL da aplicacao, que esta na pasta antiga.",
+                "Antes de atacar, examine o formulário. Qual ferramenta do caderno acessa uma página pelo terminal?",
+                "Use curl com a URL da aplicação, que está na pasta antiga.",
                 "curl http://<endereco-da-pista>" ] }),
         passo({ base: "curl", duracao: 2,
             todos: ["curl", "http://internal/login.php", "-d", "user=' or '1'='1", "pass="],
             saida: ["Login successful! Welcome, admin."],
             dicas: [
-                "O formulario envia 'user' e 'pass' por POST. O quadro da sala tem um texto estranho com aspas.",
-                "O curl envia dados de formulario com -d. Coloque o texto do quadro no campo user.",
+                "O formulário envia 'user' e 'pass' por POST. O quadro da sala tem um texto estranho com aspas.",
+                "O curl envia dados de formulário com -d. Coloque o texto do quadro no campo user.",
                 "curl -X POST <url> -d \"user=<texto-do-quadro>\" -d \"pass=<qualquer-valor>\"" ] })
     ];
 
     cadeias.i5 = [
         passo({ base: "nmap", aceita: ["nmap -sv 192.168.1.50"], dicas: [
-            "O caderno fala em identificar as versoes dos servicos, nao so as portas.",
-            "No nmap, a opcao de deteccao de versao comeca com -s e termina com V maiusculo.",
+            "O caderno fala em identificar as versões dos serviços, não só as portas.",
+            "No nmap, a opção de detecção de versão começa com -s e termina com V maiúsculo.",
             "nmap -s? <IP-do-servidor-antigo>" ] }),
         passo({ base: "nmap", todos: ["nmap", "-sv", "vulners", "192.168.1.50"], dicas: [
             "O caderno cita o NSE, os scripts do nmap. As letras de papel espalhadas pela sala formam o nome do script.",
-            "Sintaxe do caderno: nmap [opcoes] --script <script> <alvo>.",
+            "Sintaxe do caderno: nmap [opções] --script <script> <alvo>.",
             "nmap -sV --script <palavra-formada-pelas-letras> <IP>" ] })
     ];
 } else {
     // Incidente #002
     var _d_ls = [
-        "Voce precisa ver as permissoes do arquivo, nao so o nome. Qual opcao do ls mostra a listagem longa?",
-        "A opcao e um hifen seguido da letra inicial de 'long'.",
-        "ls -?  (a opcao e uma unica letra)" ];
+        "Você precisa ver as permissões do arquivo, não só o nome. Qual opção do ls mostra a listagem longa?",
+        "A opção é um hífen seguido da letra inicial de 'long'.",
+        "ls -?  (a opção é uma única letra)" ];
     var _d_gr = [
-        "Para saber se o robo tem acesso, descubra a quais grupos ele pertence.",
-        "O comando que lista os grupos de um usuario se chama groups.",
+        "Para saber se o robô tem acesso, descubra a quais grupos ele pertence.",
+        "O comando que lista os grupos de um usuário se chama groups.",
         "groups <nome-do-robo-desta-maquina>" ];
     var _d_del = [
-        "A leitura vem do grupo da collection. Remover o robo desse grupo revoga o acesso. Qual comando administra membros de grupos?",
-        "O gpasswd com a opcao -d (delete) remove um usuario de um grupo e exige sudo.",
+        "A leitura vem do grupo da collection. Remover o robô desse grupo revoga o acesso. Qual comando administra membros de grupos?",
+        "O gpasswd com a opção -d (delete) remove um usuário de um grupo e exige sudo.",
         "sudo gpasswd -d <usuario> <grupo>" ];
     var _d_conf = [
-        "Confirme se a remocao realmente funcionou.",
-        "Reutilize o comando que lista os grupos de um usuario.",
+        "Confirme se a remoção realmente funcionou.",
+        "Reutilize o comando que lista os grupos de um usuário.",
         "groups <usuario>" ];
 
     if (terminal_id == "pc1" || terminal_id == "pc2") {

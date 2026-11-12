@@ -12,11 +12,17 @@ botao_altura = 56;
 botao_espaco = 18;
 
 titulo = "GHOST PROTOCOL";
+fonte_menu_titulo = font_add("Segoe UI Semibold", 42, false, false, 32, 255);
+if (fonte_menu_titulo == -1) fonte_menu_titulo = -1;
+
+fonte_menu = font_add("Segoe UI", 20, false, false, 32, 255);
+if (fonte_menu == -1) fonte_menu = -1;
+texto_configuracoes = "AJUSTES";
 
 botoes = [
     "START",
     "CONTROLES",
-    "CONFIGURACOES",
+    texto_configuracoes,
     "SAIR"
 ];
 

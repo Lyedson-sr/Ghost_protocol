@@ -19,6 +19,9 @@ draw_rectangle(x1, y1, x2, y2, true);
 draw_set_halign(fa_left);
 draw_set_valign(fa_top);
 
+var _fonte_anterior = draw_get_font();
+draw_set_font(fonte_dialogo);
+
 // título
 draw_text(x1 + 12, y1 + 8, titulo);
 
@@ -31,7 +34,8 @@ if (tipo == "terminal") {
     var cursor = (current_time div 500) mod 2 == 0 ? "_" : "";
     draw_text(x1 + 12, y2 - 24, "> " + entrada + cursor);
 } else {
-    draw_text_ext(x1 + 12, y1 + 32, string_join_ext("\n", linhas), 18, x2 - x1 - 24);
+    draw_text_ext(x1 + 12, y1 + 32, string_join_ext("\n", linhas), 16, x2 - x1 - 24);
     draw_text(x2 - 160, y2 - 24, "[X] sair");
 }
+draw_set_font(_fonte_anterior);
 draw_set_color(c_white);

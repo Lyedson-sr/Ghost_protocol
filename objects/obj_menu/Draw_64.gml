@@ -2,6 +2,8 @@
 
 var _gui_w = display_get_gui_width();
 var _gui_h = display_get_gui_height();
+var _fonte_anterior = draw_get_font();
+draw_set_font(fonte_menu);
 
 var _total_botoes = array_length(botoes);
 
@@ -51,7 +53,7 @@ if (mostrar_controles)
     draw_set_color(make_color_rgb(20, 34, 57));
     draw_rectangle(_px1 + 1, _py1 + 1, _px2 - 1, _py1 + 74, false);
 
-    draw_set_font(-1);
+    draw_set_font(fonte_menu);
     draw_set_halign(fa_center);
     draw_set_valign(fa_middle);
     draw_set_color(c_white);
@@ -79,7 +81,12 @@ if (mostrar_controles)
     draw_set_color(make_color_rgb(162, 217, 255));
     draw_text(_linha_x1, _inicio_y + _espaco_y * 2, "ESC");
     draw_set_color(c_white);
-    draw_text(_linha_x1 + 190, _inicio_y + _espaco_y * 2, "fechar interfaces / voltar menu");
+    draw_text(_linha_x1 + 190, _inicio_y + _espaco_y * 2, "fechar interfaces / voltar ao menu");
+
+    draw_set_color(make_color_rgb(162, 217, 255));
+    draw_text(_linha_x1, _inicio_y + _espaco_y * 3, "N");
+    draw_set_color(c_white);
+    draw_text(_linha_x1 + 190, _inicio_y + _espaco_y * 3, "abrir bloco de notas");
 
     // Linha divisoria
     draw_set_color(make_color_rgb(73, 117, 166));
@@ -119,6 +126,7 @@ if (mostrar_controles)
     draw_set_valign(fa_top);
     draw_set_alpha(1);
     draw_set_color(c_white);
+    draw_set_font(_fonte_anterior);
     exit;
 }
 
@@ -141,11 +149,11 @@ if (mostrar_configuracoes)
     draw_set_color(make_color_rgb(20, 34, 57));
     draw_rectangle(_px1_cfg + 1, _py1_cfg + 1, _px2_cfg - 1, _py1_cfg + 74, false);
 
-    draw_set_font(-1);
+    draw_set_font(fonte_menu);
     draw_set_halign(fa_center);
     draw_set_valign(fa_middle);
     draw_set_color(c_white);
-    draw_text(_gui_w * 0.5, _py1_cfg + 38, "CONFIGURACOES");
+    draw_text(_gui_w * 0.5, _py1_cfg + 38, texto_configuracoes);
 
     var _vol_w = 64;
     var _vol_h = 44;
@@ -245,16 +253,19 @@ if (mostrar_configuracoes)
     draw_set_valign(fa_top);
     draw_set_alpha(1);
     draw_set_color(c_white);
+    draw_set_font(_fonte_anterior);
     exit;
 }
 
 // Titulo
-draw_set_font(-1);
+draw_set_font(fonte_menu_titulo);
 draw_set_halign(fa_center);
 draw_set_valign(fa_middle);
 
 draw_set_color(c_white);
 draw_text(_gui_w * 0.5, _y1 - 90, titulo);
+
+draw_set_font(fonte_menu);
 
 // Moldura do menu
 var _mx1 = _x1 - 28;
@@ -304,3 +315,4 @@ draw_set_halign(fa_left);
 draw_set_valign(fa_top);
 draw_set_alpha(1);
 draw_set_color(c_white);
+draw_set_font(_fonte_anterior);

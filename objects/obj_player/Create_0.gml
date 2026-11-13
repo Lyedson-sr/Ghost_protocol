@@ -83,8 +83,82 @@ if (!variable_global_exists("incidente_001_concluido")) global.incidente_001_con
 if (!variable_global_exists("incidente_001_confirmado")) global.incidente_001_confirmado = false;
 if (!variable_global_exists("incidente_002_concluido")) global.incidente_002_concluido = false;
 if (!variable_global_exists("incidente_002_confirmado")) global.incidente_002_confirmado = false;
+if (!variable_global_exists("incidente_003_concluido")) global.incidente_003_concluido = false;
+if (!variable_global_exists("incidente_004_concluido")) global.incidente_004_concluido = false;
+if (!variable_global_exists("incidente_005_concluido")) global.incidente_005_concluido = false;
 if (!variable_global_exists("anotacoes_jogador")) global.anotacoes_jogador = "";
 if (!variable_global_exists("notas_abertas")) global.notas_abertas = false;
+if (!variable_global_exists("nivel_ameaca_seguranca")) global.nivel_ameaca_seguranca = 0;
+if (!variable_global_exists("game_over_ativo")) global.game_over_ativo = false;
+if (!variable_global_exists("game_over_msg")) global.game_over_msg = "";
+if (!variable_global_exists("jogo_pausado")) global.jogo_pausado = false;
+if (!variable_global_exists("sala_retorno_pausa")) global.sala_retorno_pausa = Room1;
+if (!variable_global_exists("forcar_reset_timer")) global.forcar_reset_timer = false;
+if (!variable_global_exists("hud_escudo_sprite")) global.hud_escudo_sprite = -1;
+if (!variable_global_exists("sirene_ultimo_min_sound")) global.sirene_ultimo_min_sound = -1;
+if (!variable_global_exists("sirene_ultimo_min_arquivo")) global.sirene_ultimo_min_arquivo = "alarm_last_min.ogg";
+if (!variable_global_exists("sirene_ultimo_min_fallback")) global.sirene_ultimo_min_fallback = snd_phone_ring;
+
+if (string_lower(global.sirene_ultimo_min_arquivo) == "alarm_last_min.mp3")
+{
+    global.sirene_ultimo_min_arquivo = "alarm_last_min.ogg";
+}
+
+if (!variable_global_exists("hud_escudo_arquivo"))
+{
+    global.hud_escudo_arquivo = "escudo.png";
+}
+
+if (global.hud_escudo_sprite == -1)
+{
+    var _p1 = working_directory + "datafiles/" + global.hud_escudo_arquivo;
+    var _p2 = working_directory + "datafiles\\" + global.hud_escudo_arquivo;
+    var _p3 = working_directory + global.hud_escudo_arquivo;
+    var _p4 = program_directory + "datafiles/" + global.hud_escudo_arquivo;
+    var _p5 = program_directory + global.hud_escudo_arquivo;
+
+    if (file_exists(_p1)) global.hud_escudo_sprite = sprite_add(_p1, 1, false, false, 0, 0);
+    else if (file_exists(_p2)) global.hud_escudo_sprite = sprite_add(_p2, 1, false, false, 0, 0);
+    else if (file_exists(_p3)) global.hud_escudo_sprite = sprite_add(_p3, 1, false, false, 0, 0);
+    else if (file_exists(_p4)) global.hud_escudo_sprite = sprite_add(_p4, 1, false, false, 0, 0);
+    else if (file_exists(_p5)) global.hud_escudo_sprite = sprite_add(_p5, 1, false, false, 0, 0);
+}
+
+if (global.sirene_ultimo_min_sound == -1)
+{
+    var _nome_sirene = string_lower(global.sirene_ultimo_min_arquivo);
+    var _arquivo_ogg = string_pos(".ogg", _nome_sirene) == string_length(_nome_sirene) - 3;
+
+    if (_arquivo_ogg)
+    {
+        var _s1 = working_directory + "datafiles/" + global.sirene_ultimo_min_arquivo;
+        var _s2 = working_directory + "datafiles\\" + global.sirene_ultimo_min_arquivo;
+        var _s3 = working_directory + global.sirene_ultimo_min_arquivo;
+        var _s4 = program_directory + "datafiles/" + global.sirene_ultimo_min_arquivo;
+        var _s5 = program_directory + global.sirene_ultimo_min_arquivo;
+
+        if (file_exists(_s1)) global.sirene_ultimo_min_sound = audio_create_stream(_s1);
+        else if (file_exists(_s2)) global.sirene_ultimo_min_sound = audio_create_stream(_s2);
+        else if (file_exists(_s3)) global.sirene_ultimo_min_sound = audio_create_stream(_s3);
+        else if (file_exists(_s4)) global.sirene_ultimo_min_sound = audio_create_stream(_s4);
+        else if (file_exists(_s5)) global.sirene_ultimo_min_sound = audio_create_stream(_s5);
+    }
+}
+
+tempo_limite_sala_seg = 5 * 60;
+tempo_restante_sala = tempo_limite_sala_seg * game_get_speed(gamespeed_fps);
+sala_timer_room = room;
+taxa_dreno_base = 1;
+multiplicador_ameaca_alta = 3.0;
+limite_ameaca_alta = 80;
+game_over_disparado = false;
+
+aviso_1min_emitido = false;
+aviso_1min_pendente = false;
+sirene_1min_tocando = false;
+sirene_1min_liberada = false;
+sirene_1min_instancia = -1;
+sirene_1min_usando_fallback = false;
 
 notas_cursor_pos = string_length(global.anotacoes_jogador);
 notas_limite_caracteres = 1800;

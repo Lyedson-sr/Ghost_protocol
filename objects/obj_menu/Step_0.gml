@@ -12,6 +12,43 @@ var _y1 = (_gui_h - _bloco_altura) * 0.5;
 var _mouse_x = device_mouse_x_to_gui(0);
 var _mouse_y = device_mouse_y_to_gui(0);
 
+if (!variable_global_exists("reset_total_pendente"))
+{
+    global.reset_total_pendente = false;
+}
+
+if (variable_global_exists("game_over_ativo") && global.game_over_ativo)
+{
+    var _btn_w_go = 300;
+    var _btn_h_go = 62;
+    var _btn_x1_go = (_gui_w - _btn_w_go) * 0.5;
+    var _btn_y1_go = _gui_h * 0.62;
+    var _btn_x2_go = _btn_x1_go + _btn_w_go;
+    var _btn_y2_go = _btn_y1_go + _btn_h_go;
+
+    hover_indice = -1;
+    hover_voltar =
+        _mouse_x >= _btn_x1_go
+        && _mouse_x <= _btn_x2_go
+        && _mouse_y >= _btn_y1_go
+        && _mouse_y <= _btn_y2_go;
+    hover_volume_menos = false;
+    hover_volume_mais = false;
+
+    if (keyboard_check_pressed(vk_enter)
+        || (mouse_check_button_pressed(mb_left) && hover_voltar))
+    {
+        global.game_over_ativo = false;
+        global.game_over_msg = "";
+        global.reset_total_pendente = true;
+        global.jogo_pausado = false;
+        global.sala_retorno_pausa = Room1;
+        global.forcar_reset_timer = true;
+    }
+
+    exit;
+}
+
 if (mostrar_controles)
 {
     var _voltar_largura = 220;
@@ -148,7 +185,80 @@ if (mouse_check_button_pressed(mb_left) && hover_indice != -1)
     {
         case 0:
             audio_stop_sound(snd_menu);
-            room_goto(Room1);
+            global.game_over_ativo = false;
+            global.game_over_msg = "";
+
+            if (global.reset_total_pendente)
+            {
+                // Reset global de progresso para recomecar do zero.
+                global.incidente_001_concluido = false;
+                global.incidente_001_confirmado = false;
+                global.incidente_002_concluido = false;
+                global.incidente_002_confirmado = false;
+                global.incidente_003_concluido = false;
+                global.incidente_004_concluido = false;
+                global.incidente_005_concluido = false;
+                global.incidente_005_confirmado = false;
+
+                global.incidente_002_pc1_ok = false;
+                global.incidente_002_pc2_ok = false;
+                global.incidente_002_pc3_ok = false;
+
+                global.incidente_atual = 1;
+                global.intro_ligacao_vista = false;
+                global.dialogo_aberto = false;
+                global.nivel_ameaca_seguranca = 0;
+
+                global.anotacoes_jogador = "";
+                global.notas_abertas = false;
+
+                global.jogo_pausado = false;
+                global.sala_retorno_pausa = Room1;
+                global.forcar_reset_timer = true;
+
+                if (variable_global_exists("sirene_ultimo_min_sound") && global.sirene_ultimo_min_sound != -1)
+                {
+                    audio_stop_sound(global.sirene_ultimo_min_sound);
+                }
+
+                if (instance_exists(obj_player))
+                {
+                    with (obj_player)
+                    {
+                        aviso_1min_emitido = false;
+                        aviso_1min_pendente = false;
+                        sirene_1min_liberada = false;
+                        sirene_1min_tocando = false;
+                        sirene_1min_instancia = -1;
+                        sirene_1min_usando_fallback = false;
+                        game_over_disparado = false;
+                        intro_ligacao_estado = 0;
+                        intro_fala_tocando = false;
+                    }
+                }
+
+                if (instance_exists(obj_dialogo))
+                {
+                    with (obj_dialogo)
+                    {
+                        instance_destroy();
+                    }
+                }
+
+                global.reset_total_pendente = false;
+                room_goto(Room1);
+            }
+            else if (variable_global_exists("jogo_pausado") && global.jogo_pausado)
+            {
+                var _sala_retorno = variable_global_exists("sala_retorno_pausa") ? global.sala_retorno_pausa : Room1;
+                global.jogo_pausado = false;
+                room_goto(_sala_retorno);
+            }
+            else
+            {
+                global.forcar_reset_timer = true;
+                room_goto(Room1);
+            }
             break;
 
         case 1:

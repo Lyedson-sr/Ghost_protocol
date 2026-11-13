@@ -4,10 +4,133 @@ if (!variable_global_exists("notas_abertas")) global.notas_abertas = false;
 if (!variable_global_exists("anotacoes_jogador")) global.anotacoes_jogador = "";
 if (!variable_instance_exists(id, "notas_cursor_pos")) notas_cursor_pos = string_length(global.anotacoes_jogador);
 
+var _hud_gw = display_get_gui_width();
+var _hud_gh = display_get_gui_height();
+var _hud_margem = 18;
+
+if (!variable_global_exists("hud_escudo_sprite")) global.hud_escudo_sprite = -1;
+if (!variable_global_exists("hud_escudo_arquivo")) global.hud_escudo_arquivo = "escudo.png";
+
+if (global.hud_escudo_sprite == -1)
+{
+    var _p1_hud = working_directory + "datafiles/" + global.hud_escudo_arquivo;
+    var _p2_hud = working_directory + "datafiles\\" + global.hud_escudo_arquivo;
+    var _p3_hud = working_directory + global.hud_escudo_arquivo;
+    var _p4_hud = program_directory + "datafiles/" + global.hud_escudo_arquivo;
+    var _p5_hud = program_directory + global.hud_escudo_arquivo;
+
+    if (file_exists(_p1_hud)) global.hud_escudo_sprite = sprite_add(_p1_hud, 1, false, false, 0, 0);
+    else if (file_exists(_p2_hud)) global.hud_escudo_sprite = sprite_add(_p2_hud, 1, false, false, 0, 0);
+    else if (file_exists(_p3_hud)) global.hud_escudo_sprite = sprite_add(_p3_hud, 1, false, false, 0, 0);
+    else if (file_exists(_p4_hud)) global.hud_escudo_sprite = sprite_add(_p4_hud, 1, false, false, 0, 0);
+    else if (file_exists(_p5_hud)) global.hud_escudo_sprite = sprite_add(_p5_hud, 1, false, false, 0, 0);
+}
+
+var _spr_escudo_hud = -1;
+if (variable_global_exists("hud_escudo_sprite")
+    && global.hud_escudo_sprite != -1
+    && sprite_exists(global.hud_escudo_sprite))
+{
+    _spr_escudo_hud = global.hud_escudo_sprite;
+}
+if (_spr_escudo_hud == -1) _spr_escudo_hud = asset_get_index("spr_hud_escudo");
+var _usa_sprite_escudo = (_spr_escudo_hud != -1);
+
+var _escudos_total = 5;
+var _bloco_w = 36;
+var _bloco_h = 16;
+var _bloco_gap = 4;
+var _escudo_lateral_w = _usa_sprite_escudo ? 30 : 18;
+var _ponta_w = 0;
+var _hud_larg_total = _escudo_lateral_w + (_bloco_w * _escudos_total) + (_bloco_gap * (_escudos_total - 1)) + _ponta_w;
+var _hud_x1 = _hud_gw - _hud_margem - _hud_larg_total;
+var _hud_y1 = 12;
+var _hud_y2 = _hud_y1 + _bloco_h;
+
+var _fps = game_get_speed(gamespeed_fps);
+var _tempo_max = max(1, tempo_limite_sala_seg * _fps);
+var _proporcao_tempo = clamp(tempo_restante_sala / _tempo_max, 0, 1);
+var _bloco_tempo = _tempo_max / _escudos_total;
+var _escudos_ativos = clamp(ceil(tempo_restante_sala / _bloco_tempo), 0, _escudos_total);
+
+var _mostrar_hud_tempo = !(variable_global_exists("game_over_ativo") && global.game_over_ativo)
+    && (room == Room1 || room == Room2);
+if (_mostrar_hud_tempo)
+{
+    var _cor_borda = c_black;
+    var _cor_ativo = make_color_rgb(103, 157, 208);
+    var _cor_inativo = make_color_rgb(28, 28, 32);
+    var _cor_base = make_color_rgb(210, 218, 230);
+
+    // Cabeca do escudo (esquerda)
+    var _hx1 = _hud_x1;
+    var _hx2 = _hx1 + _escudo_lateral_w;
+    var _hxm = (_hx1 + _hx2) * 0.5;
+
+    if (_usa_sprite_escudo)
+    {
+        var _spr_w = max(1, sprite_get_width(_spr_escudo_hud));
+        var _spr_h = max(1, sprite_get_height(_spr_escudo_hud));
+        var _draw_h = _bloco_h + 18;
+        var _draw_w = _escudo_lateral_w;
+        var _escala = min(_draw_w / _spr_w, _draw_h / _spr_h);
+        var _sx = _escala;
+        var _sy = _escala;
+        var _cx = _hx1 + _escudo_lateral_w * 0.5;
+        var _cy = _hud_y1 + _bloco_h * 0.5 - 16;
+    }
+    else
+    {
+        draw_set_color(_cor_base);
+        draw_triangle(_hx1, _hud_y1 + 2, _hx2, _hud_y1 + 2, _hxm, _hud_y1 - 8, false);
+        draw_rectangle(_hx1 + 2, _hud_y1 + 2, _hx2 - 2, _hud_y2 - 2, false);
+        draw_triangle(_hx1 + 2, _hud_y2 - 2, _hx2 - 2, _hud_y2 - 2, _hxm, _hud_y2 + 8, false);
+
+        draw_set_color(_cor_borda);
+        draw_triangle(_hx1, _hud_y1 + 2, _hx2, _hud_y1 + 2, _hxm, _hud_y1 - 8, true);
+        draw_rectangle(_hx1 + 2, _hud_y1 + 2, _hx2 - 2, _hud_y2 - 2, true);
+        draw_triangle(_hx1 + 2, _hud_y2 - 2, _hx2 - 2, _hud_y2 - 2, _hxm, _hud_y2 + 8, true);
+    }
+
+    var _inicio_barra = _hx2 + 1;
+    for (var _i_esc = 0; _i_esc < _escudos_total; _i_esc++)
+    {
+        var _x1_esc = _inicio_barra + _i_esc * (_bloco_w + _bloco_gap);
+        var _x2_esc = _x1_esc + _bloco_w;
+        var _ativo = (_i_esc < _escudos_ativos);
+
+        var _cor_bloco = _ativo ? _cor_ativo : _cor_inativo;
+        var _cor_reflexo = _ativo ? make_color_rgb(132, 186, 236) : make_color_rgb(90, 90, 96);
+
+        draw_set_color(_cor_bloco);
+        draw_rectangle(_x1_esc, _hud_y1, _x2_esc, _hud_y2, false);
+
+        draw_set_color(_cor_borda);
+        draw_rectangle(_x1_esc, _hud_y1, _x2_esc, _hud_y2, true);
+        draw_set_color(_cor_reflexo);
+        draw_line(_x1_esc + 2, _hud_y1 + 2, _x2_esc - 2, _hud_y1 + 2);
+    }
+
+    // Desenha o escudo por cima para nao ficar atras da barra.
+    if (_usa_sprite_escudo)
+    {
+        var _tex_filter_antigo = gpu_get_texfilter();
+        gpu_set_texfilter(true);
+        draw_sprite_ext(_spr_escudo_hud, 0, _cx, _cy, _sx, _sy, 0, c_white, 1);
+        gpu_set_texfilter(_tex_filter_antigo);
+    }
+
+    if (_escudos_ativos <= 1)
+    {
+        draw_set_color(make_color_rgb(235, 85, 85));
+        draw_text(_hud_x1, _hud_y2 + 8, "AMEACA CRITICA");
+    }
+}
+
 if (global.notas_abertas)
 {
-    var _gw_n = display_get_gui_width();
-    var _gh_n = display_get_gui_height();
+    var _gw_n = _hud_gw;
+    var _gh_n = _hud_gh;
     var _w_n = min(840, _gw_n - 80);
     var _h_n = min(520, _gh_n - 80);
     var _x_n = (_gw_n - _w_n) * 0.5;

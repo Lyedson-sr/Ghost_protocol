@@ -20,7 +20,11 @@
     {"$GMFolder":"","%Name":"Sprites_Escritorio","folderPath":"folders/Sprites_Escritorio.yy","name":"Sprites_Escritorio","resourceType":"GMFolder","resourceVersion":"2.0",},
   ],
   "ForcedPrefabProjectReferences":[],
-  "IncludedFiles":[],
+  "IncludedFiles":[
+    {"$GMIncludedFile":"","%Name":"alarm_last_min.mp3","CopyToMask":-1,"filePath":"datafiles","name":"alarm_last_min.mp3","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+    {"$GMIncludedFile":"","%Name":"alarm_last_min.ogg","CopyToMask":-1,"filePath":"datafiles","name":"alarm_last_min.ogg","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+    {"$GMIncludedFile":"","%Name":"escudo.png","CopyToMask":-1,"filePath":"datafiles","name":"escudo.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+  ],
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{

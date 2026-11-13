@@ -5,9 +5,226 @@
 var _obj_bloco_notas = asset_get_index("obj_bloco_notas");
 if (!variable_global_exists("anotacoes_jogador")) global.anotacoes_jogador = "";
 if (!variable_global_exists("notas_abertas")) global.notas_abertas = false;
+if (!variable_global_exists("jogo_pausado")) global.jogo_pausado = false;
+if (!variable_global_exists("forcar_reset_timer")) global.forcar_reset_timer = false;
+if (!variable_global_exists("sirene_ultimo_min_sound")) global.sirene_ultimo_min_sound = -1;
+if (!variable_global_exists("sirene_ultimo_min_arquivo")) global.sirene_ultimo_min_arquivo = "alarm_last_min.ogg";
+if (!variable_global_exists("sirene_ultimo_min_fallback")) global.sirene_ultimo_min_fallback = snd_phone_ring;
+
+if (string_lower(global.sirene_ultimo_min_arquivo) == "alarm_last_min.mp3")
+{
+    global.sirene_ultimo_min_arquivo = "alarm_last_min.ogg";
+}
 
 if (!variable_instance_exists(id, "notas_cursor_pos")) notas_cursor_pos = string_length(global.anotacoes_jogador);
 if (!variable_instance_exists(id, "notas_limite_caracteres")) notas_limite_caracteres = 1800;
+if (!variable_instance_exists(id, "sirene_1min_tocando")) sirene_1min_tocando = false;
+if (!variable_instance_exists(id, "sirene_1min_liberada")) sirene_1min_liberada = false;
+if (!variable_instance_exists(id, "sirene_1min_instancia")) sirene_1min_instancia = -1;
+if (!variable_instance_exists(id, "sirene_1min_usando_fallback")) sirene_1min_usando_fallback = false;
+
+var _sala_jogavel = (room == Room1 || room == Room2);
+if (!_sala_jogavel)
+{
+    if (sirene_1min_tocando)
+    {
+        if (sirene_1min_usando_fallback)
+        {
+            if (sirene_1min_instancia != -1) audio_stop_sound(sirene_1min_instancia);
+            else audio_stop_sound(global.sirene_ultimo_min_fallback);
+        }
+        else if (global.sirene_ultimo_min_sound != -1)
+        {
+            audio_stop_sound(global.sirene_ultimo_min_sound);
+        }
+
+        sirene_1min_tocando = false;
+        sirene_1min_instancia = -1;
+        sirene_1min_usando_fallback = false;
+    }
+    exit;
+}
+
+if (global.forcar_reset_timer)
+{
+    sala_timer_room = room;
+    tempo_restante_sala = tempo_limite_sala_seg * game_get_speed(gamespeed_fps);
+    game_over_disparado = false;
+    aviso_1min_emitido = false;
+    aviso_1min_pendente = false;
+    sirene_1min_liberada = false;
+    if (sirene_1min_tocando)
+    {
+        if (sirene_1min_usando_fallback)
+        {
+            if (sirene_1min_instancia != -1) audio_stop_sound(sirene_1min_instancia);
+            else audio_stop_sound(global.sirene_ultimo_min_fallback);
+        }
+        else if (global.sirene_ultimo_min_sound != -1)
+        {
+            audio_stop_sound(global.sirene_ultimo_min_sound);
+        }
+
+        sirene_1min_tocando = false;
+        sirene_1min_instancia = -1;
+        sirene_1min_usando_fallback = false;
+    }
+    global.forcar_reset_timer = false;
+}
+
+if (room != sala_timer_room)
+{
+    sala_timer_room = room;
+    tempo_restante_sala = tempo_limite_sala_seg * game_get_speed(gamespeed_fps);
+    game_over_disparado = false;
+    aviso_1min_emitido = false;
+    aviso_1min_pendente = false;
+    sirene_1min_liberada = false;
+    if (sirene_1min_tocando)
+    {
+        if (sirene_1min_usando_fallback)
+        {
+            if (sirene_1min_instancia != -1) audio_stop_sound(sirene_1min_instancia);
+            else audio_stop_sound(global.sirene_ultimo_min_fallback);
+        }
+        else if (global.sirene_ultimo_min_sound != -1)
+        {
+            audio_stop_sound(global.sirene_ultimo_min_sound);
+        }
+
+        sirene_1min_tocando = false;
+        sirene_1min_instancia = -1;
+        sirene_1min_usando_fallback = false;
+    }
+}
+
+var _ameaca_interrompida = (room == Room2) ? global.incidente_002_confirmado : global.incidente_001_confirmado;
+if (_ameaca_interrompida && sirene_1min_tocando)
+{
+    if (sirene_1min_usando_fallback)
+    {
+        if (sirene_1min_instancia != -1) audio_stop_sound(sirene_1min_instancia);
+        else audio_stop_sound(global.sirene_ultimo_min_fallback);
+    }
+    else if (global.sirene_ultimo_min_sound != -1)
+    {
+        audio_stop_sound(global.sirene_ultimo_min_sound);
+    }
+
+    sirene_1min_tocando = false;
+    sirene_1min_instancia = -1;
+    sirene_1min_usando_fallback = false;
+}
+
+tempo_restante_sala = max(0, tempo_restante_sala - taxa_dreno_base);
+
+var _fps_tempo = game_get_speed(gamespeed_fps);
+var _limite_aviso_1min = 60 * _fps_tempo;
+if (!aviso_1min_emitido && tempo_restante_sala <= _limite_aviso_1min && tempo_restante_sala > 0)
+{
+    aviso_1min_emitido = true;
+    aviso_1min_pendente = true;
+    audio_play_sound(snd_phone_ring, 12, false);
+}
+
+if (aviso_1min_pendente
+    && !global.dialogo_aberto
+    && !instance_exists(obj_Terminal)
+    && !instance_exists(obj_Caderno)
+    && !instance_exists(obj_Caderno_1)
+    && !global.notas_abertas)
+{
+    var _dialogo_alerta = instance_find(obj_dialogo, 0);
+    if (_dialogo_alerta == noone)
+    {
+        _dialogo_alerta = instance_create_depth(0, 0, -10000, obj_dialogo);
+    }
+
+    _dialogo_alerta.abrir({
+        tipo: "mensagem",
+        titulo: "Central de Segurança",
+        linhas: [
+            "Atenção: o tempo está acabando.",
+            "Melhor correr, ou a ameaça afetará toda a empresa!"
+        ]
+    });
+
+    aviso_1min_pendente = false;
+    sirene_1min_liberada = true;
+}
+
+if (sirene_1min_liberada
+    && !global.dialogo_aberto
+    && !sirene_1min_tocando
+    && !_ameaca_interrompida
+    && tempo_restante_sala <= _limite_aviso_1min
+    && tempo_restante_sala > 0)
+{
+    if (global.sirene_ultimo_min_sound == -1)
+    {
+        var _nome_sirene = string_lower(global.sirene_ultimo_min_arquivo);
+        var _arquivo_ogg = string_pos(".ogg", _nome_sirene) == string_length(_nome_sirene) - 3;
+
+        if (_arquivo_ogg)
+        {
+            var _s1 = working_directory + "datafiles/" + global.sirene_ultimo_min_arquivo;
+            var _s2 = working_directory + "datafiles\\" + global.sirene_ultimo_min_arquivo;
+            var _s3 = working_directory + global.sirene_ultimo_min_arquivo;
+            var _s4 = program_directory + "datafiles/" + global.sirene_ultimo_min_arquivo;
+            var _s5 = program_directory + global.sirene_ultimo_min_arquivo;
+
+            if (file_exists(_s1)) global.sirene_ultimo_min_sound = audio_create_stream(_s1);
+            else if (file_exists(_s2)) global.sirene_ultimo_min_sound = audio_create_stream(_s2);
+            else if (file_exists(_s3)) global.sirene_ultimo_min_sound = audio_create_stream(_s3);
+            else if (file_exists(_s4)) global.sirene_ultimo_min_sound = audio_create_stream(_s4);
+            else if (file_exists(_s5)) global.sirene_ultimo_min_sound = audio_create_stream(_s5);
+        }
+    }
+
+    if (global.sirene_ultimo_min_sound != -1)
+    {
+        sirene_1min_instancia = audio_play_sound(global.sirene_ultimo_min_sound, 5, true);
+        audio_sound_gain(global.sirene_ultimo_min_sound, 0.18, 0);
+        sirene_1min_tocando = true;
+        sirene_1min_usando_fallback = false;
+    }
+    else
+    {
+        sirene_1min_instancia = audio_play_sound(global.sirene_ultimo_min_fallback, 5, true);
+        audio_sound_gain(sirene_1min_instancia, 0.10, 0);
+        sirene_1min_tocando = true;
+        sirene_1min_usando_fallback = true;
+    }
+}
+
+if (tempo_restante_sala <= 0 && !game_over_disparado)
+{
+    if (sirene_1min_tocando)
+    {
+        if (sirene_1min_usando_fallback)
+        {
+            if (sirene_1min_instancia != -1) audio_stop_sound(sirene_1min_instancia);
+            else audio_stop_sound(global.sirene_ultimo_min_fallback);
+        }
+        else if (global.sirene_ultimo_min_sound != -1)
+        {
+            audio_stop_sound(global.sirene_ultimo_min_sound);
+        }
+
+        sirene_1min_tocando = false;
+        sirene_1min_instancia = -1;
+        sirene_1min_usando_fallback = false;
+    }
+
+    game_over_disparado = true;
+    global.game_over_ativo = true;
+    global.game_over_msg = "Seu tempo acabou.";
+    global.jogo_pausado = false;
+    global.sala_retorno_pausa = Room1;
+    global.forcar_reset_timer = true;
+    room_goto(Room_Menu);
+    exit;
+}
 
 if (keyboard_check_pressed(vk_escape))
 {
@@ -57,6 +274,24 @@ if (keyboard_check_pressed(vk_escape))
     }
 
     room_goto(Room_Menu);
+    if (sirene_1min_tocando)
+    {
+        if (sirene_1min_usando_fallback)
+        {
+            if (sirene_1min_instancia != -1) audio_stop_sound(sirene_1min_instancia);
+            else audio_stop_sound(global.sirene_ultimo_min_fallback);
+        }
+        else if (global.sirene_ultimo_min_sound != -1)
+        {
+            audio_stop_sound(global.sirene_ultimo_min_sound);
+        }
+
+        sirene_1min_tocando = false;
+        sirene_1min_instancia = -1;
+        sirene_1min_usando_fallback = false;
+    }
+    global.jogo_pausado = true;
+    global.sala_retorno_pausa = room;
     exit;
 }
 
@@ -157,6 +392,8 @@ if (room == Room1
             _ligacao.linhas = [
                 "Alerta da Central de Segurança.",
                 "Sua tarefa é identificar e neutralizar as ameaças de segurança do prédio.",
+                "No canto superior direito há o Escudo de Ameaça com 5 blocos.",
+                "Cada bloco quebrado indica avanço da ameaça. Se ele zerar, a empresa acaba sendo invadida por falhas.",
                 "Investigue cada sala e elimine os riscos para liberar as saídas.",
                 "Para encontrar pistas, interaja com os objetos da sala usando a tecla E.",
                 "Pressione C para abrir o caderno com informações importantes da operação.",

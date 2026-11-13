@@ -21,13 +21,18 @@ if (keyboard_check_pressed(vk_escape))
     }
 
     if (instance_exists(obj_Caderno)
-        || instance_exists(obj_Caderno_1))
+        || instance_exists(obj_Caderno_1)
+        || instance_exists(obj_Caderno_2))
     {
         with (obj_Caderno)
         {
             instance_destroy();
         }
         with (obj_Caderno_1)
+        {
+            instance_destroy();
+        }
+        with (obj_Caderno_2)
         {
             instance_destroy();
         }
@@ -118,7 +123,8 @@ if (!instance_exists(obj_Terminal)
     && keyboard_check_pressed(ord("C")))
 {
     if (instance_exists(obj_Caderno)
-        || instance_exists(obj_Caderno_1))
+        || instance_exists(obj_Caderno_1)
+        || instance_exists(obj_Caderno_2))
     {
         with (obj_Caderno)
         {
@@ -128,12 +134,20 @@ if (!instance_exists(obj_Terminal)
         {
             instance_destroy();
         }
+        with (obj_Caderno_2)
+        {
+            instance_destroy();
+        }
     }
     else
     {
         if (room == Room2)
         {
             instance_create_depth(0, 0, -10000, obj_Caderno_1);
+        }
+        else if (room == Room3)
+        {
+            instance_create_depth(0, 0, -10000, obj_Caderno_2);
         }
         else
         {
@@ -164,6 +178,43 @@ if (_servidor != noone)
     if (point_distance(x, y, _ponto_x, _ponto_y) < 48)
     {
         alvo = _servidor;
+    }
+}
+
+// Armarios sao interativos mesmo sem usar obj_interactive.
+if (alvo == noone)
+{
+    var _armario_aberto = instance_nearest(x, y, obj_estante_aberto);
+    var _armario_fechado = instance_nearest(x, y, obj_estante_fechado);
+    var _armario = noone;
+    var _dist_armario = 72;
+
+    if (_armario_aberto != noone)
+    {
+        var _ponto_aberto_x = clamp(x, _armario_aberto.bbox_left, _armario_aberto.bbox_right);
+        var _ponto_aberto_y = clamp(y, _armario_aberto.bbox_top, _armario_aberto.bbox_bottom);
+        var _dist_aberto = point_distance(x, y, _ponto_aberto_x, _ponto_aberto_y);
+        if (_dist_aberto < _dist_armario)
+        {
+            _armario = _armario_aberto;
+            _dist_armario = _dist_aberto;
+        }
+    }
+
+    if (_armario_fechado != noone)
+    {
+        var _ponto_fechado_x = clamp(x, _armario_fechado.bbox_left, _armario_fechado.bbox_right);
+        var _ponto_fechado_y = clamp(y, _armario_fechado.bbox_top, _armario_fechado.bbox_bottom);
+        var _dist_fechado = point_distance(x, y, _ponto_fechado_x, _ponto_fechado_y);
+        if (_dist_fechado < _dist_armario)
+        {
+            _armario = _armario_fechado;
+        }
+    }
+
+    if (_armario != noone)
+    {
+        alvo = _armario;
     }
 }
 
@@ -235,6 +286,19 @@ velv = (_baixo - _cima) * vel;
 
 // A mascara personalizada ja remove a cabeca da colisao.
 var _offset_colisao_y = 0;
+var _porta_liberada = false;
+if (room == Room1)
+{
+    _porta_liberada = global.incidente_001_confirmado;
+}
+else if (room == Room2)
+{
+    _porta_liberada = global.incidente_002_confirmado;
+}
+else if (room == Room3)
+{
+    _porta_liberada = global.incidente_003_confirmado;
+}
 
 // Colisao horizontal
 if (place_meeting(x + velh, y + _offset_colisao_y, obj_Colisao_Pai))
@@ -247,10 +311,19 @@ if (place_meeting(x + velh, y + _offset_colisao_y, obj_Colisao_Pai))
 
     velh = 0;
 }
-else if (!(room == Room2 ? global.incidente_002_confirmado : global.incidente_001_confirmado)
-    && (place_meeting(x + velh, y + _offset_colisao_y, obj_portal_1)
-        || place_meeting(x + velh, y + _offset_colisao_y, obj_portal_2)
-        || place_meeting(x + velh, y + _offset_colisao_y, obj_porta)))
+else if (
+    (place_meeting(x + velh, y + _offset_colisao_y, obj_portal_1)
+        && !global.incidente_001_confirmado)
+    || (place_meeting(x + velh, y + _offset_colisao_y, obj_portal_2)
+        && !global.incidente_002_confirmado)
+    || (place_meeting(x + velh, y + _offset_colisao_y, obj_portal_3)
+        && !global.incidente_002_confirmado)
+    || (place_meeting(x + velh, y + _offset_colisao_y, obj_portal_4)
+        && !global.incidente_002_confirmado)
+    || (place_meeting(x + velh, y + _offset_colisao_y, obj_portal_5)
+        && !global.incidente_003_confirmado)
+    || (place_meeting(x + velh, y + _offset_colisao_y, obj_porta)
+        && !_porta_liberada))
 {
     velh = 0;
 }
@@ -270,10 +343,19 @@ if (place_meeting(x, y + velv + _offset_colisao_y, obj_Colisao_Pai))
 
     velv = 0;
 }
-else if (!(room == Room2 ? global.incidente_002_confirmado : global.incidente_001_confirmado)
-    && (place_meeting(x, y + velv + _offset_colisao_y, obj_portal_1)
-        || place_meeting(x, y + velv + _offset_colisao_y, obj_portal_2)
-        || place_meeting(x, y + velv + _offset_colisao_y, obj_porta)))
+else if (
+    (place_meeting(x, y + velv + _offset_colisao_y, obj_portal_1)
+        && !global.incidente_001_confirmado)
+    || (place_meeting(x, y + velv + _offset_colisao_y, obj_portal_2)
+        && !global.incidente_002_confirmado)
+    || (place_meeting(x, y + velv + _offset_colisao_y, obj_portal_3)
+        && !global.incidente_002_confirmado)
+    || (place_meeting(x, y + velv + _offset_colisao_y, obj_portal_4)
+        && !global.incidente_002_confirmado)
+    || (place_meeting(x, y + velv + _offset_colisao_y, obj_portal_5)
+        && !global.incidente_003_confirmado)
+    || (place_meeting(x, y + velv + _offset_colisao_y, obj_porta)
+        && !_porta_liberada))
 {
     velv = 0;
 }

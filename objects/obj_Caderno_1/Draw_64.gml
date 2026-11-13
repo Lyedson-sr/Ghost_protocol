@@ -509,34 +509,6 @@ else if (aba_atual == 2)
     );
 }
 
-if (finalizado)
-{
-    draw_set_alpha(0.82);
-    draw_set_color(c_black);
-    draw_rectangle(0, 0, _gw, _gh, false);
-
-    var _popup_w = min(620, _gw - 80);
-    var _popup_h = 220;
-    var _popup_x = (_gw - _popup_w) * 0.5;
-    var _popup_y = (_gh - _popup_h) * 0.5;
-
-    draw_set_alpha(1);
-    draw_set_color(cor_papel);
-    draw_rectangle(_popup_x, _popup_y, _popup_x + _popup_w, _popup_y + _popup_h, false);
-
-    draw_set_color(cor_madeira);
-    draw_rectangle(_popup_x, _popup_y, _popup_x + _popup_w, _popup_y + _popup_h, true);
-
-    draw_set_color(cor_texto);
-    draw_text_ext(
-        _popup_x + 32,
-        _popup_y + 48,
-        "Voce concluiu as fases atuais, mas o jogo ainda nao acabou, venha para proximas atualizacoes...",
-        24,
-        _popup_w - 64
-    );
-}
-
 // Restaurar configuracoes de desenho
 draw_set_alpha(1);
 draw_set_color(c_white);

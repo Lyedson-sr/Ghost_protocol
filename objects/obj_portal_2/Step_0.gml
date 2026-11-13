@@ -1,5 +1,5 @@
 if (place_meeting(x, y, obj_player)
-    && (room == Room2 ? global.incidente_002_confirmado : global.incidente_001_confirmado)
+    && global.incidente_002_confirmado
     && !instance_exists(obj_dist_2))
 {
     var inst = instance_create_depth(0, 0, -9999, obj_dist_2);

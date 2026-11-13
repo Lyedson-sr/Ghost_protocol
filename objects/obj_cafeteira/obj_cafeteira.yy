@@ -7,7 +7,7 @@
   "overriddenProperties":[],
   "parent":{
     "name":"Objetos _Escritorios",
-    "path":"folders/Objetos _Escritorios.yy",
+    "path":"folders/Objetos/Objetos _Escritorios.yy",
   },
   "parentObjectId":{
     "name":"obj_Colisao_Pai",

@@ -9,8 +9,8 @@
   "name":"obj_portal_2",
   "overriddenProperties":[],
   "parent":{
-    "name":"Objetos",
-    "path":"folders/Objetos.yy",
+    "name":"Objetos_Portais",
+    "path":"folders/Objetos/Objetos_Portais.yy",
   },
   "parentObjectId":null,
   "persistent":false,

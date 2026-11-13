@@ -32,7 +32,7 @@ descricoes_objetos = [
         linhas: ["Uma mesa com equipamento de impressao e papeis organizados ao lado, pronta para mais um dia de trabalho."] },
     { objeto: obj_lixeira, tipo: "mensagem", titulo: "Lixeira",
         linhas: ["A lixeira tem copos descartaveis e embalagens de lanche. Alguem precisa recolher o lixo."] },
-    { objeto: ob_movel1, tipo: "mensagem", titulo: "Armario",
+    { objeto: ob_movel1, tipo: "mensagem", titulo: "Estante",
         linhas: ["Um armario de escritorio com as portas fechadas. A pintura esta gasta perto dos puxadores."] },
     { objeto: obj_movel2, tipo: "mensagem", titulo: "Arquivo",
         linhas: ["Um pequeno arquivo de madeira. As gavetas estao fechadas e ha uma fina camada de poeira sobre ele."] },
@@ -55,7 +55,13 @@ descricoes_objetos = [
     { objeto: obj_portal_1, tipo: "mensagem", titulo: "Passagem",
         linhas: ["Esta passagem leva a outro ambiente do predio. O corredor do outro lado esta silencioso."] },
     { objeto: obj_portal_2, tipo: "mensagem", titulo: "Passagem",
-        linhas: ["Uma passagem entre as salas do predio. Uma corrente de ar frio vem do outro lado."] }
+        linhas: ["Uma passagem entre as salas do predio. Uma corrente de ar frio vem do outro lado."] },
+    { objeto: obj_portal_3, tipo: "mensagem", titulo: "Passagem",
+        linhas: ["Uma passagem bloqueada. Ela sera liberada quando a fase atual for concluida."] },
+    { objeto: obj_portal_4, tipo: "mensagem", titulo: "Passagem",
+        linhas: ["Uma passagem entre as salas do predio."] },
+    { objeto: obj_portal_5, tipo: "mensagem", titulo: "Passagem",
+        linhas: ["Uma passagem bloqueada. Ela sera liberada quando a investigacao desta sala for concluida."] }
 ];
 
 // Mantem uma mascara de colisao fixa para evitar variacao entre sprites.
@@ -83,6 +89,8 @@ if (!variable_global_exists("incidente_001_concluido")) global.incidente_001_con
 if (!variable_global_exists("incidente_001_confirmado")) global.incidente_001_confirmado = false;
 if (!variable_global_exists("incidente_002_concluido")) global.incidente_002_concluido = false;
 if (!variable_global_exists("incidente_002_confirmado")) global.incidente_002_confirmado = false;
+if (!variable_global_exists("incidente_003_concluido")) global.incidente_003_concluido = false;
+if (!variable_global_exists("incidente_003_confirmado")) global.incidente_003_confirmado = false;
 
 intro_ligacao_estado = 0; // 0: sem chamada, 1: tocando, 2: atendida
 intro_fala_tocando = false;

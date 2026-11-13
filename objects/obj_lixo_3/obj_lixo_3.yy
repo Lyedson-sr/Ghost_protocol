@@ -8,8 +8,8 @@
   "name":"obj_lixo_3",
   "overriddenProperties":[],
   "parent":{
-    "name":"BLANK GAME",
-    "path":"BLANK GAME.yyp",
+    "name":"Objetos_Lixo",
+    "path":"folders/Objetos/Objetos_Lixo.yy",
   },
   "parentObjectId":{
     "name":"obj_interactive",

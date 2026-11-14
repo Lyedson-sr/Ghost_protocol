@@ -22,6 +22,6 @@ A segunda fase, denominada **Incidente #002: O Arquivo Exposto**, também já po
 
 ## Próximos passos
 
-As próximas etapas incluem os robôs e novos cenários, ampliando a variedade de desafios apresentados ao jogador. Também está prevista a implementação de um contador de nível de ameaça associado ao tempo disponível para investigar cada fase. Caso esse limite seja ultrapassado, o jogador perderá, adicionando um elemento de urgência à experiência.
+As próximas etapas incluem os  novos cenários, ampliando a variedade de desafios apresentados ao jogador. Também está prevista a implementação de um contador de nível de ameaça associado ao tempo disponível para investigar cada fase. Caso esse limite seja ultrapassado, o jogador perderá, adicionando um elemento de urgência à experiência.
 
 Além disso, serão adicionados efeitos sonoros durante as fases para aumentar a imersão do jogador. Também serão realizados ajustes nas mecânicas existentes, especialmente na movimentação do personagem próximo aos objetos e nas interações com o ambiente, buscando aprimorar a fluidez e a experiência geral de jogo.

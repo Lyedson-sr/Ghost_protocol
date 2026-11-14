@@ -27,7 +27,11 @@
     {"$GMFolder":"","%Name":"Sprites_Portais","folderPath":"folders/Sprites/Sprites_Portais.yy","name":"Sprites_Portais","resourceType":"GMFolder","resourceVersion":"2.0",},
   ],
   "ForcedPrefabProjectReferences":[],
-  "IncludedFiles":[],
+  "IncludedFiles":[
+    {"$GMIncludedFile":"","%Name":"alarm_last_min.mp3","CopyToMask":-1,"filePath":"datafiles","name":"alarm_last_min.mp3","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+    {"$GMIncludedFile":"","%Name":"alarm_last_min.ogg","CopyToMask":-1,"filePath":"datafiles","name":"alarm_last_min.ogg","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+    {"$GMIncludedFile":"","%Name":"escudo.png","CopyToMask":-1,"filePath":"datafiles","name":"escudo.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+  ],
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
@@ -36,6 +40,7 @@
   "name":"BLANK GAME",
   "resources":[
     {"id":{"name":"ob_movel1","path":"objects/ob_movel1/ob_movel1.yy",},},
+    {"id":{"name":"obj_bloco_notas","path":"objects/obj_bloco_notas/obj_bloco_notas.yy",},},
     {"id":{"name":"obj_Caderno_1","path":"objects/obj_Caderno_1/obj_Caderno_1.yy",},},
     {"id":{"name":"obj_Caderno_2","path":"objects/obj_Caderno_2/obj_Caderno_2.yy",},},
     {"id":{"name":"obj_Caderno_3","path":"objects/obj_Caderno_3/obj_Caderno_3.yy",},},

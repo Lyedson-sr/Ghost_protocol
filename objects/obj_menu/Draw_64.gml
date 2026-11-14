@@ -2,6 +2,8 @@
 
 var _gui_w = display_get_gui_width();
 var _gui_h = display_get_gui_height();
+var _fonte_anterior = draw_get_font();
+draw_set_font(fonte_menu);
 
 var _total_botoes = array_length(botoes);
 
@@ -30,6 +32,48 @@ draw_set_color(c_black);
 draw_rectangle(26, 26, _gui_w - 26, _gui_h - 26, true);
 draw_set_alpha(1);
 
+if (variable_global_exists("game_over_ativo") && global.game_over_ativo)
+{
+    draw_set_color(c_black);
+    draw_rectangle(0, 0, _gui_w, _gui_h, false);
+
+    var _msg_go = variable_global_exists("game_over_msg") && string_length(global.game_over_msg) > 0
+        ? global.game_over_msg
+        : "GAME OVER";
+
+    var _btn_w_go = 300;
+    var _btn_h_go = 62;
+    var _btn_x1_go = (_gui_w - _btn_w_go) * 0.5;
+    var _btn_y1_go = _gui_h * 0.62;
+    var _btn_x2_go = _btn_x1_go + _btn_w_go;
+    var _btn_y2_go = _btn_y1_go + _btn_h_go;
+
+    draw_set_halign(fa_center);
+    draw_set_valign(fa_middle);
+    draw_set_color(c_white);
+    draw_set_font(fonte_menu_titulo);
+    draw_text(_gui_w * 0.5, _gui_h * 0.40, _msg_go);
+
+    var _cor_btn_go = hover_voltar ? make_color_rgb(54, 90, 150) : make_color_rgb(28, 48, 82);
+    var _cor_borda_go = hover_voltar ? c_white : make_color_rgb(130, 194, 255);
+
+    draw_set_color(_cor_btn_go);
+    draw_rectangle(_btn_x1_go, _btn_y1_go, _btn_x2_go, _btn_y2_go, false);
+    draw_set_color(_cor_borda_go);
+    draw_rectangle(_btn_x1_go, _btn_y1_go, _btn_x2_go, _btn_y2_go, true);
+
+    draw_set_font(fonte_menu);
+    draw_set_color(c_white);
+    draw_text(_gui_w * 0.5, _btn_y1_go + _btn_h_go * 0.5, "VOLTAR AO MENU");
+
+    draw_set_halign(fa_left);
+    draw_set_valign(fa_top);
+    draw_set_alpha(1);
+    draw_set_color(c_white);
+    draw_set_font(_fonte_anterior);
+    exit;
+}
+
 if (mostrar_controles)
 {
     var _painel_w = min(760, _gui_w - 120);
@@ -51,7 +95,7 @@ if (mostrar_controles)
     draw_set_color(make_color_rgb(20, 34, 57));
     draw_rectangle(_px1 + 1, _py1 + 1, _px2 - 1, _py1 + 74, false);
 
-    draw_set_font(-1);
+    draw_set_font(fonte_menu);
     draw_set_halign(fa_center);
     draw_set_valign(fa_middle);
     draw_set_color(c_white);
@@ -79,7 +123,12 @@ if (mostrar_controles)
     draw_set_color(make_color_rgb(162, 217, 255));
     draw_text(_linha_x1, _inicio_y + _espaco_y * 2, "ESC");
     draw_set_color(c_white);
-    draw_text(_linha_x1 + 190, _inicio_y + _espaco_y * 2, "fechar interfaces / voltar menu");
+    draw_text(_linha_x1 + 190, _inicio_y + _espaco_y * 2, "fechar interfaces / voltar ao menu");
+
+    draw_set_color(make_color_rgb(162, 217, 255));
+    draw_text(_linha_x1, _inicio_y + _espaco_y * 3, "N");
+    draw_set_color(c_white);
+    draw_text(_linha_x1 + 190, _inicio_y + _espaco_y * 3, "abrir bloco de notas");
 
     // Linha divisoria
     draw_set_color(make_color_rgb(73, 117, 166));
@@ -119,6 +168,7 @@ if (mostrar_controles)
     draw_set_valign(fa_top);
     draw_set_alpha(1);
     draw_set_color(c_white);
+    draw_set_font(_fonte_anterior);
     exit;
 }
 
@@ -141,11 +191,11 @@ if (mostrar_configuracoes)
     draw_set_color(make_color_rgb(20, 34, 57));
     draw_rectangle(_px1_cfg + 1, _py1_cfg + 1, _px2_cfg - 1, _py1_cfg + 74, false);
 
-    draw_set_font(-1);
+    draw_set_font(fonte_menu);
     draw_set_halign(fa_center);
     draw_set_valign(fa_middle);
     draw_set_color(c_white);
-    draw_text(_gui_w * 0.5, _py1_cfg + 38, "CONFIGURACOES");
+    draw_text(_gui_w * 0.5, _py1_cfg + 38, texto_configuracoes);
 
     var _vol_w = 64;
     var _vol_h = 44;
@@ -245,16 +295,19 @@ if (mostrar_configuracoes)
     draw_set_valign(fa_top);
     draw_set_alpha(1);
     draw_set_color(c_white);
+    draw_set_font(_fonte_anterior);
     exit;
 }
 
 // Titulo
-draw_set_font(-1);
+draw_set_font(fonte_menu_titulo);
 draw_set_halign(fa_center);
 draw_set_valign(fa_middle);
 
 draw_set_color(c_white);
 draw_text(_gui_w * 0.5, _y1 - 90, titulo);
+
+draw_set_font(fonte_menu);
 
 // Moldura do menu
 var _mx1 = _x1 - 28;
@@ -304,3 +357,4 @@ draw_set_halign(fa_left);
 draw_set_valign(fa_top);
 draw_set_alpha(1);
 draw_set_color(c_white);
+draw_set_font(_fonte_anterior);

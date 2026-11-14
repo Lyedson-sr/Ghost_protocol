@@ -579,19 +579,31 @@ if (eh_kali) {
         passo({ base: "nmap", aceita: ["nmap -sv 192.168.1.50"], duracao: 1,
             saida: [
                 "Nmap scan report for 192.168.1.50",
-                "22/tcp open ssh OpenSSH 6.6.1p1",
-                "80/tcp open http Apache httpd 2.4.7"
+                "Host is up (0.21s latency).",
+                "PORT   STATE SERVICE VERSION",
+                "22/tcp open  ssh     OpenSSH 6.6.1p1",
+                "80/tcp open  http    Apache httpd 2.4.7"
             ],
             dicas: [
                 "O caderno fala em identificar as versoes dos servicos.",
                 "Use o nmap com a opcao de deteccao de versao.",
                 "nmap -sV 192.168.1.50" ] }),
-        passo({ base: "nmap", todos: ["nmap", "-sv", "--script", "vulners", "192.168.1.50"], requer: [0], duracao: 1,
+        passo({ base: "nmap", todos: ["nmap", "-sv", "--script", "vulners", "192.168.1.50"], requer: [0], duracao: 12,
             saida: [
-                "Vulnerabilidades encontradas:",
-                "CVE-2016-3115",
-                "CVE-2015-6563",
-                "CVE-2016-10011"
+                "Host is up (0.14s latency).",
+                "PORT   STATE SERVICE VERSION",
+                "22/tcp open  ssh     OpenSSH 6.6.1p1",
+                "| vulners:",
+                "| CVE-2016-3115 6.4 https://vulners.com/cve/CVE-2016-3115",
+                "| CVE-2015-6563 6.4 https://vulners.com/cve/CVE-2015-6563",
+                "|_CVE-2016-10011 6.2 https://vulners.com/cve/CVE-2016-10011",
+                "PORT   STATE SERVICE VERSION",
+                "80/tcp open  http    Apache httpd 2.4.7",
+                "| vulners:",
+                "| CVE-2016-8612 4.3 https://vulners.com/cve/CVE-2016-8612",
+                "| CVE-2015-3185 4.3 https://vulners.com/cve/CVE-2015-3185",
+                "|_CVE-2014-0117 4.3 https://vulners.com/cve/CVE-2014-0117",
+                "Nmap done: 1 IP address (1 host up) scanned in 12.16 seconds"
             ],
             saida_antes: [
                 "Execute primeiro: nmap -sV 192.168.1.50"

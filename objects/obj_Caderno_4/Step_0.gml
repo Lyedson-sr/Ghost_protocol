@@ -58,23 +58,7 @@ if (mouse_check_button_pressed(mb_left))
             && evidencias[0] && evidencias[1])
         {
             global.incidente_005_confirmado = true;
-
-            if (!global.mensagem_final_exibida)
-            {
-                var _dialogo = instance_find(obj_dialogo, 0);
-                if (_dialogo == noone) _dialogo = instance_create_depth(0, 0, -10000, obj_dialogo);
-                var _mensagem = {
-                    tipo: "mensagem",
-                    titulo: "Conclusao",
-                    linhas: [
-                        "Parabens. Voce concluiu o ultimo desafio.",
-                        "Durante anos, construi esta empresa, enfrentei invasoes, desenvolvi sistemas e protegi aquilo que conquistei.",
-                        "Mas chegou o momento de repassar esta empresa a voce. Meu tempo neste plano acabou, mas meu legado continua..."
-                    ]
-                };
-                _dialogo.abrir(_mensagem);
-                global.mensagem_final_exibida = true;
-            }
+            global.mensagem_final_pendente = true;
         }
     }
 }

@@ -96,6 +96,7 @@ if (!variable_global_exists("incidente_004_confirmado")) global.incidente_004_co
 if (!variable_global_exists("incidente_005_concluido")) global.incidente_005_concluido = false;
 if (!variable_global_exists("incidente_005_confirmado")) global.incidente_005_confirmado = false;
 if (!variable_global_exists("mensagem_final_exibida")) global.mensagem_final_exibida = false;
+if (!variable_global_exists("mensagem_final_pendente")) global.mensagem_final_pendente = false;
 if (!variable_global_exists("retorno_final_pendente")) global.retorno_final_pendente = false;
 
 intro_ligacao_estado = 0; // 0: sem chamada, 1: tocando, 2: atendida

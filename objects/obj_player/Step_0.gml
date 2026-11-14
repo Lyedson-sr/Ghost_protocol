@@ -199,6 +199,26 @@ if (!instance_exists(obj_Terminal)
     }
 }
 
+if (global.mensagem_final_pendente
+    && !global.mensagem_final_exibida
+    && !instance_exists(obj_Caderno_4))
+{
+    var _dialogo_final = instance_find(obj_dialogo, 0);
+    if (_dialogo_final == noone) _dialogo_final = instance_create_depth(0, 0, -10000, obj_dialogo);
+    var _mensagem_final = {
+        tipo: "mensagem",
+        titulo: "Conclusao",
+        linhas: [
+            "Parabens. Voce concluiu o ultimo desafio.",
+            "Durante anos, construi esta empresa, enfrentei invasoes, desenvolvi sistemas e protegi aquilo que conquistei.",
+            "Mas chegou o momento de repassar esta empresa a voce. Meu tempo neste plano acabou, mas meu legado continua..."
+        ]
+    };
+    _dialogo_final.abrir(_mensagem_final);
+    global.mensagem_final_exibida = true;
+    global.mensagem_final_pendente = false;
+}
+
 // Teclas de movimentacao
 var _dir = 0;
 var _esq = 0;

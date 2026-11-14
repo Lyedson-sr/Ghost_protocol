@@ -2,10 +2,13 @@ if (global.dialogo_aberto
     || instance_exists(obj_Terminal)
     || instance_exists(obj_Caderno)
     || instance_exists(obj_Caderno_1)
-    || instance_exists(obj_Caderno_2)) exit;
+    || instance_exists(obj_Caderno_2)
+    || instance_exists(obj_Caderno_3)
+    || instance_exists(obj_Caderno_4)) exit;
 
 var _texto = "";
-var _atendendo = room == Room1 && !global.intro_ligacao_vista;
+var _atendendo = room == Room1
+    && (!global.intro_ligacao_vista || global.retorno_final_pendente);
 
 if (_atendendo)
 {

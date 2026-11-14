@@ -91,6 +91,12 @@ if (!variable_global_exists("incidente_002_concluido")) global.incidente_002_con
 if (!variable_global_exists("incidente_002_confirmado")) global.incidente_002_confirmado = false;
 if (!variable_global_exists("incidente_003_concluido")) global.incidente_003_concluido = false;
 if (!variable_global_exists("incidente_003_confirmado")) global.incidente_003_confirmado = false;
+if (!variable_global_exists("incidente_004_concluido")) global.incidente_004_concluido = false;
+if (!variable_global_exists("incidente_004_confirmado")) global.incidente_004_confirmado = false;
+if (!variable_global_exists("incidente_005_concluido")) global.incidente_005_concluido = false;
+if (!variable_global_exists("incidente_005_confirmado")) global.incidente_005_confirmado = false;
+if (!variable_global_exists("mensagem_final_exibida")) global.mensagem_final_exibida = false;
+if (!variable_global_exists("retorno_final_pendente")) global.retorno_final_pendente = false;
 
 intro_ligacao_estado = 0; // 0: sem chamada, 1: tocando, 2: atendida
 intro_fala_tocando = false;

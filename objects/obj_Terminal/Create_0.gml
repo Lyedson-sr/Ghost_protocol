@@ -178,8 +178,13 @@ confere_passo = function(_p, _cmd) {
 
 obter_estado = function(_inc) {
     var _chave = _inc + "_" + terminal_id;
-    if (!variable_struct_exists(global.term_estado, _chave)) {
-        var _n = array_length(variable_struct_get(cadeias, _inc));
+    var _n = array_length(variable_struct_get(cadeias, _inc));
+    var _recriar = !variable_struct_exists(global.term_estado, _chave);
+    if (!_recriar) {
+        var _estado_existente = variable_struct_get(global.term_estado, _chave);
+        _recriar = array_length(_estado_existente.feitos) != _n;
+    }
+    if (_recriar) {
         variable_struct_set(global.term_estado, _chave, {
             feitos: array_create(_n, false), erros: array_create(_n, 0),
             dicas: array_create(_n, 0), concluida: false
@@ -222,11 +227,12 @@ registrar_erro = function() {
     var _i = primeiro_pendente(_st);
     if (_i < 0) return;
     _st.erros[_i] += 1;
-    if ((_st.erros[_i] == 1 || _st.erros[_i] mod 2 == 0) && _st.dicas[_i] < 3) {
+    if (_st.erros[_i] >= 2 && _st.dicas[_i] < 3) {
         var _ps = variable_struct_get(cadeias, _inc);
         var _txt = _ps[_i].dicas[_st.dicas[_i]];
         adicionar("dica", "[DICA " + string(_st.dicas[_i] + 1) + "/3] " + _txt);
         _st.dicas[_i] += 1;
+        _st.erros[_i] = 0;
     }
 };
 

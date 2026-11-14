@@ -2,26 +2,49 @@
 
 ## Sobre o projeto
 
-O **Ghost Protocol** é um jogo educativo desenvolvido pelos alunos da UECE no contexto da disciplina de Extensão II, ministrada pelo professor Ismayle . O projeto tem como objetivo ensinar conceitos e práticas de cibersegurança por meio de desafios interativos, nos quais o jogador assume o papel de um Analista de Segurança responsável por investigar incidentes, coletar evidências e identificar possíveis falhas de segurança.
+O **Ghost Protocol** é um jogo educativo 2D desenvolvido pelos alunos da UECE na disciplina de Extensão II, ministrada pelo professor Ismayle. O projeto ensina conceitos e práticas de cibersegurança por meio de desafios interativos: o jogador assume o papel de um **Analista de Segurança** que investiga incidentes, coleta evidências e identifica falhas em um prédio comprometido.
 
 ## Equipe
 
-O projeto está sendo desenvolvido pela equipe composta pelos menbros Lyedson, Lyanderson, Gabriel Pinheiro e Salete Yara, como parte das atividades da disciplina de Extensão II.
+Lyedson, Lyanderson, Gabriel Pinheiro e Salete Yara.
 
-## Estado atual do projeto
+## Como jogar
 
-Atualmente, o jogo possui um menu inicial com opções para iniciar a partida, consultar os controles, ajustar o volume e sair, acompanhado por uma trilha sonora. Também foram desenvolvidas as telas de controles e configurações, permitindo que o jogador consulte as teclas utilizadas durante a partida e ajuste o volume.
+| Tecla | Ação |
+|-------|------|
+| **W A S D** | Movimentar o personagem |
+| **E** | Examinar objetos, usar o notebook e atender o telefone |
+| **C** | Abrir/fechar o caderno de investigação |
+| **N** ou **B** | Abrir o bloco de notas |
+| **ESC** | Fechar a interface aberta ou voltar ao menu/pausar |
+| **X**, **E** ou **Enter** | Fechar a caixa de descrição de um objeto |
 
-A jogabilidade conta com um personagem que pode se movimentar em oito direções e interagir com objetos presentes nos cenários. Entre as principais mecânicas implementadas estão o acesso ao terminal por meio de um notebook e o caderno de investigação, que possui três abas: Evidências, Ferramentas e Catálogo. O caderno permite consultar informações de apoio à investigação, conhecer comandos e ferramentas disponíveis e registrar evidências encontradas durante a resolução dos desafios.
+## Mecânicas
 
-Os objetos do cenário sem diálogo de investigação também podem ser examinados com **E**, exibindo uma caixa de descrição mesmo quando não contêm pistas. Ao se aproximar, o aviso **[E] Examinar: nome do objeto** indica o objeto selecionado. Pressione **X**, **E** ou **Enter** para fechar a descrição. Piso e paredes não recebem descrições; os diálogos e pistas existentes permanecem inalterados, e o notebook continua abrindo o terminal.
+- **Menu inicial** com iniciar, controles, volume e sair, acompanhado de trilha sonora.
+- **Exploração:** o personagem se move pelas salas e examina objetos. Ao se aproximar, o aviso **[E] Examinar: nome do objeto** indica o objeto selecionado. Objetos sem pista também exibem uma descrição; piso e paredes não têm descrição.
+- **Terminal:** acessado pelo notebook de cada sala. Simula comandos reais de Linux e de ferramentas como `nmap`, `ssh`, `curl`, `ls`, `cat`, `sudo`, `groups` e `gpasswd`.
+- **Sistema de dicas:** quando o jogador erra comandos repetidas vezes, o terminal exibe até 3 dicas progressivas para o passo atual.
+- **Caderno de investigação** com três abas: **Evidências** (registro do que foi encontrado), **Ferramentas** (comandos disponíveis) e **Catálogo** (falhas e soluções).
+- **Bloco de notas:** o jogador anota pistas durante o jogo, tanto pela tecla **N** quanto pelo terminal (`notas`, `notas add <texto>`, `notas limpar`, `notas abrir`).
+- **Escudo de ameaça:** cada sala tem um tempo limite. O escudo no canto superior direito, com 5 blocos, mostra o avanço da ameaça. No último minuto há um alerta da Central de Segurança e uma sirene. Se o tempo acabar, o jogador perde.
+- **Portas e passagens bloqueadas:** só são liberadas depois que o incidente da sala é resolvido e confirmado no caderno.
 
-A primeira fase, intitulada **Incidente #001: O Servidor Desconhecido**, encontra-se implementada com o fluxo principal de resolução. Nela, o jogador deve investigar um servidor desconhecido, identificar os serviços disponíveis utilizando o Nmap, encontrar credenciais no ambiente, acessar o servidor por SSH e consultar os arquivos disponíveis para descobrir o comando necessário à conclusão do incidente. Ao finalizar o desafio, o jogador pode registrar as evidências coletadas no caderno e avançar para o próximo cenário.
+## Fases
 
-A segunda fase, denominada **Incidente #002: O Arquivo Exposto**, também já possui parte de sua estrutura desenvolvida, dando continuidade à proposta de investigação de incidentes de segurança. Entretanto, suas mecânicas de terminal e registro de evidências ainda precisam ser implementadas.
+| Fase | Tema |
+|------|------|
+| **Incidente #001: O Servidor Desconhecido** | Varredura com Nmap, busca de credenciais no ambiente, acesso por SSH e desligamento do servidor |
+| **Incidente #002: O Arquivo Exposto** | Verificação de permissões de arquivos e grupos, e revogação de acesso indevido com `gpasswd` |
+| **Incidente #003** | Falha de Path Traversal em um servidor de arquivos interno |
+| **Incidente #004** | Contorno de autenticação em um formulário de login |
+| **Incidente #005** | Identificação de versões vulneráveis com Nmap e o script `vulners` |
+
+Cada fase termina com o registro das evidências no caderno, que libera a passagem para a próxima sala. O jogo se encerra com uma ligação final ao voltar à primeira sala.
 
 ## Próximos passos
 
-As próximas etapas incluem os  novos cenários, ampliando a variedade de desafios apresentados ao jogador. Também está prevista a implementação de um contador de nível de ameaça associado ao tempo disponível para investigar cada fase. Caso esse limite seja ultrapassado, o jogador perderá, adicionando um elemento de urgência à experiência.
-
-Além disso, serão adicionados efeitos sonoros durante as fases para aumentar a imersão do jogador. Também serão realizados ajustes nas mecânicas existentes, especialmente na movimentação do personagem próximo aos objetos e nas interações com o ambiente, buscando aprimorar a fluidez e a experiência geral de jogo.
+- Revisar a movimentação do personagem perto dos objetos e as interações com o ambiente.
+- Ampliar os efeitos sonoros durante as fases.
+- Testar o equilíbrio do tempo de cada sala e a dificuldade das dicas.
+- Finalizar a documentação do projeto (GDD).

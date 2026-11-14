@@ -7,7 +7,7 @@
   "overriddenProperties":[],
   "parent":{
     "name":"Objetos _Escritorios",
-    "path":"folders/Objetos _Escritorios.yy",
+    "path":"folders/Objetos/Objetos _Escritorios.yy",
   },
   "parentObjectId":{
     "name":"obj_Colisao_Pai",
@@ -31,8 +31,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"obj_mesaimpre",
-    "path":"sprites/obj_mesaimpre/obj_mesaimpre.yy",
+    "name":"spr_mesaimpre",
+    "path":"sprites/spr_mesaimpre/spr_mesaimpre.yy",
   },
   "spriteMaskId":null,
   "visible":true,

@@ -97,42 +97,6 @@ if (eh_kali) {
         "Nmap done: 1 IP address (1 host up) scanned in 0.53 seconds"
     ]});
 
-    // Incidente #005: nmap -sV
-    var _sv = { duracao: 10, acao: "", saida: [
-        "Nmap scan report for 192.168.1.50",
-        "Host is up (0.21s latency).",
-        "PORT   STATE SERVICE VERSION",
-        "22/tcp open  ssh     OpenSSH 6.6.1p1",
-        "80/tcp open  http    Apache httpd 2.4.7",
-        "",
-        "Nmap done: 1 IP address (1 host up) scanned in 0.53 seconds"
-    ]};
-    variable_struct_set(cmds_local, "nmap -sv 192.168.1.50", _sv);
-
-    // Incidente #005: script vulners
-    var _vul = { duracao: 10, acao: "", saida: [
-        "Nmap scan report for 192.168.1.50",
-        "Host is up (0.14s latency).",
-        "PORT   STATE SERVICE VERSION",
-        "22/tcp open  ssh     OpenSSH 6.6.1p1",
-        "| vulners:",
-        "|   CVE-2016-3115  6.4  https://vulners.com/cve/CVE-2016-3115",
-        "|   CVE-2015-6563  6.4  https://vulners.com/cve/CVE-2015-6563",
-        "|_  CVE-2016-10011 6.2  https://vulners.com/cve/CVE-2016-10011",
-        "PORT   STATE SERVICE VERSION",
-        "80/tcp open  http    Apache httpd 2.4.7",
-        "| vulners:",
-        "|   CVE-2016-8612  4.3  https://vulners.com/cve/CVE-2016-8612",
-        "|   CVE-2015-3185  4.3  https://vulners.com/cve/CVE-2015-3185",
-        "|_  CVE-2014-0117  4.3  https://vulners.com/cve/CVE-2014-0117",
-        "",
-        "Nmap done: 1 IP address (1 host up) scanned in 12.16 seconds"
-    ]};
-    variable_struct_set(cmds_local, "nmap -sv --script vulners 192.168.1.50", _vul);
-    variable_struct_set(cmds_local, "nmap -sv --script=vulners 192.168.1.50", _vul);
-    variable_struct_set(cmds_local, "nmap --script vulners -sv 192.168.1.50", _vul);
-    variable_struct_set(cmds_local, "nmap --script=vulners -sv 192.168.1.50", _vul);
-
     // Dentro do servidor (ssh)
     variable_struct_set(cmds_ssh, "ls", { duracao: 0, acao: "", saida: ["README.txt"] });
     variable_struct_set(cmds_ssh, "cat readme.txt", { duracao: 0, acao: "", saida: ["sudo poweroff"] });
@@ -333,6 +297,11 @@ ao_concluir = function(_inc) {
             adicionar("out", "Versões vulneráveis identificadas. Registre as CVEs e a medida corretiva no caderno.");
             break;
         case "i2":
+            if (terminal_id == "kali") {
+                global.incidente_002_concluido = true;
+                adicionar("out", "Incidente #002 resolvido. Registre as evidencias no caderno.");
+                break;
+            }
             variable_global_set("incidente_002_" + terminal_id + "_ok", true);
             if (terminal_id == "pc3") adicionar("out", "Acesso dos dois robôs ao grupo foi revogado.");
             else adicionar("out", "Evidência coletada neste computador. Registre no caderno.");
@@ -371,6 +340,27 @@ executar = function(_entrada) {
     var _cmd = normalizar(_entrada);
     adicionar("cmd", _entrada);
     if (_cmd == "") return;
+
+    if (_cmd == "ismayle") {
+        var _incidente_especial = 0;
+        if (room == Room1) _incidente_especial = 1;
+        else if (room == Room2) _incidente_especial = 2;
+        else if (room == Room3) _incidente_especial = 3;
+        else if (room == Room4) _incidente_especial = 4;
+        else if (room == Room5) _incidente_especial = 5;
+
+        if (_incidente_especial > 0) {
+            var _chave_especial = "i" + string(_incidente_especial);
+            if (variable_struct_exists(cadeias, _chave_especial))
+            {
+                var _estado_especial = obter_estado(_chave_especial);
+                _estado_especial.concluida = true;
+            }
+            variable_global_set("incidente_00" + string(_incidente_especial) + "_concluido", true);
+            adicionar("out", "Comando especial aceito. Incidente #" + string(_incidente_especial) + " concluido. Registre as evidencias no caderno.");
+            return;
+        }
+    }
 
     if (_cmd == "nmap scan report for 192.168.1.50") {
         adicionar("out", "Nmap scan report for 192.168.1.50");
@@ -615,14 +605,42 @@ if (eh_kali) {
     ];
 
     cadeias.i5 = [
-        passo({ base: "nmap", aceita: ["nmap -sv 192.168.1.50"], dicas: [
-            "O caderno fala em identificar as versões dos serviços, não só as portas.",
-            "No nmap, a opção de detecção de versão começa com -s e termina com V maiúsculo.",
-            "nmap -s? <IP-do-servidor-antigo>" ] }),
-        passo({ base: "nmap", todos: ["nmap", "-sv", "vulners", "192.168.1.50"], dicas: [
-            "O caderno cita o NSE, os scripts do nmap. As letras de papel espalhadas pela sala formam o nome do script.",
-            "Sintaxe do caderno: nmap [opções] --script <script> <alvo>.",
-            "nmap -sV --script <palavra-formada-pelas-letras> <IP>" ] })
+        passo({ base: "nmap", aceita: ["nmap -sv 192.168.1.50"], duracao: 1,
+            saida: [
+                "Nmap scan report for 192.168.1.50",
+                "Host is up (0.21s latency).",
+                "PORT   STATE SERVICE VERSION",
+                "22/tcp open  ssh     OpenSSH 6.6.1p1",
+                "80/tcp open  http    Apache httpd 2.4.7"
+            ],
+            dicas: [
+                "O caderno fala em identificar as versões dos serviços, não só as portas.",
+                "No nmap, a opção de detecção de versão começa com -s e termina com V maiúsculo.",
+                "nmap -s? <IP-do-servidor-antigo>" ] }),
+        passo({ base: "nmap", todos: ["nmap", "-sv", "--script", "vulners", "192.168.1.50"], requer: [0], duracao: 12,
+            saida: [
+                "Host is up (0.14s latency).",
+                "PORT   STATE SERVICE VERSION",
+                "22/tcp open  ssh     OpenSSH 6.6.1p1",
+                "| vulners:",
+                "| CVE-2016-3115 6.4 https://vulners.com/cve/CVE-2016-3115",
+                "| CVE-2015-6563 6.4 https://vulners.com/cve/CVE-2015-6563",
+                "|_CVE-2016-10011 6.2 https://vulners.com/cve/CVE-2016-10011",
+                "PORT   STATE SERVICE VERSION",
+                "80/tcp open  http    Apache httpd 2.4.7",
+                "| vulners:",
+                "| CVE-2016-8612 4.3 https://vulners.com/cve/CVE-2016-8612",
+                "| CVE-2015-3185 4.3 https://vulners.com/cve/CVE-2015-3185",
+                "|_CVE-2014-0117 4.3 https://vulners.com/cve/CVE-2014-0117",
+                "Nmap done: 1 IP address (1 host up) scanned in 12.16 seconds"
+            ],
+            saida_antes: [
+                "Execute primeiro: nmap -sV 192.168.1.50"
+            ],
+            dicas: [
+                "O caderno cita o NSE, os scripts do nmap. As letras de papel espalhadas pela sala formam o nome do script.",
+                "Sintaxe do caderno: nmap [opções] --script <script> <alvo>.",
+                "nmap -sV --script <palavra-formada-pelas-letras> <IP>" ] })
     ];
 } else {
     // Incidente #002

@@ -23,7 +23,7 @@ if (!variable_instance_exists(id, "sirene_1min_liberada")) sirene_1min_liberada 
 if (!variable_instance_exists(id, "sirene_1min_instancia")) sirene_1min_instancia = -1;
 if (!variable_instance_exists(id, "sirene_1min_usando_fallback")) sirene_1min_usando_fallback = false;
 
-var _sala_jogavel = (room == Room1 || room == Room2);
+var _sala_jogavel = (room == Room1 || room == Room2 || room == Room3 || room == Room4 || room == Room5);
 if (!_sala_jogavel)
 {
     if (sirene_1min_tocando)
@@ -98,7 +98,11 @@ if (room != sala_timer_room)
     }
 }
 
-var _ameaca_interrompida = (room == Room2) ? global.incidente_002_confirmado : global.incidente_001_confirmado;
+var _ameaca_interrompida = global.incidente_001_confirmado;
+if (room == Room2) _ameaca_interrompida = global.incidente_002_confirmado;
+else if (room == Room3) _ameaca_interrompida = global.incidente_003_confirmado;
+else if (room == Room4) _ameaca_interrompida = global.incidente_004_confirmado;
+else if (room == Room5) _ameaca_interrompida = global.incidente_005_confirmado;
 if (_ameaca_interrompida && sirene_1min_tocando)
 {
     if (sirene_1min_usando_fallback)
@@ -253,6 +257,9 @@ if (keyboard_check_pressed(vk_escape))
 
     if (instance_exists(obj_Caderno)
         || instance_exists(obj_Caderno_1)
+        || instance_exists(obj_Caderno_2)
+        || instance_exists(obj_Caderno_3)
+        || instance_exists(obj_Caderno_4)
         || (_obj_bloco_notas != -1 && instance_exists(_obj_bloco_notas)))
     {
         with (obj_Caderno)
@@ -260,6 +267,18 @@ if (keyboard_check_pressed(vk_escape))
             instance_destroy();
         }
         with (obj_Caderno_1)
+        {
+            instance_destroy();
+        }
+        with (obj_Caderno_2)
+        {
+            instance_destroy();
+        }
+        with (obj_Caderno_3)
+        {
+            instance_destroy();
+        }
+        with (obj_Caderno_4)
         {
             instance_destroy();
         }
@@ -358,7 +377,7 @@ if (global.notas_abertas)
 
 // Intro inicial da Room1: telefone toca e o jogador atende com E.
 if (room == Room1
-    && !global.intro_ligacao_vista
+    && (!global.intro_ligacao_vista || global.retorno_final_pendente)
     && !global.dialogo_aberto
     && !instance_exists(obj_Terminal)
     && !instance_exists(obj_Caderno)
@@ -389,16 +408,27 @@ if (room == Room1
             var _ligacao = instance_create_depth(x, y, -10001, obj_interactive);
             _ligacao.tipo = "mensagem";
             _ligacao.titulo = "Telefone - Central";
-            _ligacao.linhas = [
-                "Alerta da Central de Segurança.",
-                "Sua tarefa é identificar e neutralizar as ameaças de segurança do prédio.",
-                "No canto superior direito há o Escudo de Ameaça com 5 blocos.",
-                "Cada bloco quebrado indica avanço da ameaça. Se ele zerar, a empresa acaba sendo invadida por falhas.",
-                "Investigue cada sala e elimine os riscos para liberar as saídas.",
-                "Para encontrar pistas, interaja com os objetos da sala usando a tecla E.",
-                "Pressione C para abrir o caderno com informações importantes da operação.",
-                "Use N para abrir o bloco de notas e registrar pistas importantes."
-            ];
+            if (global.incidente_005_confirmado)
+            {
+                _ligacao.linhas = [
+                    "Durante anos, construí esta empresa, enfrentei invasões, desenvolvi sistemas e protegi aquilo que conquistei.",
+                    "Mas chegou o momento de repassar esta empresa a você.",
+                    "Meu tempo neste plano acabou, mas meu legado continua..."
+                ];
+            }
+            else
+            {
+                _ligacao.linhas = [
+                    "Alerta da Central de Segurança.",
+                    "Sua tarefa é identificar e neutralizar as ameaças de segurança do prédio.",
+                    "No canto superior direito há o Escudo de Ameaça com 5 blocos.",
+                    "Cada bloco quebrado indica avanço da ameaça. Se ele zerar, a empresa acaba sendo invadida por falhas.",
+                    "Investigue cada sala e elimine os riscos para liberar as saídas.",
+                    "Para encontrar pistas, interaja com os objetos da sala usando a tecla E.",
+                    "Pressione C para abrir o caderno com informações importantes da operação.",
+                    "Use N para abrir o bloco de notas e registrar pistas importantes."
+                ];
+            }
 
             _dialogo_intro.abrir(_ligacao);
             with (_ligacao) instance_destroy();
@@ -407,6 +437,7 @@ if (room == Room1
             intro_fala_tocando = true;
             intro_ligacao_estado = 2;
             global.intro_ligacao_vista = true;
+            global.retorno_final_pendente = false;
             exit;
         }
 
@@ -429,6 +460,9 @@ var _interface_aberta =
     instance_exists(obj_Terminal)
     || instance_exists(obj_Caderno)
     || instance_exists(obj_Caderno_1)
+    || instance_exists(obj_Caderno_2)
+    || instance_exists(obj_Caderno_3)
+    || instance_exists(obj_Caderno_4)
     || global.notas_abertas
     || (_obj_bloco_notas != -1 && instance_exists(_obj_bloco_notas));
 
@@ -437,13 +471,28 @@ if (!instance_exists(obj_Terminal)
     && keyboard_check_pressed(ord("C")))
 {
     if (instance_exists(obj_Caderno)
-        || instance_exists(obj_Caderno_1))
+        || instance_exists(obj_Caderno_1)
+        || instance_exists(obj_Caderno_2)
+        || instance_exists(obj_Caderno_3)
+        || instance_exists(obj_Caderno_4))
     {
         with (obj_Caderno)
         {
             instance_destroy();
         }
         with (obj_Caderno_1)
+        {
+            instance_destroy();
+        }
+        with (obj_Caderno_2)
+        {
+            instance_destroy();
+        }
+        with (obj_Caderno_3)
+        {
+            instance_destroy();
+        }
+        with (obj_Caderno_4)
         {
             instance_destroy();
         }
@@ -454,11 +503,43 @@ if (!instance_exists(obj_Terminal)
         {
             instance_create_depth(0, 0, -10000, obj_Caderno_1);
         }
+        else if (room == Room3)
+        {
+            instance_create_depth(0, 0, -10000, obj_Caderno_2);
+        }
+        else if (room == Room4)
+        {
+            instance_create_depth(0, 0, -10000, obj_Caderno_3);
+        }
+        else if (room == Room5)
+        {
+            instance_create_depth(0, 0, -10000, obj_Caderno_4);
+        }
         else
         {
             instance_create_depth(0, 0, -10000, obj_Caderno);
         }
     }
+}
+
+if (global.mensagem_final_pendente
+    && !global.mensagem_final_exibida
+    && !instance_exists(obj_Caderno_4))
+{
+    var _dialogo_final = instance_find(obj_dialogo, 0);
+    if (_dialogo_final == noone) _dialogo_final = instance_create_depth(0, 0, -10000, obj_dialogo);
+    var _mensagem_final = {
+        tipo: "mensagem",
+        titulo: "Conclusao",
+        linhas: [
+            "Parabens. Voce concluiu o ultimo desafio.",
+            "Durante anos, construi esta empresa, enfrentei invasoes, desenvolvi sistemas e protegi aquilo que conquistei.",
+            "Mas chegou o momento de repassar esta empresa a voce. Meu tempo neste plano acabou, mas meu legado continua..."
+        ]
+    };
+    _dialogo_final.abrir(_mensagem_final);
+    global.mensagem_final_exibida = true;
+    global.mensagem_final_pendente = false;
 }
 
 // Teclas de movimentacao
@@ -483,6 +564,43 @@ if (_servidor != noone)
     if (point_distance(x, y, _ponto_x, _ponto_y) < 48)
     {
         alvo = _servidor;
+    }
+}
+
+// Armarios sao interativos mesmo sem usar obj_interactive.
+if (alvo == noone)
+{
+    var _armario_aberto = instance_nearest(x, y, obj_estante_aberto);
+    var _armario_fechado = instance_nearest(x, y, obj_estante_fechado);
+    var _armario = noone;
+    var _dist_armario = 72;
+
+    if (_armario_aberto != noone)
+    {
+        var _ponto_aberto_x = clamp(x, _armario_aberto.bbox_left, _armario_aberto.bbox_right);
+        var _ponto_aberto_y = clamp(y, _armario_aberto.bbox_top, _armario_aberto.bbox_bottom);
+        var _dist_aberto = point_distance(x, y, _ponto_aberto_x, _ponto_aberto_y);
+        if (_dist_aberto < _dist_armario)
+        {
+            _armario = _armario_aberto;
+            _dist_armario = _dist_aberto;
+        }
+    }
+
+    if (_armario_fechado != noone)
+    {
+        var _ponto_fechado_x = clamp(x, _armario_fechado.bbox_left, _armario_fechado.bbox_right);
+        var _ponto_fechado_y = clamp(y, _armario_fechado.bbox_top, _armario_fechado.bbox_bottom);
+        var _dist_fechado = point_distance(x, y, _ponto_fechado_x, _ponto_fechado_y);
+        if (_dist_fechado < _dist_armario)
+        {
+            _armario = _armario_fechado;
+        }
+    }
+
+    if (_armario != noone)
+    {
+        alvo = _armario;
     }
 }
 
@@ -511,6 +629,26 @@ if (alvo == noone && !_interface_aberta && !_perto_notebook)
                 alvo = _objeto;
                 alvo_descricao = _descricao;
             }
+        }
+    }
+}
+
+// Na Room 4, o quadro apresenta a pista da autenticacao.
+if (room == Room4)
+{
+    var _quadro = instance_nearest(x, y, obj_quadro);
+    if (_quadro != noone)
+    {
+        var _quadro_x = clamp(x, _quadro.bbox_left, _quadro.bbox_right);
+        var _quadro_y = clamp(y, _quadro.bbox_top, _quadro.bbox_bottom);
+        if (point_distance(x, y, _quadro_x, _quadro_y) < 40)
+        {
+            alvo = _quadro;
+            alvo_descricao = {
+                tipo: "mensagem",
+                titulo: "Quadro de avisos",
+                linhas: ["-d \"user=' or '1'='1\" -d \"pass=\""]
+            };
         }
     }
 }
@@ -554,6 +692,27 @@ velv = (_baixo - _cima) * vel;
 
 // A mascara personalizada ja remove a cabeca da colisao.
 var _offset_colisao_y = 0;
+var _porta_liberada = false;
+if (room == Room1)
+{
+    _porta_liberada = global.incidente_001_confirmado;
+}
+else if (room == Room2)
+{
+    _porta_liberada = global.incidente_002_confirmado;
+}
+else if (room == Room3)
+{
+    _porta_liberada = global.incidente_003_confirmado;
+}
+else if (room == Room4)
+{
+    _porta_liberada = global.incidente_004_confirmado;
+}
+else if (room == Room5)
+{
+    _porta_liberada = global.incidente_005_confirmado;
+}
 
 // Colisao horizontal
 if (place_meeting(x + velh, y + _offset_colisao_y, obj_Colisao_Pai))
@@ -566,10 +725,26 @@ if (place_meeting(x + velh, y + _offset_colisao_y, obj_Colisao_Pai))
 
     velh = 0;
 }
-else if (!(room == Room2 ? global.incidente_002_confirmado : global.incidente_001_confirmado)
-    && (place_meeting(x + velh, y + _offset_colisao_y, obj_portal_1)
-        || place_meeting(x + velh, y + _offset_colisao_y, obj_portal_2)
-        || place_meeting(x + velh, y + _offset_colisao_y, obj_porta)))
+else if (
+    (place_meeting(x + velh, y + _offset_colisao_y, obj_portal_1)
+        && !global.incidente_001_confirmado)
+    || (place_meeting(x + velh, y + _offset_colisao_y, obj_portal_2)
+        && !global.incidente_002_confirmado)
+    || (place_meeting(x + velh, y + _offset_colisao_y, obj_portal_3)
+        && !global.incidente_002_confirmado)
+    || (place_meeting(x + velh, y + _offset_colisao_y, obj_portal_4)
+        && !global.incidente_002_confirmado)
+    || (place_meeting(x + velh, y + _offset_colisao_y, obj_portal_5)
+        && !global.incidente_003_confirmado)
+    || (place_meeting(x + velh, y + _offset_colisao_y, obj_portal_6)
+        && !global.incidente_004_confirmado)
+    || (place_meeting(x + velh, y + _offset_colisao_y, obj_portal_7)
+        && !global.incidente_004_confirmado)
+    || (room == Room5
+        && place_meeting(x + velh, y + _offset_colisao_y, Object53)
+        && !global.incidente_005_confirmado)
+    || (place_meeting(x + velh, y + _offset_colisao_y, obj_porta)
+        && !_porta_liberada))
 {
     velh = 0;
 }
@@ -589,10 +764,26 @@ if (place_meeting(x, y + velv + _offset_colisao_y, obj_Colisao_Pai))
 
     velv = 0;
 }
-else if (!(room == Room2 ? global.incidente_002_confirmado : global.incidente_001_confirmado)
-    && (place_meeting(x, y + velv + _offset_colisao_y, obj_portal_1)
-        || place_meeting(x, y + velv + _offset_colisao_y, obj_portal_2)
-        || place_meeting(x, y + velv + _offset_colisao_y, obj_porta)))
+else if (
+    (place_meeting(x, y + velv + _offset_colisao_y, obj_portal_1)
+        && !global.incidente_001_confirmado)
+    || (place_meeting(x, y + velv + _offset_colisao_y, obj_portal_2)
+        && !global.incidente_002_confirmado)
+    || (place_meeting(x, y + velv + _offset_colisao_y, obj_portal_3)
+        && !global.incidente_002_confirmado)
+    || (place_meeting(x, y + velv + _offset_colisao_y, obj_portal_4)
+        && !global.incidente_002_confirmado)
+    || (place_meeting(x, y + velv + _offset_colisao_y, obj_portal_5)
+        && !global.incidente_003_confirmado)
+    || (place_meeting(x, y + velv + _offset_colisao_y, obj_portal_6)
+        && !global.incidente_004_confirmado)
+    || (place_meeting(x, y + velv + _offset_colisao_y, obj_portal_7)
+        && !global.incidente_004_confirmado)
+    || (room == Room5
+        && place_meeting(x, y + velv + _offset_colisao_y, Object53)
+        && !global.incidente_005_confirmado)
+    || (place_meeting(x, y + velv + _offset_colisao_y, obj_porta)
+        && !_porta_liberada))
 {
     velv = 0;
 }

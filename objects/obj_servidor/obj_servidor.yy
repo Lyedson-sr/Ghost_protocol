@@ -9,8 +9,8 @@
   "name":"obj_servidor",
   "overriddenProperties":[],
   "parent":{
-    "name":"Objetos",
-    "path":"folders/Objetos.yy",
+    "name":"Objetos _Escritorios",
+    "path":"folders/Objetos/Objetos _Escritorios.yy",
   },
   "parentObjectId":{
     "name":"obj_interactive",

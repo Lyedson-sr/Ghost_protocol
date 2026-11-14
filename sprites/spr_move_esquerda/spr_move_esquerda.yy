@@ -30,7 +30,7 @@
   "origin":4,
   "parent":{
     "name":"Sprites se movendo",
-    "path":"folders/Sprites Player/Sprites se movendo.yy",
+    "path":"folders/Sprites/Sprites_Player/Sprites se movendo.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

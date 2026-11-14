@@ -10,8 +10,8 @@
   "name":"obj_Caderno_1",
   "overriddenProperties":[],
   "parent":{
-    "name":"Objetos",
-    "path":"folders/Objetos.yy",
+    "name":"Objetos_Caderno",
+    "path":"folders/Objetos/Objetos_Caderno.yy",
   },
   "parentObjectId":null,
   "persistent":false,

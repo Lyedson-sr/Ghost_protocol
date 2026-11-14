@@ -26,7 +26,7 @@
   "origin":4,
   "parent":{
     "name":"Sprites parados",
-    "path":"folders/Sprites Player/Sprites parados.yy",
+    "path":"folders/Sprites/Sprites_Player/Sprites parados.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

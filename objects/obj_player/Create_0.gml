@@ -55,7 +55,13 @@ descricoes_objetos = [
     { objeto: obj_portal_1, tipo: "mensagem", titulo: "Passagem",
         linhas: ["Esta passagem leva a outro ambiente do prédio. O corredor do outro lado está silencioso."] },
     { objeto: obj_portal_2, tipo: "mensagem", titulo: "Passagem",
-        linhas: ["Uma passagem entre as salas do prédio. Uma corrente de ar frio vem do outro lado."] }
+        linhas: ["Uma passagem entre as salas do prédio. Uma corrente de ar frio vem do outro lado."] },
+    { objeto: obj_portal_3, tipo: "mensagem", titulo: "Passagem",
+        linhas: ["Uma passagem bloqueada. Ela será liberada quando a fase atual for concluída."] },
+    { objeto: obj_portal_4, tipo: "mensagem", titulo: "Passagem",
+        linhas: ["Uma passagem entre as salas do prédio."] },
+    { objeto: obj_portal_5, tipo: "mensagem", titulo: "Passagem",
+        linhas: ["Uma passagem bloqueada. Ela será liberada quando a investigação desta sala for concluída."] }
 ];
 
 // Mantem uma mascara de colisao fixa para evitar variacao entre sprites.
@@ -84,8 +90,14 @@ if (!variable_global_exists("incidente_001_confirmado")) global.incidente_001_co
 if (!variable_global_exists("incidente_002_concluido")) global.incidente_002_concluido = false;
 if (!variable_global_exists("incidente_002_confirmado")) global.incidente_002_confirmado = false;
 if (!variable_global_exists("incidente_003_concluido")) global.incidente_003_concluido = false;
+if (!variable_global_exists("incidente_003_confirmado")) global.incidente_003_confirmado = false;
 if (!variable_global_exists("incidente_004_concluido")) global.incidente_004_concluido = false;
+if (!variable_global_exists("incidente_004_confirmado")) global.incidente_004_confirmado = false;
 if (!variable_global_exists("incidente_005_concluido")) global.incidente_005_concluido = false;
+if (!variable_global_exists("incidente_005_confirmado")) global.incidente_005_confirmado = false;
+if (!variable_global_exists("mensagem_final_exibida")) global.mensagem_final_exibida = false;
+if (!variable_global_exists("mensagem_final_pendente")) global.mensagem_final_pendente = false;
+if (!variable_global_exists("retorno_final_pendente")) global.retorno_final_pendente = false;
 if (!variable_global_exists("anotacoes_jogador")) global.anotacoes_jogador = "";
 if (!variable_global_exists("notas_abertas")) global.notas_abertas = false;
 if (!variable_global_exists("nivel_ameaca_seguranca")) global.nivel_ameaca_seguranca = 0;

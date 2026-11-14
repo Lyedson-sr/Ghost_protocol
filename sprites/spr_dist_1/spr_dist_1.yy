@@ -37,8 +37,8 @@
   "nineSlice":null,
   "origin":0,
   "parent":{
-    "name":"Sprites objetos",
-    "path":"folders/Sprites objetos.yy",
+    "name":"Sprites_Objetos",
+    "path":"folders/Sprites/Sprites_Objetos.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

@@ -9,8 +9,8 @@
   "name":"obj_notebook",
   "overriddenProperties":[],
   "parent":{
-    "name":"Objetos",
-    "path":"folders/Objetos.yy",
+    "name":"Objetos _Escritorios",
+    "path":"folders/Objetos/Objetos _Escritorios.yy",
   },
   "parentObjectId":{
     "name":"obj_Colisao_Pai",

@@ -54,7 +54,7 @@ var _bloco_tempo = _tempo_max / _escudos_total;
 var _escudos_ativos = clamp(ceil(tempo_restante_sala / _bloco_tempo), 0, _escudos_total);
 
 var _mostrar_hud_tempo = !(variable_global_exists("game_over_ativo") && global.game_over_ativo)
-    && (room == Room1 || room == Room2);
+        && (room == Room1 || room == Room2 || room == Room3 || room == Room4 || room == Room5);
 if (_mostrar_hud_tempo)
 {
     var _cor_borda = c_black;
@@ -261,10 +261,14 @@ if (global.dialogo_aberto
     || instance_exists(obj_Terminal)
     || instance_exists(obj_Caderno)
     || instance_exists(obj_Caderno_1)
+    || instance_exists(obj_Caderno_2)
+    || instance_exists(obj_Caderno_3)
+    || instance_exists(obj_Caderno_4)
     || (_obj_bloco_notas != -1 && instance_exists(_obj_bloco_notas))) exit;
 
 var _texto = "";
-var _atendendo = room == Room1 && !global.intro_ligacao_vista;
+var _atendendo = room == Room1
+    && (!global.intro_ligacao_vista || global.retorno_final_pendente);
 
 if (_atendendo)
 {

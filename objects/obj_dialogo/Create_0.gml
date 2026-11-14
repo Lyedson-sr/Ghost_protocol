@@ -53,6 +53,6 @@ executar_comando = function(_cmd) {
         case "exit":  fechar(); break;
         default:      array_push(historico, "Comando desconhecido.");
     }
-    // limita o histórico
+    // limita o historico
     while (array_length(historico) > 12) array_delete(historico, 0, 1);
 };

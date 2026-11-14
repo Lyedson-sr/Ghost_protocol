@@ -1,4 +1,4 @@
 tipo = "mensagem";
-titulo = "Interação";
+titulo = "Interacao";
 linhas = [];
 raio_interacao = 40;

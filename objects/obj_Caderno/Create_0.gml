@@ -2,16 +2,16 @@
 /// Evento Criar - obj_Caderno
 
 // Aba selecionada:
-// 0 = Evidências
+// 0 = Evidencias
 // 1 = Ferramentas
-// 2 = Catálogo
+// 2 = Catalogo
 aba_atual = 0;
 ferramentas_pagina = 0;
 ferramentas_total_paginas = 2;
 nav_anim_prev = 0;
 nav_anim_next = 0;
 
-// Evidências selecionadas
+// Evidencias selecionadas
 evidencias = array_create(3, false);
 evidencias_fase2 = array_create(3, false);
 
@@ -21,7 +21,7 @@ evidencias_nome = [
     "Senha"
 ];
 
-// Estado da ameaça
+// Estado da ameaca
 if (!variable_global_exists("incidente_001_concluido")) global.incidente_001_concluido = false;
 if (!variable_global_exists("incidente_001_confirmado")) global.incidente_001_confirmado = false;
 if (!variable_global_exists("incidente_005_concluido")) global.incidente_005_concluido = false;

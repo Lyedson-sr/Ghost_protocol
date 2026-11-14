@@ -2,16 +2,16 @@
 /// Evento Criar - obj_Caderno
 
 // Aba selecionada:
-// 0 = Evidências
+// 0 = Evidencias
 // 1 = Ferramentas
-// 2 = Catálogo
+// 2 = Catalogo
 aba_atual = 1;
 ferramentas_pagina = 0;
 ferramentas_total_paginas = 2;
 nav_anim_prev = 0;
 nav_anim_next = 0;
 
-// Evidências selecionadas
+// Evidencias selecionadas
 evidencias = array_create(3, false);
 
 evidencias_nome = [
@@ -20,7 +20,7 @@ evidencias_nome = [
     "CVE-2016-10011"
 ];
 
-// Estado da ameaça
+// Estado da ameaca
 if (!variable_global_exists("incidente_002_concluido")) global.incidente_002_concluido = false;
 if (!variable_global_exists("incidente_002_confirmado")) global.incidente_002_confirmado = false;
 ameaca_confirmada = global.incidente_002_confirmado;

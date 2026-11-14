@@ -22,7 +22,7 @@ draw_set_valign(fa_top);
 var _fonte_anterior = draw_get_font();
 draw_set_font(fonte_dialogo);
 
-// título
+// titulo
 draw_text(x1 + 12, y1 + 8, titulo);
 
 if (tipo == "terminal") {

@@ -146,10 +146,10 @@ if (aviso_1min_pendente
 
     _dialogo_alerta.abrir({
         tipo: "mensagem",
-        titulo: "Central de Segurança",
+        titulo: "Central de Seguranca",
         linhas: [
-            "Atenção: o tempo está acabando.",
-            "Melhor correr, ou a ameaça afetará toda a empresa!"
+            "Atencao: o tempo esta acabando.",
+            "Melhor correr, ou a ameaca afetara toda a empresa!"
         ]
     });
 
@@ -411,21 +411,21 @@ if (room == Room1
             if (global.incidente_005_confirmado)
             {
                 _ligacao.linhas = [
-                    "Durante anos, construí esta empresa, enfrentei invasões, desenvolvi sistemas e protegi aquilo que conquistei.",
-                    "Mas chegou o momento de repassar esta empresa a você.",
+                    "Durante anos, construi esta empresa, enfrentei invasoes, desenvolvi sistemas e protegi aquilo que conquistei.",
+                    "Mas chegou o momento de repassar esta empresa a voce.",
                     "Meu tempo neste plano acabou, mas meu legado continua..."
                 ];
             }
             else
             {
                 _ligacao.linhas = [
-                    "Alerta da Central de Segurança.",
-                    "Sua tarefa é identificar e neutralizar as ameaças de segurança do prédio.",
-                    "No canto superior direito há o Escudo de Ameaça com 5 blocos.",
-                    "Cada bloco quebrado indica avanço da ameaça. Se ele zerar, a empresa acaba sendo invadida por falhas.",
-                    "Investigue cada sala e elimine os riscos para liberar as saídas.",
+                    "Alerta da Central de Seguranca.",
+                    "Sua tarefa e identificar e neutralizar as ameacas de seguranca do predio.",
+                    "No canto superior direito ha o Escudo de Ameaca com 5 blocos.",
+                    "Cada bloco quebrado indica avanco da ameaca. Se ele zerar, a empresa acaba sendo invadida por falhas.",
+                    "Investigue cada sala e elimine os riscos para liberar as saidas.",
                     "Para encontrar pistas, interaja com os objetos da sala usando a tecla E.",
-                    "Pressione C para abrir o caderno com informações importantes da operação.",
+                    "Pressione C para abrir o caderno com informacoes importantes da operacao.",
                     "Use N para abrir o bloco de notas e registrar pistas importantes."
                 ];
             }
@@ -551,7 +551,7 @@ var _x_ant = x;
 var _y_ant = y;
 var _lado_ant = lado;
 
-if (global.dialogo_aberto) exit;   // trava o movimento enquanto a janela está aberta
+if (global.dialogo_aberto) exit;   // trava o movimento enquanto a janela esta aberta
 
 alvo = collision_circle(x, y, 36, obj_interactive, false, true);
 

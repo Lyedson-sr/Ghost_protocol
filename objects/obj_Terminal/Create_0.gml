@@ -222,7 +222,7 @@ registrar_erro = function() {
     var _i = primeiro_pendente(_st);
     if (_i < 0) return;
     _st.erros[_i] += 1;
-    if (_st.erros[_i] mod 2 == 0 && _st.dicas[_i] < 3) {
+    if ((_st.erros[_i] == 1 || _st.erros[_i] mod 2 == 0) && _st.dicas[_i] < 3) {
         var _ps = variable_struct_get(cadeias, _inc);
         var _txt = _ps[_i].dicas[_st.dicas[_i]];
         adicionar("dica", "[DICA " + string(_st.dicas[_i] + 1) + "/3] " + _txt);
@@ -286,15 +286,15 @@ ao_concluir = function(_inc) {
         case "i1": break;   // flag e mensagem ja tratadas em finalizar_acao("poweroff")
         case "i3":
             global.incidente_003_concluido = true;
-            adicionar("out", "Falha confirmada: o servidor entrega arquivos fora do diretório permitido. Registre a CWE no caderno.");
+            adicionar("out", "Falha confirmada: o servidor entrega arquivos fora do diretorio permitido. Registre a CWE no caderno.");
             break;
         case "i4":
             global.incidente_004_concluido = true;
-            adicionar("out", "Autenticação contornada. Registre a falha no caderno.");
+            adicionar("out", "Autenticacao contornada. Registre a falha no caderno.");
             break;
         case "i5":
             global.incidente_005_concluido = true;
-            adicionar("out", "Versões vulneráveis identificadas. Registre as CVEs e a medida corretiva no caderno.");
+            adicionar("out", "Versoes vulneraveis identificadas. Registre as CVEs e a medida corretiva no caderno.");
             break;
         case "i2":
             if (terminal_id == "kali") {
@@ -303,8 +303,8 @@ ao_concluir = function(_inc) {
                 break;
             }
             variable_global_set("incidente_002_" + terminal_id + "_ok", true);
-            if (terminal_id == "pc3") adicionar("out", "Acesso dos dois robôs ao grupo foi revogado.");
-            else adicionar("out", "Evidência coletada neste computador. Registre no caderno.");
+            if (terminal_id == "pc3") adicionar("out", "Acesso dos dois robos ao grupo foi revogado.");
+            else adicionar("out", "Evidencia coletada neste computador. Registre no caderno.");
             if (global.incidente_002_pc1_ok && global.incidente_002_pc2_ok && global.incidente_002_pc3_ok) {
                 global.incidente_002_concluido = true;
                 adicionar("out", "Incidente #002 resolvido.");
@@ -331,7 +331,7 @@ finalizar_acao = function(_acao) {
     if (_acao == "poweroff") {
         servidor20_ligado = false;
         global.incidente_001_concluido = true;
-        adicionar("out", "Ameaça neutralizada. Confirme a ameaça no caderno para liberar a porta.");
+        adicionar("out", "Ameaca neutralizada. Confirme a ameaca no caderno para liberar a porta.");
         definir_sessao_local();
     }
 };
@@ -406,7 +406,7 @@ executar = function(_entrada) {
             global.anotacoes_jogador += "\n" + _texto_add;
         }
 
-        adicionar("out", "Anotação adicionada ao bloco.");
+        adicionar("out", "Anotacao adicionada ao bloco.");
         return;
     }
 
@@ -538,73 +538,32 @@ cadeias = {};
 if (eh_kali) {
     cadeias.i1 = [
         passo({ base: "nmap", aceita: ["nmap 192.168.1.20"], dicas: [
-            "Antes de tentar entrar, descubra quais serviços o servidor expõe. Qual ferramenta do caderno faz varredura de portas?",
-            "Use o nmap seguido do alvo. O IP está na etiqueta do servidor.",
+            "Antes de tentar entrar, descubra quais servicos o servidor expoe. Qual ferramenta do caderno faz varredura de portas?",
+            "Use o nmap seguido do alvo. O IP esta na etiqueta do servidor.",
             "nmap <IP-da-etiqueta>" ] }),
         passo({ base: "ssh", aceita: ["ssh operador@192.168.1.20"], reabrir: true, dicas: [
-            "A porta 22 está aberta. Que serviço roda nela e como se conecta a ele remotamente?",
-            "Use ssh no formato usuario@ip. As pistas indicam o usuário.",
+            "A porta 22 esta aberta. Que servico roda nela e como se conecta a ele remotamente?",
+            "Use ssh no formato usuario@ip. As pistas indicam o usuario.",
             "ssh <usuario>@<IP>" ] }),
         passo({ base: "", senha: true, dicas: [
-            "A senha não aparece enquanto você digita. O caderno cita as senhas do ssh: onde alguém poderia tê-la deixado?",
+            "A senha nao aparece enquanto voce digita. O caderno cita as senhas do ssh: onde alguem poderia te-la deixado?",
             "Procure na lixeira da sala (dumpster diving).",
-            "Digite a senha exatamente como está escrita: letras, números e hífen contam." ] }),
+            "Digite a senha exatamente como esta escrita: letras, numeros e hifen contam." ] }),
         passo({ base: "ls", aceita: ["ls"], dicas: [
-            "Você está dentro do servidor. Como listar os arquivos do diretório atual?",
-            "É um comando de duas letras.",
-            "Começa com 'l' e termina com 's'." ] }),
+            "Voce esta dentro do servidor. Como listar os arquivos do diretorio atual?",
+            "E um comando de duas letras.",
+            "Comeca com 'l' e termina com 's'." ] }),
         passo({ base: "cat", aceita: ["cat readme.txt"], dicas: [
-            "Como exibir o conteúdo de um arquivo de texto no terminal?",
+            "Como exibir o conteudo de um arquivo de texto no terminal?",
             "O comando se chama cat, seguido do nome do arquivo.",
             "cat <nome-do-arquivo-listado>" ] }),
         passo({ base: "sudo", aceita: ["sudo poweroff"], dicas: [
-            "O arquivo ensina como desligar a máquina. Falta executar com privilégios administrativos.",
+            "O arquivo ensina como desligar a maquina. Falta executar com privilegios administrativos.",
             "Comandos administrativos usam o prefixo sudo.",
             "sudo <comando-lido-no-arquivo>" ] })
     ];
 
-    cadeias.i3 = [
-        passo({ base: "curl", duracao: 2,
-            aceita: ["curl http://internal-files.example.com", "curl http://internal-files.example.com/", "curl http://192.168.1.30", "curl http://192.168.1.30/"],
-            saida: ["<!doctype html>", "<html lang=\"pt-br\">", "<head>", "<meta charset=\"UTF-8\" />",
-                    "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />",
-                    "<title>Internal File Server</title>", "</head>", "<body>", "<h1>Internal File Server</h1>",
-                    "<a href=\"/download?file=manual.pdf\">Download Manual</a>", "</body>", "</html>"],
-            dicas: [
-                "Você precisa ver o que o servidor devolve. Qual ferramenta de linha de comando faz requisições HTTP?",
-                "Use curl seguido da URL que aparece na pista da caixa do projeto arquivado.",
-                "curl http://<endereco-da-pista>" ] }),
-        passo({ base: "curl", duracao: 2,
-            todos: ["curl", "download?file=../config.txt"], um_de: ["internal-files.example.com", "192.168.1.30"],
-            saida: ["SERVER_CONFIG", "Environment: production", "Database: internal-db"],
-            dicas: [
-                "A aplicação pede arquivos pelo parâmetro file. O catálogo de vulnerabilidades cita manipulação de caminhos.",
-                "No Path Traversal, ../ sobe um diretório. Peça o arquivo mencionado na caixa, fora da pasta web.",
-                "curl \"http://<host>/download?file=../<arquivo>\"  (aspas por causa do '?')" ] })
-    ];
-
-    cadeias.i4 = [
-        passo({ base: "curl", duracao: 2,
-            todos: ["curl", "http://internal/login.php"], proibe: ["-d", "-x"],
-            saida: ["<!doctype html>", "<html lang=\"pt-br\">", "<head>", "<meta charset=\"UTF-8\" />", "<title>Internal System</title>", "</head>", "<body>",
-                    "<h1>Internal System Login</h1>", "<form action=\"/login.php\" method=\"POST\">",
-                    "<label>Username:</label> <input type=\"text\" name=\"user\"><br>",
-                    "<label>Password:</label> <input type=\"password\" name=\"pass\"><br>",
-                    "<input type=\"submit\" value=\"Login\">", "</form>", "</body>", "</html>"],
-            dicas: [
-                "Antes de atacar, examine o formulário. Qual ferramenta do caderno acessa uma página pelo terminal?",
-                "Use curl com a URL da aplicação, que está na pasta antiga.",
-                "curl http://<endereco-da-pista>" ] }),
-        passo({ base: "curl", duracao: 2,
-            todos: ["curl", "http://internal/login.php", "-d", "user=' or '1'='1", "pass="],
-            saida: ["Login successful! Welcome, admin."],
-            dicas: [
-                "O formulário envia 'user' e 'pass' por POST. O quadro da sala tem um texto estranho com aspas.",
-                "O curl envia dados de formulário com -d. Coloque o texto do quadro no campo user.",
-                "curl -X POST <url> -d \"user=<texto-do-quadro>\" -d \"pass=<qualquer-valor>\"" ] })
-    ];
-
-    cadeias.i5 = [
+    cadeias.i2 = [
         passo({ base: "nmap", aceita: ["nmap -sv 192.168.1.50"], duracao: 1,
             saida: [
                 "Nmap scan report for 192.168.1.50",
@@ -614,9 +573,9 @@ if (eh_kali) {
                 "80/tcp open  http    Apache httpd 2.4.7"
             ],
             dicas: [
-                "O caderno fala em identificar as versões dos serviços, não só as portas.",
-                "No nmap, a opção de detecção de versão começa com -s e termina com V maiúsculo.",
-                "nmap -s? <IP-do-servidor-antigo>" ] }),
+                "O caderno fala em identificar as versoes dos servicos.",
+                "Use o nmap com a opcao de deteccao de versao.",
+                "nmap -sV 192.168.1.50" ] }),
         passo({ base: "nmap", todos: ["nmap", "-sv", "--script", "vulners", "192.168.1.50"], requer: [0], duracao: 12,
             saida: [
                 "Host is up (0.14s latency).",
@@ -638,27 +597,89 @@ if (eh_kali) {
                 "Execute primeiro: nmap -sV 192.168.1.50"
             ],
             dicas: [
-                "O caderno cita o NSE, os scripts do nmap. As letras de papel espalhadas pela sala formam o nome do script.",
-                "Sintaxe do caderno: nmap [opções] --script <script> <alvo>.",
-                "nmap -sV --script <palavra-formada-pelas-letras> <IP>" ] })
+                "O caderno cita o script vulners para consultar vulnerabilidades.",
+                "Use --script vulners junto com a deteccao de versao.",
+                "nmap -sV --script vulners 192.168.1.50" ] })
+    ];
+
+    cadeias.i3 = [
+        passo({ base: "curl", duracao: 2,
+            aceita: ["curl http://internal-files.example.com", "curl http://internal-files.example.com/", "curl http://192.168.1.30", "curl http://192.168.1.30/"],
+            saida: ["<!doctype html>", "<html lang=\"pt-br\">", "<head>", "<meta charset=\"UTF-8\" />",
+                    "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />",
+                    "<title>Internal File Server</title>", "</head>", "<body>", "<h1>Internal File Server</h1>",
+                    "<a href=\"/download?file=manual.pdf\">Download Manual</a>", "</body>", "</html>"],
+            dicas: [
+                "Voce precisa ver o que o servidor devolve. Qual ferramenta de linha de comando faz requisicoes HTTP?",
+                "Use curl seguido da URL que aparece na pista da caixa do projeto arquivado.",
+                "curl http://<endereco-da-pista>" ] }),
+        passo({ base: "curl", duracao: 2,
+            todos: ["curl", "download?file=../config.txt"], um_de: ["internal-files.example.com", "192.168.1.30"],
+            saida: ["SERVER_CONFIG", "Environment: production", "Database: internal-db"],
+            dicas: [
+                "A aplicacao pede arquivos pelo parametro file. O catalogo de vulnerabilidades cita manipulacao de caminhos.",
+                "No Path Traversal, ../ sobe um diretorio. Peca o arquivo mencionado na caixa, fora da pasta web.",
+                "curl \"http://<host>/download?file=../<arquivo>\"  (aspas por causa do '?')" ] })
+    ];
+
+    cadeias.i4 = [
+        passo({ base: "curl", duracao: 2,
+            todos: ["curl", "http://internal/login.php"], proibe: ["-d", "-x"],
+            saida: ["<!doctype html>", "<html lang=\"pt-br\">", "<head>", "<meta charset=\"UTF-8\" />", "<title>Internal System</title>", "</head>", "<body>",
+                    "<h1>Internal System Login</h1>", "<form action=\"/login.php\" method=\"POST\">",
+                    "<label>Username:</label> <input type=\"text\" name=\"user\"><br>",
+                    "<label>Password:</label> <input type=\"password\" name=\"pass\"><br>",
+                    "<input type=\"submit\" value=\"Login\">", "</form>", "</body>", "</html>"],
+            dicas: [
+                "Antes de atacar, examine o formulario. Qual ferramenta do caderno acessa uma pagina pelo terminal?",
+                "Use curl com a URL da aplicacao, que esta na pasta antiga.",
+                "curl http://<endereco-da-pista>" ] }),
+        passo({ base: "curl", duracao: 2,
+            todos: ["curl", "http://internal/login.php", "-d", "user=' or '1'='1", "pass="],
+            saida: ["Login successful! Welcome, admin."],
+            dicas: [
+                "O formulario envia 'user' e 'pass' por POST. O quadro da sala tem um texto estranho com aspas.",
+                "O curl envia dados de formulario com -d. Coloque o texto do quadro no campo user.",
+                "curl -X POST <url> -d \"user=<texto-do-quadro>\" -d \"pass=<qualquer-valor>\"" ] })
+    ];
+
+    cadeias.i5 = [
+        passo({ base: "ls", aceita: ["ls -l"], duracao: 1,
+            saida: ["-rw-r----- 1 apiadmin api-testers 842 collection.yml"],
+            dicas: [
+                "Verifique as permissoes do arquivo com uma listagem longa.",
+                "Use ls com a opcao -l.",
+                "ls -l" ] }),
+        passo({ base: "sudo", aceita: ["sudo gpasswd -d user1 api-testers"], requer: [0], duracao: 1,
+            saida: ["Removing user user1 from group api-testers"],
+            dicas: [
+                "O grupo api-testers concede acesso a collection.",
+                "Use gpasswd com a opcao -d e privilegios sudo.",
+                "sudo gpasswd -d user1 api-testers" ] }),
+        passo({ base: "groups", aceita: ["groups user1"], requer: [1], duracao: 1,
+            saida: ["user1 : user1"],
+            dicas: [
+                "Verifique novamente os grupos do usuario.",
+                "Use groups seguido do nome do usuario.",
+                "groups user1" ] })
     ];
 } else {
     // Incidente #002
     var _d_ls = [
-        "Você precisa ver as permissões do arquivo, não só o nome. Qual opção do ls mostra a listagem longa?",
-        "A opção é um hífen seguido da letra inicial de 'long'.",
-        "ls -?  (a opção é uma única letra)" ];
+        "Voce precisa ver as permissoes do arquivo, nao so o nome. Qual opcao do ls mostra a listagem longa?",
+        "A opcao e um hifen seguido da letra inicial de 'long'.",
+        "ls -?  (a opcao e uma unica letra)" ];
     var _d_gr = [
-        "Para saber se o robô tem acesso, descubra a quais grupos ele pertence.",
-        "O comando que lista os grupos de um usuário se chama groups.",
+        "Para saber se o robo tem acesso, descubra a quais grupos ele pertence.",
+        "O comando que lista os grupos de um usuario se chama groups.",
         "groups <nome-do-robo-desta-maquina>" ];
     var _d_del = [
-        "A leitura vem do grupo da collection. Remover o robô desse grupo revoga o acesso. Qual comando administra membros de grupos?",
-        "O gpasswd com a opção -d (delete) remove um usuário de um grupo e exige sudo.",
+        "A leitura vem do grupo da collection. Remover o robo desse grupo revoga o acesso. Qual comando administra membros de grupos?",
+        "O gpasswd com a opcao -d (delete) remove um usuario de um grupo e exige sudo.",
         "sudo gpasswd -d <usuario> <grupo>" ];
     var _d_conf = [
-        "Confirme se a remoção realmente funcionou.",
-        "Reutilize o comando que lista os grupos de um usuário.",
+        "Confirme se a remocao realmente funcionou.",
+        "Reutilize o comando que lista os grupos de um usuario.",
         "groups <usuario>" ];
 
     if (terminal_id == "pc1" || terminal_id == "pc2") {

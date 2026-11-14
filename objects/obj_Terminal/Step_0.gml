@@ -5,7 +5,7 @@ terminal_y = (display_get_gui_height() - terminal_altura)  / 2;
 var _mx = device_mouse_x_to_gui(0);
 var _my = device_mouse_y_to_gui(0);
 
-// Botão fechar (X)
+// Botao fechar (X)
 var _bx = terminal_x + terminal_largura - 30;
 var _by = terminal_y + 4;
 if (mouse_check_button_pressed(mb_left) && point_in_rectangle(_mx, _my, _bx, _by, _bx + 24, _by + 24)) {

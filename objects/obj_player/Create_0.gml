@@ -157,7 +157,7 @@ if (global.sirene_ultimo_min_sound == -1)
     }
 }
 
-tempo_limite_sala_seg = 5 * 60;
+tempo_limite_sala_seg = 10 * 60;
 tempo_restante_sala = tempo_limite_sala_seg * game_get_speed(gamespeed_fps);
 sala_timer_room = room;
 taxa_dreno_base = 1;

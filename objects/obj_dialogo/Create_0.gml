@@ -43,6 +43,12 @@ abrir = function(_inst) {
 fechar = function() {
     ativo = false;
     global.dialogo_aberto = false;
+
+    // Consome as teclas de fechamento neste frame: sem isso, o Step do
+    // obj_player (que roda depois deste Begin Step) ve o mesmo "E"
+    // pressionado e reabre o dialogo imediatamente.
+    keyboard_clear(ord("E"));
+    keyboard_clear(vk_enter);
 };
 
 executar_comando = function(_cmd) {

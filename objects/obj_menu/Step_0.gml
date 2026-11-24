@@ -234,6 +234,18 @@ if (mouse_check_button_pressed(mb_left) && hover_indice != -1)
                         game_over_disparado = false;
                         intro_ligacao_estado = 0;
                         intro_fala_tocando = false;
+
+                        // obj_player e persistente: a Room1 nao recria a instancia,
+                        // entao a posicao precisa voltar ao spawn manualmente.
+                        x = xstart;
+                        y = ystart;
+                        velh = 0;
+                        velv = 0;
+                        movendo = 0;
+                        lado = 0;
+                        lado_anterior = lado;
+                        ultimo_lado_input = lado;
+                        depth = -y;
                     }
                 }
 

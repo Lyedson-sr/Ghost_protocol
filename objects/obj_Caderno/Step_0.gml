@@ -33,6 +33,8 @@ var _my = device_mouse_y_to_gui(0);
 // Fechar com ESC
 if (keyboard_check_pressed(vk_escape))
 {
+    // Consome o ESC para o obj_player nao abrir o menu de pausa no mesmo frame.
+    keyboard_clear(vk_escape);
     instance_destroy();
     exit;
 }

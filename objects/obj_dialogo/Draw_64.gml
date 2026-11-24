@@ -35,7 +35,7 @@ if (tipo == "terminal") {
     draw_text(x1 + 12, y2 - 24, "> " + entrada + cursor);
 } else {
     draw_text_ext(x1 + 12, y1 + 32, string_join_ext("\n", linhas), 16, x2 - x1 - 24);
-    draw_text(x2 - 160, y2 - 24, "[X] sair");
+    draw_text(x2 - 160, y2 - 24, "[E] sair");
 }
 draw_set_font(_fonte_anterior);
 draw_set_color(c_white);

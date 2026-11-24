@@ -19,6 +19,8 @@ var _right_x = _page_x + _page_w + 4;
 
 if (keyboard_check_pressed(vk_escape))
 {
+    // Consome o ESC para o obj_player nao abrir o menu de pausa no mesmo frame.
+    keyboard_clear(vk_escape);
     instance_destroy();
     exit;
 }

@@ -16,7 +16,7 @@ var _tab_y = _y + 20;
 var _tab_h = 54;
 var _tab_gap = 8;
 var _tab_margin = 28;
-var _tab_w = (_w - 2 * _tab_margin - 2 * _tab_gap) / 3;
+var _tab_w = (_w - 2 * _tab_margin - (total_abas - 1) * _tab_gap) / total_abas;
 
 // Paginas
 var _page_x = _x + 28;
@@ -45,8 +45,8 @@ if (mouse_check_button_pressed(mb_left))
     ameaca_confirmada = global.incidente_001_confirmado;
     var _fase2 = global.incidente_001_confirmado && global.incidente_005_concluido;
 
-    // Selecionar uma das tres abas
-    for (var i = 0; i < 3; i++)
+    // Selecionar uma das abas
+    for (var i = 0; i < total_abas; i++)
     {
         var _tx = _x + _tab_margin
             + i * (_tab_w + _tab_gap);
@@ -65,7 +65,7 @@ if (mouse_check_button_pressed(mb_left))
         for (var i = 0; i < array_length(evidencias); i++)
         {
             var _cx = _page_x + 30;
-            var _cy = _page_y + 86 + i * 48;
+            var _cy = _page_y + 86 + i * evidencia_espaco;
 
             if (_mx >= _cx && _mx <= _cx + 28
                 && _my >= _cy && _my <= _cy + 28)
@@ -117,18 +117,19 @@ if (mouse_check_button_pressed(mb_left))
         var _tri_y1 = _page_y + _page_h - 36;
         var _tri_y2 = _page_y + _page_h - 8;
 
-        if (ferramentas_total_paginas > 1
+        // Sem loop: a seta so funciona se houver pagina naquela direcao.
+        if (ferramentas_pagina > 0
             && _mx >= _prev_x1 && _mx <= _prev_x2
             && _my >= _tri_y1 && _my <= _tri_y2)
         {
-            ferramentas_pagina = (ferramentas_pagina - 1 + ferramentas_total_paginas) mod ferramentas_total_paginas;
+            ferramentas_pagina -= 1;
             nav_anim_prev = 14;
         }
-        else if (ferramentas_total_paginas > 1
+        else if (ferramentas_pagina < ferramentas_total_paginas - 1
             && _mx >= _next_x1 && _mx <= _next_x2
             && _my >= _tri_y1 && _my <= _tri_y2)
         {
-            ferramentas_pagina = (ferramentas_pagina + 1) mod ferramentas_total_paginas;
+            ferramentas_pagina += 1;
             nav_anim_next = 14;
         }
     }

@@ -13,7 +13,7 @@ var _tab_y = _y + 20;
 var _tab_h = 54;
 var _tab_gap = 8;
 var _tab_margin = 28;
-var _tab_w = (_w - 2 * _tab_margin - 2 * _tab_gap) / 3;
+var _tab_w = (_w - 2 * _tab_margin - (total_abas - 1) * _tab_gap) / total_abas;
 
 var _page_x = _x + 28;
 var _page_y = _y + 88;
@@ -117,16 +117,17 @@ draw_line(
 );
 
 // --------------------------------------------------
-// 4. TRES ABAS
+// 4. ABAS
 // --------------------------------------------------
 
 var _nomes_abas = [
     "EVIDENCIAS",
     "FERRAMENTAS",
-    "CATALOGO"
+    "CATALOGO",
+    "GLOSSARIO"
 ];
 
-for (var i = 0; i < 3; i++)
+for (var i = 0; i < total_abas; i++)
 {
     var _tx = _x + _tab_margin
         + i * (_tab_w + _tab_gap);
@@ -213,7 +214,7 @@ if (aba_atual == 0)
     for (var i = 0; i < array_length(evidencias); i++)
     {
         var _cx = _page_x + 30;
-        var _cy = _page_y + 86 + i * 48;
+        var _cy = _page_y + 86 + i * evidencia_espaco;
 
         // Caixa de selecao
         draw_set_color(cor_texto);
@@ -254,18 +255,31 @@ if (aba_atual == 0)
             _cy + 4,
             evidencias_nome[i]
         );
+
+        // Dica de onde procurar
+        if (evidencias_dica[i] != "")
+        {
+            draw_set_color(cor_secundaria);
+            texto_bloco(_cx + 36, _cy + 30, evidencias_dica[i], _page_x + _page_w - 20 - (_cx + 36), "");
+            draw_set_font(fonte_caderno);
+        }
     }
 
-    // Descricao da ameaca
+    // Objetivo e roteiro de investigacao
     draw_set_color(cor_texto);
 
-    draw_text_ext(
-        _right_x + 25,
-        _page_y + 82,
-        "Um servidor desconhecido foi identificado na rede interna. Descubra quais servicos estao expostos e desligue-o.",
-        16,
-        _page_w - 50
-    );
+    var _rl = _page_w - 50;
+    var _ry = _page_y + 70;
+    _ry = texto_bloco(_right_x + 25, _ry, "Objetivo: entrar no servidor e desliga-lo.", _rl, "Objetivo:");
+    _ry += 8;
+    _ry = texto_bloco(_right_x + 25, _ry, "Roteiro de investigacao", _rl, "Roteiro de investigacao");
+    _ry = texto_bloco(_right_x + 25, _ry, "1. Descubra o IP do servidor.", _rl, "");
+    _ry = texto_bloco(_right_x + 25, _ry, "2. Use o nmap para ver quais portas estao abertas.", _rl, "");
+    _ry = texto_bloco(_right_x + 25, _ry, "3. Porta de ssh aberta? Da para entrar, mas voce vai precisar de usuario e senha.", _rl, "");
+    _ry = texto_bloco(_right_x + 25, _ry, "4. Procure as credenciais pela sala.", _rl, "");
+    _ry = texto_bloco(_right_x + 25, _ry, "5. Entre com ssh e explore os arquivos com ls e cat.", _rl, "");
+    _ry = texto_bloco(_right_x + 25, _ry, "6. Siga as instrucoes que encontrar.", _rl, "");
+    draw_set_font(fonte_caderno);
 
     // Botao de confirmacao
     var _bx = _right_x + 24;
@@ -354,15 +368,6 @@ if (aba_atual == 0)
             _texto_botao
         );
     }
-
-    // Numero da pagina
-    draw_set_color(cor_texto);
-
-    draw_text(
-        _page_x + 12,
-        _page_y + _page_h - 28,
-        "Pagina 1"
-    );
 }
 
 // --------------------------------------------------
@@ -373,115 +378,113 @@ else if (aba_atual == 1)
 {
     draw_set_color(cor_texto);
 
-    var _titulo_ferramentas = "Ferramentas de Investigacao";
-    if (ferramentas_pagina == 1) _titulo_ferramentas = "SSH";
+    // Ordem das paginas segue o caminho da fase: descobrir -> entrar -> explorar -> anotar
+    var _titulo_esq = (ferramentas_pagina == 0) ? "1. Descobrir" : "3. Explorar";
+    var _titulo_dir = (ferramentas_pagina == 0) ? "2. Entrar" : "4. Anotar";
 
-    draw_text(
-        _page_x + 25, _page_y + 23,
-        _titulo_ferramentas
-    );
+    draw_text(_page_x + 25, _page_y + 23, _titulo_esq);
+    draw_text(_right_x + 25, _page_y + 23, _titulo_dir);
 
     draw_line(
         _page_x + 20, _page_y + 57,
         _page_x + _page_w - 20, _page_y + 57
     );
+    draw_line(
+        _right_x + 20, _page_y + 57,
+        _right_x + _page_w - 20, _page_y + 57
+    );
+
+    var _fl = _page_w - 50;
+    var _fy;
 
     if (ferramentas_pagina == 0)
     {
-        var _ferramentas = [
-            "Nmap - Descoberta de redes"
-        ];
+        // ---------- Esquerda: Nmap ----------
+        _fy = caixa_titulo(_page_x + 20, _page_y + 70, _page_w - 40, "Nmap - Portas abertas");
 
-        for (var i = 0; i < array_length(_ferramentas); i++)
-        {
-            var _fy = _page_y + 82 + i * 48;
-
-            draw_set_color(make_color_rgb(225, 211, 161));
-
-            draw_rectangle(
-                _page_x + 20, _fy,
-                _page_x + _page_w - 20, _fy + 36,
-                false
-            );
-
-            draw_set_color(cor_texto);
-
-            draw_text(
-                _page_x + 30, _fy + 10,
-                _ferramentas[i]
-            );
-        }
-
-        draw_text(_page_x + 25, _page_y + 126, "nmap <Ip_do_alvo>");
-        draw_text(_page_x + 25, _page_y + 150, "# verificar portas abertas");
-
-        draw_text(_page_x + 25, _page_y + 194, "Uso da ferramenta");
-        draw_line(
-            _page_x + 20, _page_y + 230,
-            _page_x + _page_w - 20, _page_y + 230
-        );
-        draw_text_ext(
-            _page_x + 25,
-            _page_y + 248,
-            "Mapear redes, descobrir hosts, verificar portas abertas e identificar servicos ou sistemas operacionais.",
-            16,
-            _page_w - 50
-        );
+        draw_set_color(cor_comando);
+        _fy = texto_comando(_page_x + 25, _fy, "nmap IP");
+        draw_set_color(cor_secundaria);
+        _fy = texto_comando(_page_x + 25, _fy, "Exemplo: nmap 10.0.0.5");
+        _fy += 10;
 
         draw_set_color(cor_texto);
+        _fy = texto_bloco(_page_x + 25, _fy, "Como ler o resultado:", _fl, "Como ler o resultado:");
+        draw_set_color(cor_comando);
+        _fy = texto_comando(_page_x + 25, _fy, "PORT    numero da porta");
+        _fy = texto_comando(_page_x + 25, _fy, "STATE   open = aberta");
+        _fy = texto_comando(_page_x + 25, _fy, "SERVICE servico que esta ali");
+        _fy += 10;
 
-        draw_text(
-            _right_x + 25, _page_y + 23,
-            "Linux"
-        );
+        draw_set_color(cor_texto);
+        texto_bloco(_page_x + 25, _fy, "Uma porta aberta e um caminho possivel para entrar no computador.", _fl, "");
 
-        draw_line(
-            _right_x + 20, _page_y + 57,
-            _right_x + _page_w - 20, _page_y + 57
-        );
+        // ---------- Direita: SSH ----------
+        _fy = caixa_titulo(_right_x + 20, _page_y + 70, _page_w - 40, "SSH - Acesso remoto");
 
-        draw_text(_right_x + 25, _page_y + 62, "ls");
-        draw_text(_right_x + 25, _page_y + 86, "#listar arquivos e diretorios");
-        draw_text(_right_x + 25, _page_y + 110, "cat");
-        draw_text(_right_x + 25, _page_y + 134, "#exibir conteudo de arquivos");
+        draw_set_color(cor_comando);
+        _fy = texto_comando(_right_x + 25, _fy, "ssh usuario@IP");
+        draw_set_color(cor_secundaria);
+        _fy = texto_comando(_right_x + 25, _fy, "Exemplo: ssh maria@10.0.0.5");
+        _fy += 10;
+
+        draw_set_color(cor_texto);
+        _fy = texto_bloco(_right_x + 25, _fy, "Depois, o terminal pede a senha (password:). A senha NAO aparece enquanto voce digita. Isso e normal: digite e aperte Enter.", _fl, "");
+        _fy += 10;
+        texto_bloco(_right_x + 25, _fy, "Deu certo? O inicio da linha muda de kali@kali para usuario@servidor. Agora voce esta dentro do servidor.", _fl, "");
     }
     else
     {
-        draw_text(_page_x + 25, _page_y + 82, "ssh usuario@Ip_ou_hostname");
-        draw_text(_page_x + 25, _page_y + 106, "#acessar host remoto por ssh");
+        // ---------- Esquerda: ls e cat ----------
+        _fy = caixa_titulo(_page_x + 20, _page_y + 70, _page_w - 40, "ls e cat - Ler arquivos");
 
-        draw_text(_page_x + 25, _page_y + 152, "Bloco de notas");
-        draw_line(
-            _page_x + 20, _page_y + 188,
-            _page_x + _page_w - 20, _page_y + 188
-        );
-        draw_text(_page_x + 25, _page_y + 212, "N");
-        draw_text(_page_x + 25, _page_y + 236, "#abrir bloco para anotar pistas");
-        draw_text(_page_x + 25, _page_y + 262, "notas");
-        draw_text(_page_x + 25, _page_y + 286, "#mostrar anotacoes no terminal");
+        draw_set_color(cor_comando);
+        _fy = texto_comando(_page_x + 25, _fy, "ls");
+        draw_set_color(cor_texto);
+        _fy = texto_bloco(_page_x + 25, _fy, "Lista os arquivos da pasta atual.", _fl, "");
+        _fy += 10;
 
-        draw_text(
-            _right_x + 25, _page_y + 23,
-            "Dica rapida"
-        );
-        draw_line(
-            _right_x + 20, _page_y + 57,
-            _right_x + _page_w - 20, _page_y + 57
-        );
-        draw_text_ext(
-            _right_x + 25,
-            _page_y + 84,
-            "Registre IP, usuario, senha e comandos uteis no bloco para acelerar cada incidente.",
-            18,
-            _page_w - 50
-        );
+        draw_set_color(cor_comando);
+        _fy = texto_comando(_page_x + 25, _fy, "cat arquivo");
+        draw_set_color(cor_texto);
+        _fy = texto_bloco(_page_x + 25, _fy, "Mostra o que esta escrito dentro do arquivo.", _fl, "");
+        draw_set_color(cor_secundaria);
+        _fy = texto_comando(_page_x + 25, _fy, "Exemplo: cat recado.txt");
+        _fy += 10;
+
+        draw_set_color(cor_texto);
+        texto_bloco(_page_x + 25, _fy, "Arquivos .txt costumam guardar anotacoes e instrucoes.", _fl, "");
+
+        // ---------- Direita: Bloco de notas ----------
+        _fy = caixa_titulo(_right_x + 20, _page_y + 70, _page_w - 40, "Bloco de notas");
+
+        draw_set_color(cor_comando);
+        _fy = texto_comando(_right_x + 25, _fy, "Tecla N");
+        draw_set_color(cor_texto);
+        _fy = texto_bloco(_right_x + 25, _fy, "Abre o bloco para anotar pistas.", _fl, "");
+        _fy += 10;
+
+        draw_set_color(cor_comando);
+        _fy = texto_comando(_right_x + 25, _fy, "notas");
+        draw_set_color(cor_texto);
+        _fy = texto_bloco(_right_x + 25, _fy, "Digitado no terminal, mostra o que voce anotou.", _fl, "");
+        _fy += 10;
+
+        texto_bloco(_right_x + 25, _fy, "Dica: anote o IP, o usuario e a senha assim que encontrar. Voce vai precisar deles no terminal.", _fl, "Dica:");
     }
+
+    draw_set_font(fonte_caderno);
 
     if (ferramentas_total_paginas > 1)
     {
         draw_set_color(make_color_rgb(158, 118, 70));
 
+        // Setas sem pagina naquela direcao ficam apagadas
+        var _alpha_prev = (ferramentas_pagina > 0) ? 1 : 0.25;
+        var _alpha_next = (ferramentas_pagina < ferramentas_total_paginas - 1) ? 1 : 0.25;
+
         // Triangulo de voltar
+        draw_set_alpha(_alpha_prev);
         draw_triangle(
             _right_x + _page_w - 52, _page_y + _page_h - 34,
             _right_x + _page_w - 74, _page_y + _page_h - 22,
@@ -496,6 +499,7 @@ else if (aba_atual == 1)
         );
 
         // Triangulo de avancar
+        draw_set_alpha(_alpha_next);
         draw_triangle(
             _right_x + _page_w - 40, _page_y + _page_h - 34,
             _right_x + _page_w - 18, _page_y + _page_h - 22,
@@ -508,6 +512,7 @@ else if (aba_atual == 1)
             _right_x + _page_w - 41, _page_y + _page_h - 10,
             true
         );
+        draw_set_alpha(1);
 
         if (nav_anim_prev > 0)
         {
@@ -601,7 +606,7 @@ else if (aba_atual == 2)
 
     draw_text(
         _right_x + 25, _page_y + 23,
-        "Sobre o Catalogo"
+        "Como se proteger"
     );
 
     draw_line(
@@ -609,27 +614,87 @@ else if (aba_atual == 2)
         _right_x + _page_w - 20, _page_y + 57
     );
 
-    draw_text_ext(
-        _right_x + 25,
-        _page_y + 82,
-        "Consulte aqui as categorias de ameacas identificadas durante a investigacao.",
-        20,
-        _page_w - 50
+    var _cl = _page_w - 50;
+
+    // ---------- Esquerda: o que e ----------
+    var _cy = _page_y + 124;
+    draw_set_color(cor_secundaria);
+    _cy = texto_bloco(_page_x + 25, _cy, "(\"mergulho no lixo\")", _cl, "");
+    _cy += 10;
+    draw_set_color(cor_texto);
+    _cy = texto_bloco(_page_x + 25, _cy, "Tecnica em que alguem procura informacoes uteis no LIXO de uma empresa: senhas anotadas, documentos, relatorios.", _cl, "");
+    _cy += 10;
+    texto_bloco(_page_x + 25, _cy, "Parece simples, mas funciona: muita gente joga fora papeis com dados importantes sem destrui-los.", _cl, "");
+
+    // ---------- Direita: como se proteger ----------
+    _cy = _page_y + 70;
+    _cy = texto_bloco(_right_x + 25, _cy, "- Rasgue ou triture papeis com informacoes sensiveis.", _cl, "");
+    _cy += 6;
+    _cy = texto_bloco(_right_x + 25, _cy, "- Nunca anote senhas em papeis soltos.", _cl, "");
+    _cy += 6;
+    _cy = texto_bloco(_right_x + 25, _cy, "- Use um gerenciador de senhas.", _cl, "");
+    _cy += 16;
+    draw_set_color(cor_secundaria);
+    texto_bloco(_right_x + 25, _cy, "Seguranca nao e so tecnologia: tambem depende dos habitos das pessoas.", _cl, "");
+
+    draw_set_color(cor_texto);
+    draw_set_font(fonte_caderno);
+}
+
+// --------------------------------------------------
+// 8. CONTEUDO DA ABA GLOSSARIO
+// --------------------------------------------------
+
+else if (aba_atual == 3)
+{
+    draw_set_color(cor_texto);
+
+    draw_text(_page_x + 25, _page_y + 23, "Glossario");
+    draw_text(_right_x + 25, _page_y + 23, "Termos da Fase 1");
+
+    draw_line(
+        _page_x + 20, _page_y + 57,
+        _page_x + _page_w - 20, _page_y + 57
+    );
+    draw_line(
+        _right_x + 20, _page_y + 57,
+        _right_x + _page_w - 20, _page_y + 57
     );
 
-    draw_text_ext(
-        _page_x + 25,
-        _page_y + 126,
-        "Tecnica de reconhecimento em que um atacante procura informacoes uteis em materiais...",
-        18,
-        _page_w - 50
-    );
+    // Cada termo: [nome, definicao, comparacao do dia a dia]
+    var _termos = [
+        ["IP", "IP: o endereco de um computador na rede. Ex: 192.168.1.20", "Como o endereco de uma casa: e por ele que voce encontra quem procura."],
+        ["Porta", "Porta: um canal de entrada do computador. Cada servico usa uma porta com um numero.", "Como as portas de um predio: cada uma leva a uma sala diferente."],
+        ["Servico", "Servico: programa que espera conexoes numa porta. Ex: ssh (porta 22) e site (porta 80).", "Como um atendente esperando clientes atras de um balcao."],
+        ["SSH", "SSH: forma segura de entrar em outro computador e usar o terminal dele, a distancia. Precisa de usuario e senha.", "Como ter a chave da casa: com ela, voce entra e mexe em tudo."],
+        ["Terminal", "Terminal: a tela onde voce digita comandos em vez de clicar.", "Como dar ordens por escrito ao computador."],
+        ["Diretorio", "Diretorio: o mesmo que pasta. Guarda arquivos.", "Como uma gaveta de arquivo."]
+    ];
 
-    draw_text(
-        _page_x + 12,
-        _page_y + _page_h - 28,
-        "Pagina 3"
-    );
+    var _gl = _page_w - 50;
+    var _metade = ceil(array_length(_termos) / 2);
+    var _gy_esq = _page_y + 70;
+    var _gy_dir = _page_y + 70;
+
+    for (var i = 0; i < array_length(_termos); i++)
+    {
+        var _na_esquerda = (i < _metade);
+        var _gx = _na_esquerda ? _page_x + 25 : _right_x + 25;
+        var _gy = _na_esquerda ? _gy_esq : _gy_dir;
+        var _t = _termos[i];
+
+        draw_set_color(cor_texto);
+        _gy = texto_bloco(_gx, _gy, _t[1], _gl, _t[0] + ":");
+        draw_set_color(cor_secundaria);
+        _gy = texto_bloco(_gx, _gy, _t[2], _gl, "");
+        _gy += 12;
+
+        if (_na_esquerda) _gy_esq = _gy;
+        else _gy_dir = _gy;
+    }
+
+    draw_set_color(cor_texto);
+    draw_set_font(fonte_caderno);
 }
 
 // Restaurar configuracoes de desenho
